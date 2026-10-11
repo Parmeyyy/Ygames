@@ -5,6 +5,7 @@ import { LEVEL_TYPES } from '../level-types/index.js';
 import { progress } from '../services/progress.js';
 import { Egg } from '../ui/Egg.js';
 import { addBubble, addButton, addText, makeTappable } from '../ui/widgets.js';
+import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
 export class LevelScene extends BaseScene {
@@ -16,9 +17,16 @@ export class LevelScene extends BaseScene {
     this.level = getLevel(data.number);
     this.mistakes = 0;
     this.solved = false;
+    this.hintUnlocked = false;
     // у уровня может быть своя стартовая реплика (levels.<id>.start)
     const own = levelText(this.level, 'start');
     this.line = own.startsWith('levels.') ? pick('egg.start') : own;
+  }
+
+  create() {
+    super.create();
+    yandex.setGameplay(true);
+    this.events.once('shutdown', () => yandex.setGameplay(false));
   }
 
   // Портрет: вопрос → поле → яйцо с репликой внизу.
@@ -52,10 +60,12 @@ export class LevelScene extends BaseScene {
       size: 28,
     });
     const title = addText(this, W / 2, 60 * u, t('ui.level', { n: level.number }), 34, { fontStyle: 'bold' });
-    // Пока без рекламы: подсказка показывается сразу
-    addButton(this, W - 130 * u, 60 * u, 220 * u, 72 * u, t('ui.hint'), () => this.say(levelText(level, 'hint')), {
-      size: 28,
-    });
+    // Первая подсказка на уровне — за рекламу, дальше её можно перечитывать бесплатно
+    if (this.hintUnlocked) {
+      addButton(this, W - 130 * u, 60 * u, 220 * u, 72 * u, t('ui.hint'), () => this.showHint(), { size: 28 });
+    } else {
+      addButton(this, W - 130 * u, 60 * u, 220 * u, 72 * u, t('ui.hintAd'), () => this.showHint(), { size: 21 });
+    }
 
     const question = addText(this, layout.question.x, layout.question.y, levelText(level, 'question'), 42, {
       fontStyle: 'bold',
@@ -102,10 +112,21 @@ export class LevelScene extends BaseScene {
     this.bubble = addBubble(this, x, y, w, line);
   }
 
+  async showHint() {
+    if (!this.hintUnlocked) {
+      if (!(await yandex.showRewarded())) return;
+      this.hintUnlocked = true;
+    }
+    this.line = levelText(this.level, 'hint');
+    this.rebuild(); // кнопка меняет подпись на «Подсказка»
+  }
+
   correct() {
     if (this.solved) return;
     this.solved = true;
     progress.complete(this.level.number);
+    yandex.levelCompleted();
+    yandex.setGameplay(false);
     this.egg.react('happy');
     this.time.delayedCall(800, () => this.scene.start('Win', { number: this.level.number }));
   }

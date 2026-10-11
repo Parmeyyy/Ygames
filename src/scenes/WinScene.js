@@ -3,9 +3,10 @@ import { levelText, t } from '../i18n/index.js';
 import { getLevel } from '../levels/index.js';
 import { Egg } from '../ui/Egg.js';
 import { addBubble, addButton, addText } from '../ui/widgets.js';
+import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
-// Экран победы между уровнями. Позже здесь же — межстраничная реклама.
+// Экран победы между уровнями. По кнопке «Дальше» может показаться межстраничная реклама.
 export class WinScene extends BaseScene {
   constructor() {
     super('Win');
@@ -35,9 +36,10 @@ export class WinScene extends BaseScene {
     const h = 92 * u;
 
     if (this.next) {
-      addButton(this, sideX, buttonsY, w, h, t('ui.next'), () =>
-        this.scene.start('Level', { number: this.next.number }),
-      );
+      addButton(this, sideX, buttonsY, w, h, t('ui.next'), async () => {
+        await yandex.showInterstitialIfDue();
+        this.scene.start('Level', { number: this.next.number });
+      });
     } else {
       addText(this, sideX, buttonsY, t('ui.allDone'), 28, {
         color: TEXT.muted,

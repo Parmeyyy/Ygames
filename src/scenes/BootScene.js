@@ -1,13 +1,15 @@
 import { COLORS } from '../config.js';
-import { t } from '../i18n/index.js';
+import { setLang, t } from '../i18n/index.js';
 import { progress } from '../services/progress.js';
 import { addText } from '../ui/widgets.js';
+import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
 // Полоса заполняется не быстрее этого времени, чтобы экран не мелькал
 const MIN_DURATION = 600;
 
-// Экран загрузки. Позже здесь: инициализация SDK, загрузка графики и звука, вызов Game Ready.
+// Экран загрузки: инициализация SDK, язык, прогресс игрока. Позже здесь же — загрузка графики и звука.
+// Game Ready отправляет главное меню, когда оно показано.
 export class BootScene extends BaseScene {
   constructor() {
     super('Boot');
@@ -24,10 +26,16 @@ export class BootScene extends BaseScene {
 
   create() {
     super.create();
-    progress.load().then(() => {
-      this.sound.mute = !progress.sound;
-      this.ready = true;
-    });
+    this.prepare();
+  }
+
+  async prepare() {
+    await yandex.init();
+    setLang(yandex.lang);
+    await progress.load();
+    this.sound.mute = !progress.sound;
+    this.ready = true;
+    this.rebuild(); // надпись «Загрузка…» на языке из SDK
   }
 
   build() {

@@ -1,7 +1,7 @@
-// Прогресс игрока. Сейчас хранится в localStorage; позже здесь же появится
-// облачное сохранение через SDK Яндекс Игр (поэтому load асинхронный).
+import { yandex } from '../yandex.js';
 
-const KEY = 'egg-progress-v1';
+// Прогресс игрока. Хранится в данных игрока SDK Яндекс Игр (облако),
+// при локальном запуске — в localStorage (см. src/yandex.js).
 
 const state = {
   unlocked: 1, // до какого номера уровни открыты
@@ -9,21 +9,14 @@ const state = {
   sound: true,
 };
 
-function save() {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(state));
-  } catch {
-    // хранилище может быть недоступно (приватный режим) — играем без сохранения
-  }
-}
+const save = () => yandex.saveData({ ...state });
 
 export const progress = {
   async load() {
-    try {
-      Object.assign(state, JSON.parse(localStorage.getItem(KEY)) ?? {});
-    } catch {
-      // нет сохранения или оно повреждено — начинаем с нуля
-    }
+    const data = await yandex.loadData();
+    if (Number.isInteger(data.unlocked)) state.unlocked = data.unlocked;
+    if (Array.isArray(data.completed)) state.completed = data.completed;
+    if (typeof data.sound === 'boolean') state.sound = data.sound;
   },
 
   get unlocked() {

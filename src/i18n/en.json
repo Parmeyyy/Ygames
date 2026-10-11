@@ -11,6 +11,7 @@
     "menu": "Menu",
     "back": "Back",
     "hint": "Hint",
+    "hintAd": "Hint\n(ad)",
     "next": "Next",
     "selectLevel": "Select level",
     "level": "Level {n}",

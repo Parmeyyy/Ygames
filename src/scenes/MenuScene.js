@@ -4,11 +4,18 @@ import { levels } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { Egg } from '../ui/Egg.js';
 import { addBubble, addButton, addText } from '../ui/widgets.js';
+import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
 export class MenuScene extends BaseScene {
   constructor() {
     super('Menu');
+  }
+
+  create() {
+    super.create();
+    // Меню показано, игра готова к взаимодействию
+    yandex.gameReady();
   }
 
   build() {

@@ -2,18 +2,15 @@ import ru from './ru.json';
 import en from './en.json';
 
 const dicts = { ru, en };
+// Языки, для которых показываем русский текст
 const RU_LIKE = ['ru', 'be', 'kk', 'uk', 'uz'];
 
 let lang = 'ru';
 
-// Позже язык будет приходить из SDK Яндекс Игр
-export function detectLang() {
-  const code = (navigator.language || 'ru').slice(0, 2).toLowerCase();
-  return RU_LIKE.includes(code) ? 'ru' : 'en';
-}
-
+// code — код языка из SDK или браузера ("ru", "en-US", "kk", ...)
 export function setLang(code) {
-  lang = dicts[code] ? code : 'en';
+  const short = String(code || '').slice(0, 2).toLowerCase();
+  lang = RU_LIKE.includes(short) ? 'ru' : 'en';
   document.documentElement.lang = lang;
 }
 

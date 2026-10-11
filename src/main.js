@@ -1,13 +1,15 @@
 import Phaser from 'phaser';
 import { COLORS } from './config.js';
-import { detectLang, setLang } from './i18n/index.js';
+import { setLang } from './i18n/index.js';
 import { BootScene } from './scenes/BootScene.js';
 import { MenuScene } from './scenes/MenuScene.js';
 import { LevelSelectScene } from './scenes/LevelSelectScene.js';
 import { LevelScene } from './scenes/LevelScene.js';
 import { WinScene } from './scenes/WinScene.js';
+import { yandex } from './yandex.js';
 
-setLang(detectLang());
+// Пока SDK не инициализирован — язык браузера; BootScene потом возьмёт язык из SDK
+setLang(yandex.lang);
 
 // Канвас рисуется в физических пикселях (чёткий текст на retina),
 // а zoom возвращает его к размеру окна в CSS-пикселях.
@@ -34,6 +36,20 @@ const game = new Phaser.Game({
     zoom: initial.zoom,
   },
   scene: [BootScene, MenuScene, LevelSelectScene, LevelScene, WinScene],
+});
+
+// Паузой звука управляем сами (реклама, уход со вкладки), иначе Phaser
+// включит его обратно при возврате фокуса, даже если реклама ещё открыта.
+game.sound.pauseOnBlur = false;
+
+yandex.onPauseChange((paused) => {
+  if (paused) {
+    game.sound.pauseAll();
+    game.pause();
+  } else {
+    game.resume();
+    game.sound.resumeAll();
+  }
 });
 
 window.addEventListener('resize', () => {
