@@ -1,0 +1,11 @@
+{
+  "id": 2,
+  "type": "choice",
+  "options": [
+    { "id": "one", "labelKey": "one" },
+    { "id": "two", "labelKey": "two" },
+    { "id": "six", "labelKey": "six" },
+    { "id": "all", "labelKey": "all" }
+  ],
+  "answer": "all"
+}

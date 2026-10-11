@@ -1,0 +1,7 @@
+{
+  "id": 3,
+  "type": "action",
+  "eggMood": "sleep",
+  "action": { "kind": "wait", "seconds": 5 },
+  "decoys": [{ "id": "button", "labelKey": "button" }]
+}

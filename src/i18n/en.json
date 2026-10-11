@@ -1,0 +1,48 @@
+{
+  "game": {
+    "title": "Egg"
+  },
+  "ui": {
+    "loading": "Loading…",
+    "play": "Play",
+    "levels": "Levels",
+    "soundOn": "Sound: on",
+    "soundOff": "Sound: off",
+    "menu": "Menu",
+    "back": "Back",
+    "hint": "Hint",
+    "next": "Next",
+    "selectLevel": "Select level",
+    "level": "Level {n}",
+    "win": "Correct!",
+    "allDone": "That's all the levels for now. More coming soon!"
+  },
+  "egg": {
+    "menu": "Hi! Please don't drop me!",
+    "start": ["Careful, I'm fragile!", "Take your time. And don't shake me!", "Oh, I'm nervous…"],
+    "wrong": ["Oops! Not that!", "Ouch, I almost cracked!", "Missed… Try again!"]
+  },
+  "levels": {
+    "1": {
+      "question": "Where is the smallest number?",
+      "hint": "Look higher. Which level is this?",
+      "win": "One! It was hiding in the level number."
+    },
+    "2": {
+      "question": "How many months of the year have 28 days?",
+      "one": "One",
+      "two": "Two",
+      "six": "Six",
+      "all": "All of them",
+      "hint": "March has a 28th day too…",
+      "win": "Of course! Every month has a 28th day."
+    },
+    "3": {
+      "question": "Shh! The egg fell asleep. Don't wake it up!",
+      "button": "PRESS ME",
+      "start": "Zzz… Zzz…",
+      "hint": "Sometimes it's best to do nothing. Just wait.",
+      "win": "Thanks for the quiet, I slept so well!"
+    }
+  }
+}
