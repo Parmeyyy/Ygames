@@ -1,4 +1,5 @@
 import { ECONOMY } from '../config.js';
+import { dev } from '../dev.js';
 import { HATS } from '../hats.js';
 import { chapters } from '../levels/index.js';
 import { yandex } from '../yandex.js';
@@ -11,6 +12,7 @@ const state = {
   secretOpen: false, // секретная глава открыта (навсегда)
   secretUnlocked: 1, // до какого номера открыты уровни секретной главы
   completed: [], // id пройденных уровней
+  cracks: 0, // сколько трещин на яйце: по одной за финал каждой главы
   coins: 0,
   hats: [], // id купленных и полученных шапок
   hat: null, // id надетой шапки
@@ -23,7 +25,7 @@ const save = () => yandex.saveData({ ...state });
 export const progress = {
   async load() {
     const data = await yandex.loadData();
-    for (const key of ['unlocked', 'secretUnlocked', 'coins']) {
+    for (const key of ['unlocked', 'secretUnlocked', 'coins', 'cracks']) {
       if (Number.isInteger(data[key]) && data[key] >= 0) state[key] = data[key];
     }
     for (const key of ['secretOpen', 'sound']) {
@@ -44,6 +46,7 @@ export const progress = {
   },
 
   isUnlocked(level) {
+    if (dev.unlockAll) return true;
     if (level.chapter === 'secret') return state.secretOpen && level.number <= state.secretUnlocked;
     return level.number <= state.unlocked;
   },
@@ -59,6 +62,8 @@ export const progress = {
       state.completed.push(level.id);
       state.coins += ECONOMY.levelReward;
     }
+    // финал главы: level.finale — номер трещины, которая появляется на яйце
+    if (level.finale) state.cracks = Math.max(state.cracks, level.finale);
     this.openNext(level, false);
     save();
     return first ? ECONOMY.levelReward : 0;
@@ -76,8 +81,12 @@ export const progress = {
     if (andSave) save();
   },
 
+  get cracks() {
+    return state.cracks;
+  },
+
   get secretOpen() {
-    return state.secretOpen;
+    return state.secretOpen || dev.unlockAll;
   },
 
   openSecret() {

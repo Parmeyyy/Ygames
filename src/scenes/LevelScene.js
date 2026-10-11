@@ -1,5 +1,5 @@
 import { COLORS, ECONOMY } from '../config.js';
-import { levelText, pick, t } from '../i18n/index.js';
+import { hasText, levelText, pick, t } from '../i18n/index.js';
 import { getLevel, nextLevel } from '../levels/index.js';
 import { LEVEL_TYPES } from '../level-types/index.js';
 import { progress } from '../services/progress.js';
@@ -20,8 +20,7 @@ export class LevelScene extends BaseScene {
     this.hintUnlocked = false;
     this.hintDialogOpen = false;
     // у уровня может быть своя стартовая реплика (levels.<id>.start)
-    const own = levelText(this.level, 'start');
-    this.line = own.startsWith('levels.') ? pick('egg.start') : own;
+    this.line = hasText(`levels.${this.level.id}.start`) ? levelText(this.level, 'start') : pick('egg.start');
   }
 
   create() {
@@ -61,15 +60,19 @@ export class LevelScene extends BaseScene {
     const layout = (this.layout = this.computeLayout());
     this.bubble = null;
     this.modal = null;
+    this.marks = {};
 
+    // isUi: нажатия на кнопки интерфейса не считаются действиями игрока на уровне
     addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.menu'), () => this.scene.start('Menu'), {
       fill: COLORS.secondary,
       size: 28,
-    });
+    }).isUi = true;
     const titleKey = level.chapter === 'secret' ? 'ui.secretLevel' : 'ui.level';
     const title = addText(this, W / 2, 60 * u, t(titleKey, { n: level.number }), 34, { fontStyle: 'bold' });
-    addButton(this, W - 130 * u, 60 * u, 220 * u, 72 * u, t('ui.hint'), () => this.onHintTap(), { size: 28 });
-    addCoinCounter(this, layout.coins.x, layout.coins.y, progress.coins, layout.coins.anchor);
+    const hint = addButton(this, W - 130 * u, 60 * u, 220 * u, 72 * u, t('ui.hint'), () => this.onHintTap(), { size: 28 });
+    hint.isUi = true;
+    // hideCoins: на уровнях про числа счётчик монет был бы лишним числом на экране
+    if (!level.hideCoins) addCoinCounter(this, layout.coins.x, layout.coins.y, progress.coins, layout.coins.anchor);
 
     const question = addText(this, layout.question.x, layout.question.y, levelText(level, 'question'), 42, {
       fontStyle: 'bold',
@@ -83,6 +86,7 @@ export class LevelScene extends BaseScene {
 
     // Элементы интерфейса, которые уровень может сделать ответом ("ui:<имя>")
     this.targets = { levelNumber: title, question, egg: this.egg };
+    Object.assign(this.marks, { 'ui:egg': this.egg, 'ui:levelNumber': title, 'ui:question': question, 'ui:hint': hint });
 
     const buildType = LEVEL_TYPES[level.type];
     if (buildType) {
@@ -90,12 +94,30 @@ export class LevelScene extends BaseScene {
         correct: () => this.correct(),
         wrong: () => this.wrong(),
         bindTarget: (name, onTap) => this.bindTarget(name, onTap),
+        target: (name) => this.targets[name],
+        say: (line) => this.say(line),
+        isUiPress: (over) => this.hintDialogOpen || over.some((object) => object.isUi),
+        mark: (id, object) => {
+          this.marks[id] = object;
+        },
       });
     } else {
       console.warn(`Уровень ${level.id}: неизвестный тип "${level.type}"`);
     }
 
     if (this.hintDialogOpen) this.openHintDialog();
+
+    // режим разработки: координаты объектов уровня в CSS-пикселях — для автотестов
+    if (import.meta.env.DEV) {
+      const zoom = this.scale.zoom;
+      window.__eggLevel = {
+        id: level.id,
+        solved: () => this.solved,
+        mistakes: () => this.mistakes,
+        points: () =>
+          Object.fromEntries(Object.entries(this.marks).map(([id, o]) => [id, { x: o.x * zoom, y: o.y * zoom }])),
+      };
+    }
   }
 
   teardown() {
@@ -168,7 +190,9 @@ export class LevelScene extends BaseScene {
 
   addSkipButton() {
     const { x, y, w, h } = this.layout.skip;
-    addButton(this, x, y, w, h, t('ui.skipAd'), () => this.skip(), { fill: COLORS.secondary, size: 24 });
+    const button = addButton(this, x, y, w, h, t('ui.skipAd'), () => this.skip(), { fill: COLORS.secondary, size: 24 });
+    button.isUi = true;
+    this.marks['ui:skip'] = button;
   }
 
   async skip() {
@@ -179,14 +203,16 @@ export class LevelScene extends BaseScene {
     else this.scene.start('LevelSelect', { chapter: this.level.chapter });
   }
 
+  // Возвращает true: ответ принят (типы уровней могут оборачивать correct своей проверкой)
   correct() {
-    if (this.solved) return;
+    if (this.solved) return true;
     this.solved = true;
     const reward = progress.complete(this.level);
     yandex.levelCompleted();
     yandex.setGameplay(false);
     this.egg.react('happy');
     this.time.delayedCall(800, () => this.scene.start('Win', { id: this.level.id, reward }));
+    return true;
   }
 
   wrong() {
@@ -194,7 +220,9 @@ export class LevelScene extends BaseScene {
     this.mistakes += 1;
     this.egg.react('scared');
     this.cameras.main.shake(200, 0.006);
-    this.say(pick('egg.wrong'));
+    // у уровня может быть своя реплика на ошибку (levels.<id>.wrong)
+    const own = `levels.${this.level.id}.wrong`;
+    this.say(hasText(own) ? pick(own) : pick('egg.wrong'));
     if (this.mistakes === ECONOMY.mistakesToSkip) this.addSkipButton();
   }
 }

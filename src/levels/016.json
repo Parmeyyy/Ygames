@@ -1,0 +1,26 @@
+{
+  "id": 16,
+  "type": "drag",
+  "objects": [
+    {
+      "id": "sun",
+      "shape": "sun",
+      "x": 0.5,
+      "y": 0.25,
+      "size": 180
+    },
+    {
+      "id": "ground",
+      "shape": "ground",
+      "x": 0.5,
+      "y": 0.85,
+      "w": 1,
+      "h": 0.3,
+      "inert": true
+    }
+  ],
+  "goal": {
+    "drag": "sun",
+    "onto": "ground"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": 5,
+  "type": "choice",
+  "objects": [
+    {
+      "id": "egg1",
+      "shape": "egg",
+      "x": 0.2,
+      "y": 0.5,
+      "size": 120,
+      "inert": true
+    },
+    {
+      "id": "egg2",
+      "shape": "egg",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 120,
+      "inert": true
+    },
+    {
+      "id": "egg3",
+      "shape": "egg",
+      "x": 0.8,
+      "y": 0.5,
+      "size": 120,
+      "inert": true
+    }
+  ],
+  "options": [
+    {
+      "id": "2",
+      "label": "2"
+    },
+    {
+      "id": "3",
+      "label": "3"
+    },
+    {
+      "id": "4",
+      "label": "4"
+    },
+    {
+      "id": "5",
+      "label": "5"
+    }
+  ],
+  "answer": "4"
+}

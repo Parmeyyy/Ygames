@@ -21,20 +21,30 @@ export class LevelSelectScene extends BaseScene {
     const secret = this.chapter === 'secret';
     const levels = chapters[this.chapter];
 
-    const back = () => (secret ? this.scene.start('LevelSelect') : this.scene.start('Menu'));
+    // chapter передаём всегда: без данных Phaser запустил бы сцену с прошлыми, то есть снова с секретной главой
+    const back = () => (secret ? this.scene.start('LevelSelect', { chapter: 'main' }) : this.scene.start('Menu'));
     addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.back'), back, { fill: COLORS.secondary, size: 28 });
     const title = addText(this, W / 2, 60 * u, t(secret ? 'ui.secretChapter' : 'ui.selectLevel'), 36, { fontStyle: 'bold' });
     // длинный заголовок не должен наезжать на кнопку «Назад»
     const maxTitle = W - 440 * u;
     if (title.width > maxTitle) title.setScale(maxTitle / title.width);
 
-    const cell = 130 * u;
-    const gap = 24 * u;
-    const fit = Math.floor((W - 80 * u + gap) / (cell + gap));
-    const cols = Math.max(1, Math.min(8, fit, levels.length));
-    const rows = Math.ceil(levels.length / cols);
-    const left = (W - (cols * cell + (cols - 1) * gap)) / 2;
+    const withSecret = !secret && chapters.secret.length > 0;
     const top = 150 * u;
+    const gap = 24 * u;
+    // Ячейки уменьшаются, пока вся сетка (и кнопка секретной главы) не поместится по высоте
+    const room = this.H - top - (withSecret ? 150 * u : 20 * u);
+    let cell;
+    let cols;
+    let rows;
+    for (let size = 130; size >= 60; size -= 10) {
+      cell = size * u;
+      const fit = Math.floor((W - 80 * u + gap) / (cell + gap));
+      cols = Math.max(1, Math.min(10, fit, levels.length));
+      rows = Math.ceil(levels.length / cols);
+      if (rows * (cell + gap) <= room) break;
+    }
+    const left = (W - (cols * cell + (cols - 1) * gap)) / 2;
 
     levels.forEach((level, index) => {
       const x = left + (index % cols) * (cell + gap) + cell / 2;
@@ -42,7 +52,7 @@ export class LevelSelectScene extends BaseScene {
       this.addCell(x, y, cell, level);
     });
 
-    if (!secret && chapters.secret.length) this.addSecretButton(top + rows * (cell + gap) + 70 * u);
+    if (withSecret) this.addSecretButton(top + rows * (cell + gap) + 70 * u);
   }
 
   addCell(x, y, size, level) {
@@ -51,8 +61,9 @@ export class LevelSelectScene extends BaseScene {
     const fill = locked ? COLORS.locked : progress.isCompleted(level) ? COLORS.success : COLORS.accent;
 
     const bg = this.add.graphics();
-    bg.fillStyle(COLORS.outline, 0.18).fillRoundedRect(-size / 2, -size / 2 + 6 * u, size, size, 24 * u);
-    bg.fillStyle(fill, 1).fillRoundedRect(-size / 2, -size / 2, size, size, 24 * u);
+    const radius = size * 0.18;
+    bg.fillStyle(COLORS.outline, 0.18).fillRoundedRect(-size / 2, -size / 2 + 6 * u, size, size, radius);
+    bg.fillStyle(fill, 1).fillRoundedRect(-size / 2, -size / 2, size, size, radius);
 
     const cell = this.add.container(x, y, [bg]).setSize(size, size);
 
@@ -61,7 +72,7 @@ export class LevelSelectScene extends BaseScene {
       return;
     }
 
-    cell.add(addText(this, 0, 0, String(level.number), 52, { color: TEXT.light, fontStyle: 'bold' }));
+    cell.add(addText(this, 0, 0, String(level.number), 52 * (size / (130 * u)), { color: TEXT.light, fontStyle: 'bold' }));
     makeTappable(cell, () => this.scene.start('Level', { id: level.id }));
   }
 

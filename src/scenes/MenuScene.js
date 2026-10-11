@@ -44,7 +44,7 @@ export class MenuScene extends BaseScene {
       this.scene.start('Level', { id: chapters.main[number - 1].id });
     });
 
-    addButton(this, menuX, buttonsY + step, w, h, t('ui.levels'), () => this.scene.start('LevelSelect'), {
+    addButton(this, menuX, buttonsY + step, w, h, t('ui.levels'), () => this.scene.start('LevelSelect', { chapter: 'main' }), {
       fill: COLORS.secondary,
     });
 

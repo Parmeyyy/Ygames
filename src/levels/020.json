@@ -1,0 +1,7 @@
+{
+  "id": 20,
+  "type": "wait",
+  "seconds": 5,
+  "eggMood": "scared",
+  "finale": 1
+}

@@ -1,5 +1,7 @@
 import { COLORS } from '../config.js';
+import { dev } from '../dev.js';
 import { setLang, t } from '../i18n/index.js';
+import { getLevel } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { addText } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
@@ -61,6 +63,14 @@ export class BootScene extends BaseScene {
   }
 
   update() {
-    if (this.drawBar() >= 1 && this.ready) this.scene.start('Menu');
+    if (this.drawBar() < 1 || !this.ready) return;
+    // режим разработки: ?level=15 сразу открывает уровень
+    const level = dev.level && (getLevel(Number(dev.level)) ?? getLevel(dev.level));
+    if (level) {
+      yandex.gameReady();
+      this.scene.start('Level', { id: level.id });
+    } else {
+      this.scene.start('Menu');
+    }
   }
 }

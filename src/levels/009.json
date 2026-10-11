@@ -1,0 +1,27 @@
+{
+  "id": 9,
+  "type": "drag",
+  "eggMood": "scared",
+  "objects": [
+    {
+      "id": "cloud",
+      "shape": "cloud",
+      "x": 0.25,
+      "y": 0.2,
+      "size": 220,
+      "inert": true
+    },
+    {
+      "id": "nest",
+      "shape": "nest",
+      "x": 0.55,
+      "y": 0.6,
+      "size": 280,
+      "inert": true
+    }
+  ],
+  "goal": {
+    "drag": "ui:egg",
+    "onto": "nest"
+  }
+}

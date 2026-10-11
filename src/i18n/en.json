@@ -26,7 +26,8 @@
     "cancel": "Cancel",
     "skipAd": "Skip (ad)",
     "doubleAd": "x2 coins (ad)",
-    "replay": "Level already completed"
+    "replay": "Level already completed",
+    "chapterDone": "Chapter {n} complete!"
   },
   "egg": {
     "menu": "Hi! Please don't drop me!",
@@ -43,25 +44,141 @@
   },
   "levels": {
     "1": {
-      "question": "Where is the smallest number?",
-      "hint": "Look higher. Which level is this?",
-      "win": "One! It was hiding in the level number."
+      "question": "Tap the egg",
+      "hint": "There is only one here. It is standing there, smiling.",
+      "start": "Hi! I'm right here!",
+      "win": "That tickles! You found me!"
     },
     "2": {
-      "question": "How many months of the year have 28 days?",
-      "one": "One",
-      "two": "Two",
-      "six": "Six",
-      "all": "All of them",
-      "hint": "March has a 28th day too…",
-      "win": "Of course! Every month has a 28th day."
+      "question": "Which number is the biggest?",
+      "hint": "No tricks here. Just compare the numbers.",
+      "wrong": "There is a bigger one!",
+      "win": "Twelve! That's a full box of eggs."
     },
     "3": {
-      "question": "Shh! The egg fell asleep. Don't wake it up!",
-      "button": "PRESS ME",
-      "start": "Zzz… Zzz…",
-      "hint": "Sometimes it's best to do nothing. Just wait.",
-      "win": "Thanks for the quiet, I slept so well!"
+      "question": "Find the smallest number",
+      "hint": "Not every number lives on the playing field. Look higher.",
+      "wrong": "Small, but there is a smaller one!",
+      "win": "The three was hiding in the level number. Sneaky!"
+    },
+    "4": {
+      "question": "Press the button",
+      "big": "NOT THIS ONE",
+      "hint": "The big button is being honest. Check the corners.",
+      "wrong": "It told you it's not this one!",
+      "win": "Small but real. Just like me!"
+    },
+    "5": {
+      "question": "How many eggs are on the screen?",
+      "hint": "The screen is more than the picture. Who is talking to you?",
+      "wrong": "Hey, did you count me?",
+      "win": "Four! Thanks for not forgetting me."
+    },
+    "6": {
+      "question": "The egg is freezing. Warm it up",
+      "start": "Brr… S-so cold…",
+      "hint": "Something warm is hiding behind the cloud. You can pick it up.",
+      "wrong": "N-not that… Still c-cold!",
+      "win": "Ahh, warm! Just don't boil me."
+    },
+    "7": {
+      "question": "Tap the green one",
+      "red": "RED",
+      "green": "GREEN",
+      "blue": "BLUE",
+      "black": "BLACK",
+      "hint": "Don't read the words. Look at the paint they are written in.",
+      "wrong": "It says one thing, but the colour is another!",
+      "win": "Eyes beat letters! I can't read anyway."
+    },
+    "8": {
+      "question": "Which is heavier: a kilo of feathers or a kilo of nails?",
+      "fluff": "Feathers",
+      "nails": "Nails",
+      "same": "The same",
+      "hint": "Read the question again. How much does each one weigh?",
+      "wrong": "Put them on the scales!",
+      "win": "A kilo is a kilo. But feathers are softer to land on."
+    },
+    "9": {
+      "question": "Help the egg hide",
+      "start": "Oh no, everyone can see me!",
+      "hint": "The one who is scared should hide. You can pick it up and carry it.",
+      "wrong": "I'm still visible here! I need a cosier place.",
+      "win": "Nobody will find me in the nest. Except the hen."
+    },
+    "10": {
+      "question": "Tap the heaviest one",
+      "hint": "Size in a picture is not weight. Who is really heavy here?",
+      "wrong": "Big, but light!",
+      "win": "The elephant! Looks tiny, but please don't let it sit on me."
+    },
+    "11": {
+      "question": "Find the second egg",
+      "hint": "The clouds are not glued down. Try moving them.",
+      "wrong": "Not that! Look for my friend.",
+      "win": "There you are! I thought you flew away."
+    },
+    "12": {
+      "question": "Make the egg laugh",
+      "joke": "Tell a joke",
+      "face": "Make a funny face",
+      "partial": "Hee… More!",
+      "hint": "The egg is ticklish. Tickle fast, and more than once.",
+      "wrong": "Not funny. I am a serious egg.",
+      "win": "Ha-ha-ha! Stop, I'll crack up!"
+    },
+    "13": {
+      "question": "What is 2 + 2 × 2?",
+      "hint": "Which comes first: adding or multiplying?",
+      "wrong": "The maths teacher is sad.",
+      "win": "Six! Multiply first. I knew it, honest."
+    },
+    "14": {
+      "question": "The egg is too hot",
+      "start": "Phew… I'm about to boil!",
+      "hint": "It's hot because of the one who shines. Ask it to hide.",
+      "wrong": "That didn't help! I'm nearly soft-boiled!",
+      "win": "The shade is lovely. Thanks, I almost became an omelette."
+    },
+    "15": {
+      "question": "How many times does the letter O appear in this question?",
+      "letter": "O",
+      "hint": "Count the letters right in the question. The one standing alone counts too.",
+      "wrong": "Count again, and no poking!",
+      "win": "Correct! Funny, there is no letter O in the word egg."
+    },
+    "16": {
+      "question": "Put the egg to bed",
+      "hint": "You go to bed when it's dark. Who is keeping it bright?",
+      "wrong": "Too bright, I can't sleep!",
+      "win": "The sun has set. Good night… zzz…"
+    },
+    "17": {
+      "question": "Help the egg cross the road",
+      "hint": "Watch the traffic light. Cross only on green.",
+      "wrong": "Yikes! Not on red! And no standing on the road!",
+      "win": "We made it! Not a single crack."
+    },
+    "18": {
+      "question": "How many triangles are in this figure?",
+      "hint": "Count the small ones. Then look at the whole figure.",
+      "wrong": "Count carefully, they are hiding!",
+      "win": "Five! The big one counts too."
+    },
+    "19": {
+      "question": "Turn on the light",
+      "start": "It's dark! Are you there?",
+      "hint": "Move your finger over the dark, it shines. Look for the thing that turns lights on.",
+      "wrong": "I can't see what you are pressing!",
+      "win": "Let there be light! I wasn't scared. Almost."
+    },
+    "20": {
+      "question": "DO NOT TAP THE EGG!",
+      "start": "Don't touch! Don't touch anything at all!",
+      "hint": "Sometimes the best move is no move. Hands off and wait.",
+      "wrong": "I asked you not to! Let's start over.",
+      "win": "Phew… Oh. I think I cracked a little. Is that normal?"
     },
     "s1": {
       "question": "Who is the main character here?",

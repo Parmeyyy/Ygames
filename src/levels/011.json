@@ -1,0 +1,38 @@
+{
+  "id": 11,
+  "type": "tap",
+  "objects": [
+    {
+      "id": "second",
+      "shape": "egg",
+      "x": 0.7,
+      "y": 0.3,
+      "size": 90
+    },
+    {
+      "id": "cloud1",
+      "shape": "cloud",
+      "x": 0.25,
+      "y": 0.22,
+      "size": 260,
+      "draggable": true
+    },
+    {
+      "id": "cloud2",
+      "shape": "cloud",
+      "x": 0.7,
+      "y": 0.3,
+      "size": 280,
+      "draggable": true
+    },
+    {
+      "id": "cloud3",
+      "shape": "cloud",
+      "x": 0.45,
+      "y": 0.75,
+      "size": 270,
+      "draggable": true
+    }
+  ],
+  "answer": "second"
+}

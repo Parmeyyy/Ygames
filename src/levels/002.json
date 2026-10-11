@@ -1,11 +1,32 @@
 {
   "id": 2,
-  "type": "choice",
-  "options": [
-    { "id": "one", "labelKey": "one" },
-    { "id": "two", "labelKey": "two" },
-    { "id": "six", "labelKey": "six" },
-    { "id": "all", "labelKey": "all" }
+  "type": "tap",
+  "hideCoins": true,
+  "objects": [
+    {
+      "id": "n3",
+      "label": "3",
+      "x": 0.2,
+      "y": 0.2
+    },
+    {
+      "id": "n7",
+      "label": "7",
+      "x": 0.78,
+      "y": 0.3
+    },
+    {
+      "id": "n12",
+      "label": "12",
+      "x": 0.25,
+      "y": 0.75
+    },
+    {
+      "id": "n9",
+      "label": "9",
+      "x": 0.8,
+      "y": 0.8
+    }
   ],
-  "answer": "all"
+  "answer": "n12"
 }

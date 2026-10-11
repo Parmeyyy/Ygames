@@ -1,0 +1,19 @@
+{
+  "id": 8,
+  "type": "choice",
+  "options": [
+    {
+      "id": "fluff",
+      "labelKey": "fluff"
+    },
+    {
+      "id": "nails",
+      "labelKey": "nails"
+    },
+    {
+      "id": "same",
+      "labelKey": "same"
+    }
+  ],
+  "answer": "same"
+}

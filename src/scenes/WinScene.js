@@ -32,7 +32,9 @@ export class WinScene extends BaseScene {
     const buttonsY = portrait ? H * 0.78 : H * 0.56;
     const bubbleW = portrait ? Math.min(W - 80 * u, 600 * u) : 520 * u;
 
-    addText(this, sideX, titleY, t('ui.win'), 72, { fontStyle: 'bold' });
+    // финал главы — свой заголовок
+    const title = this.level.finale ? t('ui.chapterDone', { n: this.level.finale }) : t('ui.win');
+    addText(this, sideX, titleY, title, this.level.finale ? 52 : 72, { fontStyle: 'bold' });
     new Egg(this, eggX, eggY, 320 * u, 'happy').react('happy');
     addBubble(this, sideX, bubbleY, bubbleW, levelText(this.level, 'win'));
 

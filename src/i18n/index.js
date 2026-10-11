@@ -23,6 +23,9 @@ export function t(key, params) {
   return value.replace(/\{(\w+)\}/g, (_, name) => params[name] ?? '');
 }
 
+// Есть ли такой текст хотя бы в одном словаре
+export const hasText = (key) => (lookup(dicts[lang], key) ?? lookup(dicts.ru, key)) !== undefined;
+
 // Случайная реплика из массива
 export function pick(key) {
   const value = t(key);

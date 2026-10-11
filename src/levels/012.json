@@ -1,0 +1,20 @@
+{
+  "id": 12,
+  "type": "action",
+  "action": {
+    "kind": "tap",
+    "target": "ui:egg",
+    "count": 3,
+    "within": 1200
+  },
+  "decoys": [
+    {
+      "id": "joke",
+      "labelKey": "joke"
+    },
+    {
+      "id": "face",
+      "labelKey": "face"
+    }
+  ]
+}

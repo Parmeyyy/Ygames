@@ -1,0 +1,48 @@
+{
+  "id": 17,
+  "type": "timed",
+  "objects": [
+    {
+      "id": "road",
+      "shape": "road",
+      "x": 0.5,
+      "y": 0.5,
+      "w": 0.46,
+      "h": 1,
+      "inert": true
+    },
+    {
+      "id": "far",
+      "shape": "zone",
+      "x": 0.885,
+      "y": 0.5,
+      "w": 0.23,
+      "h": 1,
+      "inert": true
+    },
+    {
+      "id": "light",
+      "shape": "light",
+      "x": 0.5,
+      "y": 0.14,
+      "size": 130,
+      "inert": true
+    },
+    {
+      "id": "walker",
+      "shape": "egg",
+      "x": 0.11,
+      "y": 0.6,
+      "size": 120
+    }
+  ],
+  "goal": {
+    "drag": "walker",
+    "onto": "far"
+  },
+  "signal": {
+    "light": "light",
+    "red": 2200,
+    "green": 1500
+  }
+}

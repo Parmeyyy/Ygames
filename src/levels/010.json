@@ -1,0 +1,35 @@
+{
+  "id": 10,
+  "type": "tap",
+  "objects": [
+    {
+      "id": "feather",
+      "shape": "feather",
+      "x": 0.25,
+      "y": 0.25,
+      "size": 260
+    },
+    {
+      "id": "leaf",
+      "shape": "leaf",
+      "x": 0.75,
+      "y": 0.3,
+      "size": 250
+    },
+    {
+      "id": "balloon",
+      "shape": "balloon",
+      "x": 0.3,
+      "y": 0.75,
+      "size": 260
+    },
+    {
+      "id": "elephant",
+      "shape": "elephant",
+      "x": 0.82,
+      "y": 0.85,
+      "size": 70
+    }
+  ],
+  "answer": "elephant"
+}
