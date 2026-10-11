@@ -31,6 +31,7 @@ export class BootScene extends BaseScene {
 
   async prepare() {
     await yandex.init();
+    yandex.showBanner();
     setLang(yandex.lang);
     await progress.load();
     this.sound.mute = !progress.sound;

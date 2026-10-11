@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
 import { COLORS } from '../config.js';
+import { progress } from '../services/progress.js';
+import { addHat } from './hats.js';
 
 // Яйцо-заглушка: нарисовано фигурами, позже заменится на спрайты из public/assets.
-// Настроения: idle, happy, scared, sleep.
+// Настроения: idle, happy, scared, sleep. Сверху рисуется надетая шапка.
 export class Egg extends Phaser.GameObjects.Container {
-  // (x, y) — центр яйца, height — его высота в пикселях
-  constructor(scene, x, y, height, mood = 'idle') {
+  // (x, y) — центр яйца, height — его высота в пикселях, hat — id шапки (по умолчанию надетая)
+  constructor(scene, x, y, height, mood = 'idle', hat = progress.hat) {
     super(scene, x, y);
     this.homeX = x;
     this.homeY = y;
@@ -16,6 +18,8 @@ export class Egg extends Phaser.GameObjects.Container {
     this.shell = scene.add.graphics();
     this.face = scene.add.graphics();
     this.add([this.shell, this.face]);
+    const hatObject = addHat(scene, hat, 0, -height / 2, this.eggW);
+    if (hatObject) this.add(hatObject);
     this.setSize(this.eggW, this.eggH);
     scene.add.existing(this);
 

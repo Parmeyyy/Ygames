@@ -10,6 +10,14 @@ export const COLORS = {
   egg: 0xfffdf5,
   outline: 0x3a2e39,
   blush: 0xffb4a2,
+  coin: 0xffc93c,
+  special: 0x7b5ea7,
+};
+
+export const ECONOMY = {
+  levelReward: 10, // монет за первое прохождение уровня
+  hintPrice: 30, // цена подсказки в монетах
+  mistakesToSkip: 3, // после скольких ошибок появляется «Пропустить»
 };
 
 export const TEXT = {

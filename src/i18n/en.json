@@ -11,17 +11,35 @@
     "menu": "Menu",
     "back": "Back",
     "hint": "Hint",
-    "hintAd": "Hint\n(ad)",
     "next": "Next",
     "selectLevel": "Select level",
     "level": "Level {n}",
     "win": "Correct!",
-    "allDone": "That's all the levels for now. More coming soon!"
+    "allDone": "That's all the levels for now. More coming soon!",
+    "wardrobe": "Wardrobe",
+    "secretLevel": "Secret {n}",
+    "secretChapter": "Secret chapter",
+    "secretChapterAd": "Secret chapter\n(watch an ad to open)",
+    "hintTitle": "Get a hint",
+    "hintForCoins": "For {n} coins",
+    "hintForAd": "Watch an ad",
+    "cancel": "Cancel",
+    "skipAd": "Skip (ad)",
+    "doubleAd": "x2 coins (ad)",
+    "replay": "Level already completed"
   },
   "egg": {
     "menu": "Hi! Please don't drop me!",
-    "start": ["Careful, I'm fragile!", "Take your time. And don't shake me!", "Oh, I'm nervous…"],
-    "wrong": ["Oops! Not that!", "Ouch, I almost cracked!", "Missed… Try again!"]
+    "start": [
+      "Careful, I'm fragile!",
+      "Take your time. And don't shake me!",
+      "Oh, I'm nervous…"
+    ],
+    "wrong": [
+      "Oops! Not that!",
+      "Ouch, I almost cracked!",
+      "Missed… Try again!"
+    ]
   },
   "levels": {
     "1": {
@@ -44,6 +62,30 @@
       "start": "Zzz… Zzz…",
       "hint": "Sometimes it's best to do nothing. Just wait.",
       "win": "Thanks for the quiet, I slept so well!"
+    },
+    "s1": {
+      "question": "Who is the main character here?",
+      "button": "This button",
+      "questionOption": "The question",
+      "hint": "The main character is quiet and stands off to the side.",
+      "win": "It's me! I'm the main character! How nice!"
     }
+  },
+  "wardrobe": {
+    "info": "Rare hats take 3 ad views each",
+    "noCoins": "Not enough coins!",
+    "equip": "Wear",
+    "equipped": "Wearing",
+    "ad": "Ad {n}/{max}"
+  },
+  "hats": {
+    "cap": "Cap",
+    "bow": "Bow",
+    "beanie": "Bobble hat",
+    "tophat": "Top hat",
+    "wizard": "Wizard hat",
+    "crown": "Crown",
+    "chef": "Chef's hat",
+    "flower": "Flower"
   }
 }

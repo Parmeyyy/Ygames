@@ -1,16 +1,22 @@
 // Обёртка над SDK Яндекс Игр. Остальная игра обращается к платформе только через этот модуль.
 //
 // Если YaGames не определён (локальный запуск), работает заглушка:
-// данные игрока лежат в localStorage, вместо рекламы — серый экран на 2 секунды.
+// данные игрока лежат в localStorage, вместо рекламы — серый экран на 2 секунды,
+// вместо стики-баннера — серая полоса внизу.
 
 const STORAGE_KEY = 'egg-progress-v1';
 const LEVELS_PER_INTERSTITIAL = 3;
 const STUB_AD_DURATION = 2000;
+const STUB_BANNER_HEIGHT = 50;
 
 let ysdk = null;
 let player = null;
 let readySent = false;
 let levelsSinceInterstitial = 0;
+
+// Сколько CSS-пикселей внизу окна занято баннером, который рисует сама игра (только заглушка)
+let bannerHeight = 0;
+let layoutListener = () => {};
 
 // Игра на паузе, пока есть хотя бы одна причина: 'ad', 'hidden', 'platform'
 const pauseReasons = new Set();
@@ -97,6 +103,40 @@ export const yandex = {
   // listener(paused) вызывается, когда игру и звук нужно остановить или продолжить
   onPauseChange(listener) {
     pauseListener = listener;
+  },
+
+  // listener() вызывается, когда меняется место, доступное игре (появился баннер)
+  onLayoutChange(listener) {
+    layoutListener = listener;
+  },
+
+  // Высота полосы внизу окна, которую игра должна оставить свободной под баннер
+  get bannerHeight() {
+    return bannerHeight;
+  },
+
+  // Стики-баннер. На платформе его рисует Яндекс рядом с игрой (включается в Консоли, вкладка «Реклама»;
+  // для управления отсюда нужна опция «Использовать API для показа sticky-баннера»).
+  async showBanner() {
+    if (!ysdk) {
+      if (bannerHeight) return;
+      const banner = document.createElement('div');
+      banner.textContent = 'БАННЕР (тест)';
+      banner.style.cssText =
+        `position:fixed;left:0;right:0;bottom:0;height:${STUB_BANNER_HEIGHT}px;z-index:900;display:flex;` +
+        'align-items:center;justify-content:center;background:#9e9e9e;color:#fff;font:bold 16px system-ui,sans-serif;';
+      document.body.append(banner);
+      bannerHeight = STUB_BANNER_HEIGHT;
+      layoutListener();
+      return;
+    }
+    try {
+      const status = await ysdk.adv.getBannerAdvStatus();
+      // reason есть, когда баннер показать нельзя (например, не подключён в Консоли)
+      if (!status.stickyAdvIsShowing && !status.reason) await ysdk.adv.showBannerAdv();
+    } catch (error) {
+      console.warn('SDK Яндекс Игр: не удалось показать стики-баннер', error);
+    }
   },
 
   // Game Ready: игра загружена и готова к взаимодействию. Отправляется один раз.
