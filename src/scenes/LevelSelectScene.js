@@ -2,7 +2,7 @@ import { COLORS, TEXT } from '../config.js';
 import { t } from '../i18n/index.js';
 import { chapters } from '../levels/index.js';
 import { progress } from '../services/progress.js';
-import { addButton, addText, drawLock, makeTappable } from '../ui/widgets.js';
+import { addButton, addStars, addText, drawLock, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -72,7 +72,9 @@ export class LevelSelectScene extends BaseScene {
       return;
     }
 
-    cell.add(addText(this, 0, 0, String(level.number), 52 * (size / (130 * u)), { color: TEXT.light, fontStyle: 'bold' }));
+    const stars = progress.starsOf(level);
+    if (stars > 0) cell.add(addStars(this, 0, size * 0.3, stars, size * 0.1));
+    cell.add(addText(this, 0, stars > 0 ? -size * 0.1 : 0, String(level.number), 52 * (size / (130 * u)), { color: TEXT.light, fontStyle: 'bold' }));
     makeTappable(cell, () => this.go('Level', { id: level.id }));
   }
 

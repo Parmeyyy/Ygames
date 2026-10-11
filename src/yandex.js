@@ -100,6 +100,12 @@ export const yandex = {
     }
   },
 
+  // Текущее время в миллисекундах. На платформе — серверное, чтобы подарки нельзя было
+  // получить, переведя часы на устройстве.
+  now() {
+    return ysdk?.serverTime?.() ?? Date.now();
+  },
+
   // listener(paused) вызывается, когда игру и звук нужно остановить или продолжить
   onPauseChange(listener) {
     pauseListener = listener;

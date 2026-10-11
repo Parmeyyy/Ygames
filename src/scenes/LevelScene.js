@@ -221,7 +221,9 @@ export class LevelScene extends BaseScene {
   correct() {
     if (this.solved) return true;
     this.solved = true;
-    const reward = progress.complete(this.level);
+    // 3 звезды — без ошибок и без подсказки, 2 — не больше двух ошибок, иначе 1
+    const stars = this.mistakes === 0 && !this.hintUnlocked ? 3 : this.mistakes <= 2 ? 2 : 1;
+    const reward = progress.complete(this.level, stars);
     yandex.levelCompleted();
     yandex.setGameplay(false);
     audio.correct();
@@ -232,7 +234,7 @@ export class LevelScene extends BaseScene {
       this.children.moveTo(next, this.children.getIndex(this.background) + 1);
       this.tweens.add({ targets: next, alpha: 1, duration: 600 });
     }
-    this.time.delayedCall(800, () => this.go('Win', { id: this.level.id, reward }));
+    this.time.delayedCall(800, () => this.go('Win', { id: this.level.id, reward, stars }));
     return true;
   }
 

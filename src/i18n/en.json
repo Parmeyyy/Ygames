@@ -26,8 +26,10 @@
     "cancel": "Cancel",
     "skipAd": "Skip (ad)",
     "doubleAd": "x2 coins (ad)",
-    "replay": "Level already completed",
-    "chapterDone": "Chapter {n} complete!"
+    "chapterDone": "Chapter {n} complete!",
+    "dailyTitle": "Daily gift: +{n} coins",
+    "dailyTake": "Collect",
+    "dailyDouble": "Collect x2 (ad)"
   },
   "egg": {
     "menu": "Hi! Please don't drop me!",
@@ -186,6 +188,26 @@
       "questionOption": "The question",
       "hint": "The main character is quiet and stands off to the side.",
       "win": "It's me! I'm the main character! How nice!"
+    },
+    "s2": {
+      "question": "Who is rustling in the bushes?",
+      "start": "Eek! Someone is there!",
+      "hint": "One bush is moving. You can rub a bush away with your finger.",
+      "wrong": "The rustling is not there!",
+      "win": "It's my friend! And I was all ready to be scared."
+    },
+    "s3": {
+      "question": "The egg is having a nightmare. Rub it out",
+      "start": "I'm dreaming of something awful…",
+      "hint": "What does an egg fear most of all? Rub that with your finger.",
+      "wrong": "No, no, that was the nice part! Bring it back!",
+      "win": "The frying pan is gone! Now it's balloons all the way."
+    },
+    "s4": {
+      "question": "Scratch off the grey layer",
+      "start": "A lottery! What's in there?",
+      "hint": "The grey layer rubs off like a scratch card. Rub it with your finger.",
+      "win": "The grand prize is… another egg! Well, not bad."
     }
   },
   "wardrobe": {

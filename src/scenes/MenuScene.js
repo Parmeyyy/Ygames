@@ -1,10 +1,10 @@
 import { audio } from '../audio.js';
-import { COLORS } from '../config.js';
+import { COLORS, ECONOMY, TEXT } from '../config.js';
 import { t } from '../i18n/index.js';
 import { chapters } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { Egg } from '../ui/Egg.js';
-import { addBubble, addButton, addCoinCounter, addText } from '../ui/widgets.js';
+import { addBubble, addButton, addCoinCounter, addModal, addText } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -33,6 +33,9 @@ export class MenuScene extends BaseScene {
     addText(this, menuX, titleY, t('game.title'), 96, { fontStyle: 'bold' });
     addBubble(this, eggX, bubbleY, 460 * u, t('egg.menu'));
     addCoinCounter(this, W - 20 * u, 50 * u, progress.coins, 'right');
+    // всего звёзд за пройденные уровни
+    this.add.star(44 * u, 50 * u, 5, 12 * u, 25 * u, COLORS.coin).setStrokeStyle(2 * u, COLORS.outline);
+    addText(this, 78 * u, 50 * u, String(progress.totalStars), 30, { fontStyle: 'bold', color: TEXT.dark }).setOrigin(0, 0.5);
     new Egg(this, eggX, eggY, 300 * u).enableTaps();
 
     const w = 420 * u;
@@ -69,5 +72,31 @@ export class MenuScene extends BaseScene {
       },
       { fill: COLORS.secondary },
     );
+
+    if (progress.dailyAvailable) this.addDailyGift();
+  }
+
+  // Ежедневный подарок: раз в день, можно удвоить за рекламу
+  addDailyGift() {
+    const amount = ECONOMY.dailyBonus;
+    const claim = (coins) => {
+      progress.claimDaily(coins);
+      audio.coin();
+      this.rebuild();
+    };
+    addModal(this, {
+      title: t('ui.dailyTitle', { n: amount }),
+      onClose: () => {},
+      buttons: [
+        { label: t('ui.dailyTake'), onTap: () => claim(amount) },
+        {
+          label: t('ui.dailyDouble'),
+          fill: COLORS.success,
+          onTap: async () => {
+            if (await yandex.showRewarded()) claim(amount * 2);
+          },
+        },
+      ],
+    });
   }
 }

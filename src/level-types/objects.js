@@ -13,8 +13,10 @@ import { addText } from '../ui/widgets.js';
 //   textColor       — цвет текста для word
 //   draggable       — объект можно таскать
 //   inert           — объект не реагирует на нажатия
+//   erasable        — объект можно стереть (для типа erase)
 // Виды: chip, word, button, egg, figure, road, ground, zone (невидимая зона), goal (подсвеченная зона-цель),
-// arrow (пунктирная стрелка вправо) и картинки из src/ui/shapes.js.
+// arrow (пунктирная стрелка вправо), card (защитный слой, как на лотерейном билете)
+// и картинки из src/ui/shapes.js.
 // Объекты рисуются в порядке списка: следующий поверх предыдущего.
 //
 // Возвращает Map: id → { def, object, w, h } (object — контейнер с центром в точке объекта).
@@ -112,6 +114,14 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
       for (let d = -w / 2; d < w / 2 - head - dash * 0.5; d += dash * 1.7) g.fillRect(d, -5 * u, dash, 10 * u);
       g.fillTriangle(w / 2, 0, w / 2 - head, -head * 0.6, w / 2 - head, head * 0.6);
       parts = [g];
+    } else if (shape === 'card') {
+      w = rectW;
+      h = rectH;
+      const g = scene.add.graphics();
+      g.fillStyle(0xb9bcc4, 1).fillRoundedRect(-w / 2, -h / 2, w, h, 20 * u);
+      g.lineStyle(4 * u, COLORS.outline, 1).strokeRoundedRect(-w / 2, -h / 2, w, h, 20 * u);
+      const marks = addText(scene, 0, 0, '? ? ?', 64, { fontStyle: 'bold', color: TEXT.light });
+      parts = [g, marks];
     } else if (shape === 'zone') {
       w = rectW;
       h = rectH;

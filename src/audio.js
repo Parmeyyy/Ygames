@@ -118,6 +118,11 @@ export const audio = {
     tone(1760, 0.05, 0.14, { type: 'square', volume: SFX_VOLUME * 0.35 });
   },
 
+  // i — номер звезды: каждая следующая звучит выше
+  star(i) {
+    tone(semitone(12 + i * 4), 0, 0.18, { type: 'triangle', volume: SFX_VOLUME * 0.8 });
+  },
+
   buy() {
     tone(semitone(12), 0, 0.09, { type: 'triangle' });
     tone(semitone(16), 0.08, 0.09, { type: 'triangle' });

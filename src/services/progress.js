@@ -12,6 +12,8 @@ const state = {
   secretOpen: false, // секретная глава открыта (навсегда)
   secretUnlocked: 1, // до какого номера открыты уровни секретной главы
   completed: [], // id пройденных уровней
+  stars: {}, // id уровня → лучшая оценка, от 1 до 3 звёзд
+  bonusDay: 0, // номер дня, когда забрали последний ежедневный подарок
   cracks: 0, // сколько трещин на яйце: по одной за финал каждой главы
   coins: 0,
   hats: [], // id купленных и полученных шапок
@@ -25,7 +27,7 @@ const save = () => yandex.saveData({ ...state });
 export const progress = {
   async load() {
     const data = await yandex.loadData();
-    for (const key of ['unlocked', 'secretUnlocked', 'coins', 'cracks']) {
+    for (const key of ['unlocked', 'secretUnlocked', 'coins', 'cracks', 'bonusDay']) {
       if (Number.isInteger(data[key]) && data[key] >= 0) state[key] = data[key];
     }
     for (const key of ['secretOpen', 'sound']) {
@@ -35,6 +37,7 @@ export const progress = {
     // шапки, которых больше нет в игре, из сохранения отбрасываются
     if (Array.isArray(data.hats)) state.hats = data.hats.filter((id) => HATS.some((hat) => hat.id === id));
     if (data.hatAds && typeof data.hatAds === 'object') state.hatAds = data.hatAds;
+    if (data.stars && typeof data.stars === 'object') state.stars = data.stars;
     if (state.hats.includes(data.hat)) state.hat = data.hat;
   },
 
@@ -55,8 +58,19 @@ export const progress = {
     return state.completed.includes(level.id);
   },
 
-  // Уровень пройден. Возвращает, сколько монет начислено: награда даётся только за первое прохождение.
-  complete(level) {
+  // Сколько звёзд у уровня (0 — не пройден)
+  starsOf(level) {
+    return state.stars[level.id] ?? 0;
+  },
+
+  get totalStars() {
+    return Object.values(state.stars).reduce((sum, value) => sum + value, 0);
+  },
+
+  // Уровень пройден на stars звёзд (хранится лучший результат).
+  // Возвращает, сколько монет начислено: награда даётся только за первое прохождение.
+  complete(level, stars = 1) {
+    state.stars[level.id] = Math.max(state.stars[level.id] ?? 0, stars);
     const first = !state.completed.includes(level.id);
     if (first) {
       state.completed.push(level.id);
@@ -91,6 +105,23 @@ export const progress = {
 
   openSecret() {
     state.secretOpen = true;
+    save();
+  },
+
+  // ——— ежедневный подарок ———
+
+  // Номер сегодняшнего дня (по UTC)
+  today() {
+    return Math.floor(yandex.now() / 86400000);
+  },
+
+  get dailyAvailable() {
+    return state.bonusDay !== this.today();
+  },
+
+  claimDaily(amount) {
+    state.bonusDay = this.today();
+    state.coins += amount;
     save();
   },
 

@@ -84,6 +84,27 @@ function drawSwitch(g, s) {
   g.fillStyle(COLORS.secondary, 1).fillRoundedRect(-s * 0.13, -s * 0.3, s * 0.26, s * 0.6, s * 0.06);
 }
 
+function drawBush(g, s) {
+  const puffs = [
+    [-s * 0.28, s * 0.08, s * 0.22],
+    [0, -s * 0.06, s * 0.3],
+    [s * 0.28, s * 0.08, s * 0.22],
+  ];
+  line(g, s);
+  for (const [x, y, r] of puffs) g.strokeCircle(x, y, r);
+  g.strokeRoundedRect(-s * 0.46, s * 0.05, s * 0.92, s * 0.28, s * 0.12);
+  g.fillStyle(COLORS.success, 1);
+  for (const [x, y, r] of puffs) g.fillCircle(x, y, r);
+  g.fillRoundedRect(-s * 0.46, s * 0.05, s * 0.92, s * 0.28, s * 0.12);
+  g.fillStyle(0x4c9644, 1).fillCircle(-s * 0.1, s * 0.02, s * 0.05).fillCircle(s * 0.16, s * 0.12, s * 0.04);
+}
+
+function drawPan(g, s) {
+  g.fillStyle(INK, 1).fillRoundedRect(s * 0.2, -s * 0.05, s * 0.3, s * 0.1, s * 0.04);
+  g.fillCircle(-s * 0.12, 0, s * 0.33);
+  g.fillStyle(0x6b6470, 1).fillCircle(-s * 0.12, 0, s * 0.25);
+}
+
 // Светофор: g.setLight(true) — зелёный, g.setLight(false) — красный
 function drawLight(g, s) {
   g.setLight = (green) => {
@@ -105,6 +126,8 @@ const SHAPES = {
   balloon: { draw: drawBalloon, aspect: 1 },
   switch: { draw: drawSwitch, aspect: 1.2 },
   light: { draw: drawLight, aspect: 1 },
+  bush: { draw: drawBush, aspect: 0.75 },
+  pan: { draw: drawPan, aspect: 0.7 },
 };
 
 export const hasShape = (name) => name in SHAPES;

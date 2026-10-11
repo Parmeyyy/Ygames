@@ -1,6 +1,7 @@
 import { buildAction } from './action.js';
 import { buildChoice } from './choice.js';
 import { buildDrag } from './drag.js';
+import { buildErase } from './erase.js';
 import { buildFlashlight } from './flashlight.js';
 import { buildTap } from './tap.js';
 import { buildTimed } from './timed.js';
@@ -23,6 +24,7 @@ export const LEVEL_TYPES = {
   choice: buildChoice,
   action: buildAction,
   drag: buildDrag,
+  erase: buildErase,
   wait: buildWait,
   flashlight: buildFlashlight,
   timed: buildTimed,

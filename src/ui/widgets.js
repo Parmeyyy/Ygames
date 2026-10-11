@@ -138,6 +138,30 @@ export function addCoinCounter(scene, x, y, coins, anchor = 'center', from = coi
   return counter;
 }
 
+// Три звезды в ряд с центром в (x, y): count золотых, остальные серые. radius — в пикселях.
+// animate: true — золотые по очереди «выпрыгивают», на каждую вызывается onPop(номер).
+export function addStars(scene, x, y, count, radius, { animate = false, onPop } = {}) {
+  const row = scene.add.container(x, y);
+  for (let i = 0; i < 3; i += 1) {
+    const filled = i < count;
+    const star = scene.add.star((i - 1) * radius * 2.3, 0, 5, radius * 0.48, radius, filled ? COLORS.coin : COLORS.locked);
+    if (filled) star.setStrokeStyle(Math.max(1, radius * 0.1), COLORS.outline);
+    row.add(star);
+    if (filled && animate) {
+      star.setScale(0);
+      scene.tweens.add({
+        targets: star,
+        scale: 1,
+        duration: 320,
+        delay: 350 + i * 260,
+        ease: 'Back.easeOut',
+        onStart: () => onPop?.(i),
+      });
+    }
+  }
+  return row;
+}
+
 // Рисует замок с центром в (x, y)
 export function drawLock(g, x, y, size, color = COLORS.secondary) {
   g.lineStyle(size * 0.15, color, 1);

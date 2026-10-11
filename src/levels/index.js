@@ -1,10 +1,11 @@
 // Каждый *.json — один уровень. Основные уровни лежат прямо в этой папке (порядок задаёт числовой id),
 // уровни секретной главы — в папке secret/ (порядок по имени файла, id вида "s1").
 //
-// Общие поля:   id, type ("tap" | "choice" | "action"), eggMood (необязательно)
+// Общие поля:   id, type, eggMood, background, hideCoins (последние три необязательны)
 // tap:          objects [{ id, label | labelKey, x, y }] (x, y — доли поля 0..1), answer
 // choice:       options [{ id, label | labelKey }], answer
-// action:       action { kind: "wait", seconds } или { kind: "tap", target }, decoys [{ id, label | labelKey }]
+// action:       action { kind: "tap", target, count, within }, decoys [{ id, label | labelKey }]
+// остальные типы (drag, wait, flashlight, timed, erase) описаны в начале своих файлов в src/level-types/
 //
 // answer / target — id объекта либо элемент интерфейса: "ui:levelNumber", "ui:question", "ui:egg".
 // Тексты уровня — в src/i18n/*.json, раздел levels.<id> (question, hint, win, start и подписи labelKey).
