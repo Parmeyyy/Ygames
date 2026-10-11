@@ -23,5 +23,6 @@
   "goal": {
     "drag": "ui:egg",
     "onto": "nest"
-  }
+  },
+  "background": "sky"
 }

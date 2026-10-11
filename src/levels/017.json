@@ -7,17 +7,25 @@
       "shape": "road",
       "x": 0.5,
       "y": 0.5,
-      "w": 0.46,
+      "w": 0.44,
       "h": 1,
       "inert": true
     },
     {
       "id": "far",
-      "shape": "zone",
-      "x": 0.885,
+      "shape": "goal",
+      "x": 0.86,
       "y": 0.5,
-      "w": 0.23,
+      "w": 0.28,
       "h": 1,
+      "inert": true
+    },
+    {
+      "id": "arrow",
+      "shape": "arrow",
+      "x": 0.5,
+      "y": 0.62,
+      "w": 0.5,
       "inert": true
     },
     {
@@ -31,8 +39,8 @@
     {
       "id": "walker",
       "shape": "egg",
-      "x": 0.11,
-      "y": 0.6,
+      "x": 0.13,
+      "y": 0.62,
       "size": 120
     }
   ],
@@ -44,5 +52,6 @@
     "light": "light",
     "red": 2200,
     "green": 1500
-  }
+  },
+  "background": "dusk"
 }

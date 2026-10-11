@@ -1,4 +1,8 @@
 import Phaser from 'phaser';
+import { addBackground } from '../ui/background.js';
+
+// Цвет, через который экраны плавно сменяют друг друга (как фон игры)
+const FADE = [255, 244, 214];
 
 // Адаптив: сцена целиком пересобирается в build() при каждом изменении размера окна.
 // Всё, что должно пережить пересборку (ошибки, текущая реплика), хранится в полях сцены.
@@ -7,9 +11,20 @@ import Phaser from 'phaser';
 // портрет рассчитан на макет 720×1280, альбом — на 1280×720.
 export class BaseScene extends Phaser.Scene {
   create() {
+    this.leaving = false;
     this.scale.on('resize', this.rebuild, this);
     this.events.once('shutdown', () => this.scale.off('resize', this.rebuild, this));
     this.rebuild();
+    this.cameras.main.fadeIn(220, ...FADE);
+  }
+
+  // Плавный переход на другой экран. Данные передаём всегда явно:
+  // без них Phaser запустил бы сцену с данными прошлого запуска.
+  go(key, data = {}) {
+    if (this.leaving) return;
+    this.leaving = true;
+    this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(key, data));
+    this.cameras.main.fadeOut(160, ...FADE);
   }
 
   rebuild() {
@@ -25,7 +40,13 @@ export class BaseScene extends Phaser.Scene {
       ? Math.min(width / 720, height / 1280)
       : Math.min(width / 1280, height / 720);
 
+    this.background = addBackground(this, ...this.backgroundTheme());
     this.build();
+  }
+
+  // Фон сцены: [имя темы, настройки] — см. src/ui/background.js
+  backgroundTheme() {
+    return ['day'];
   }
 
   // Создаёт все объекты сцены под текущий размер

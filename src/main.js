@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { audio } from './audio.js';
 import { COLORS } from './config.js';
 import { setLang } from './i18n/index.js';
 import { BootScene } from './scenes/BootScene.js';
@@ -49,6 +50,7 @@ const game = new Phaser.Game({
 game.sound.pauseOnBlur = false;
 
 yandex.onPauseChange((paused) => {
+  audio.setPaused(paused);
   if (paused) {
     game.sound.pauseAll();
     game.pause();
@@ -57,6 +59,9 @@ yandex.onPauseChange((paused) => {
     game.sound.resumeAll();
   }
 });
+
+// Браузер разрешает звук только после первого действия игрока
+window.addEventListener('pointerdown', () => audio.unlock());
 
 function applyViewport() {
   const { cssWidth, cssHeight, width, height, zoom } = viewport();

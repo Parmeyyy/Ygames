@@ -1,9 +1,11 @@
+import { audio } from '../audio.js';
 import { COLORS, TEXT } from '../config.js';
 import { levelText, t } from '../i18n/index.js';
 import { getLevel, nextLevel } from '../levels/index.js';
 import { progress } from '../services/progress.js';
+import { confetti, flyCoins } from '../ui/effects.js';
 import { Egg } from '../ui/Egg.js';
-import { addBubble, addButton, addCoinAmount, addText } from '../ui/widgets.js';
+import { addBubble, addButton, addCoinAmount, addCoinCounter, addText } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -18,6 +20,8 @@ export class WinScene extends BaseScene {
     this.next = nextLevel(this.level);
     this.reward = data.reward ?? 0; // монеты за это прохождение (0 при повторном)
     this.doubled = false;
+    this.flying = this.reward; // монеты, которые ещё не «долетели» до счётчика
+    this.celebrated = false;
   }
 
   build() {
@@ -35,11 +39,22 @@ export class WinScene extends BaseScene {
     // финал главы — свой заголовок
     const title = this.level.finale ? t('ui.chapterDone', { n: this.level.finale }) : t('ui.win');
     addText(this, sideX, titleY, title, this.level.finale ? 52 : 72, { fontStyle: 'bold' });
-    new Egg(this, eggX, eggY, 320 * u, 'happy').react('happy');
+    new Egg(this, eggX, eggY, 320 * u, 'happy').enableTaps().react('happy');
     addBubble(this, sideX, bubbleY, bubbleW, levelText(this.level, 'win'));
+
+    // Счётчик показывает сумму без летящих монет и докручивается, когда они долетят
+    const flying = this.flying;
+    this.flying = 0;
+    const counter = addCoinCounter(this, W - 20 * u, 50 * u, progress.coins, 'right', progress.coins - flying);
 
     if (this.reward > 0) {
       addCoinAmount(this, sideX, rewardY, `+${this.doubled ? this.reward * 2 : this.reward}`, 40);
+      if (flying > 0) {
+        flyCoins(this, { x: sideX, y: rewardY }, counter.coinPoint, 5, () => {
+          audio.coin();
+          counter.bump();
+        }, () => counter.tickTo(progress.coins));
+      }
     } else {
       addText(this, sideX, rewardY, t('ui.replay'), 26, { color: TEXT.muted });
     }
@@ -61,19 +76,26 @@ export class WinScene extends BaseScene {
       addText(this, sideX, y, t('ui.allDone'), 28, { color: TEXT.muted, wordWrap: { width: bubbleW } });
       y += 94 * u;
     }
-    place(t('ui.menu'), () => this.scene.start('Menu'), { fill: COLORS.secondary });
+    place(t('ui.menu'), () => this.go('Menu'), { fill: COLORS.secondary });
+
+    if (!this.celebrated) {
+      this.celebrated = true;
+      audio.win();
+      confetti(this);
+    }
   }
 
   async double() {
     if (!(await yandex.showRewarded())) return;
     progress.addCoins(this.reward);
     this.doubled = true;
+    this.flying = this.reward;
     this.rebuild();
   }
 
   async goNext() {
     // Сразу после рекламы за удвоение межстраничную не показываем
     if (!this.doubled) await yandex.showInterstitialIfDue();
-    this.scene.start('Level', { id: this.next.id });
+    this.go('Level', { id: this.next.id });
   }
 }

@@ -1,4 +1,5 @@
 import { COLORS } from '../config.js';
+import { audio } from '../audio.js';
 import { dev } from '../dev.js';
 import { setLang, t } from '../i18n/index.js';
 import { getLevel } from '../levels/index.js';
@@ -37,6 +38,7 @@ export class BootScene extends BaseScene {
     setLang(yandex.lang);
     await progress.load();
     this.sound.mute = !progress.sound;
+    audio.setEnabled(progress.sound);
     this.ready = true;
     this.rebuild(); // надпись «Загрузка…» на языке из SDK
   }
@@ -68,9 +70,9 @@ export class BootScene extends BaseScene {
     const level = dev.level && (getLevel(Number(dev.level)) ?? getLevel(dev.level));
     if (level) {
       yandex.gameReady();
-      this.scene.start('Level', { id: level.id });
+      this.go('Level', { id: level.id });
     } else {
-      this.scene.start('Menu');
+      this.go('Menu');
     }
   }
 }

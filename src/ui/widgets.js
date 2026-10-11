@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { audio } from '../audio.js';
 import { COLORS, FONT, TEXT } from '../config.js';
 
 // Текст по центру точки (x, y); size — в дизайн-единицах
@@ -18,9 +19,10 @@ export function addText(scene, x, y, str, size, style = {}) {
 }
 
 // Делает объект нажимаемым. Срабатывает, только если палец и опустился, и поднялся на объекте.
-// cursor: false — не показывать «руку» на десктопе (для спрятанных ответов).
+// При нажатии объект сжимается и пружинит обратно, при наведении мыши чуть увеличивается.
+// cursor: false — не показывать «руку» и не увеличивать при наведении (для спрятанных ответов).
 // pad — расширение зоны нажатия для мелких объектов.
-// feedback: false — не сжимать объект при нажатии.
+// feedback: false — объект не сжимается и не пружинит.
 export function makeTappable(obj, onTap, { cursor = true, pad = 0, feedback = true } = {}) {
   const config = { useHandCursor: cursor };
   if (pad) {
@@ -29,21 +31,36 @@ export function makeTappable(obj, onTap, { cursor = true, pad = 0, feedback = tr
   }
   obj.setInteractive(config);
 
+  const scene = obj.scene;
   const baseScale = obj.scale;
-  const pressedScale = feedback ? baseScale * 0.95 : baseScale;
   let pressed = false;
+  let hovered = false;
+  let scaleTween = null;
+  const scaleTo = (factor, duration, ease = 'Quad.easeOut') => {
+    if (!feedback || !obj.scene) return;
+    scaleTween?.stop();
+    scaleTween = scene.tweens.add({ targets: obj, scale: baseScale * factor, duration, ease });
+  };
+  const rest = () => (hovered && cursor ? 1.04 : 1);
+
+  obj.on('pointerover', () => {
+    hovered = true;
+    if (!pressed) scaleTo(rest(), 120);
+  });
   obj.on('pointerdown', () => {
     pressed = true;
-    obj.setScale(pressedScale);
+    scaleTo(0.92, 70);
   });
   obj.on('pointerout', () => {
     pressed = false;
-    obj.setScale(baseScale);
+    hovered = false;
+    scaleTo(1, 150);
   });
   obj.on('pointerup', () => {
     if (!pressed) return;
     pressed = false;
-    obj.setScale(baseScale);
+    scaleTo(rest(), 320, 'Back.easeOut'); // пружинит обратно
+    audio.tap();
     onTap();
   });
   return obj;
@@ -83,11 +100,15 @@ export function addCoinAmount(scene, x, y, label, size = 28, color = TEXT.dark) 
   coin.fillStyle(COLORS.coin, 1).fillCircle(-width / 2 + radius, 0, radius);
   coin.lineStyle(Math.max(1, 2 * u), COLORS.outline, 1).strokeCircle(-width / 2 + radius, 0, radius);
 
-  return scene.add.container(x, y, [coin, text]).setSize(width, radius * 2);
+  const amount = scene.add.container(x, y, [coin, text]).setSize(width, radius * 2);
+  amount.label = text;
+  return amount;
 }
 
 // Счётчик монет игрока в «таблетке». anchor — какой стороной он привязан к x: left, center или right.
-export function addCoinCounter(scene, x, y, coins, anchor = 'center') {
+// from — с какого числа начать показ (если монеты ещё «летят»); потом вызвать tickTo(coins).
+// У результата: coinPoint — куда лететь монетам, tickTo(value) — докрутить число, bump() — подпрыгнуть.
+export function addCoinCounter(scene, x, y, coins, anchor = 'center', from = coins) {
   const u = scene.u;
   const amount = addCoinAmount(scene, 0, 0, coins, 28);
   const w = amount.width + 36 * u;
@@ -98,7 +119,23 @@ export function addCoinCounter(scene, x, y, coins, anchor = 'center') {
   bg.lineStyle(3 * u, COLORS.outline, 1).strokeRoundedRect(-w / 2, -h / 2, w, h, h / 2);
 
   const shift = anchor === 'left' ? w / 2 : anchor === 'right' ? -w / 2 : 0;
-  return scene.add.container(x + shift, y, [bg, amount]);
+  const counter = scene.add.container(x + shift, y, [bg, amount]);
+  amount.label.setText(String(from));
+
+  counter.coinPoint = { x: counter.x - amount.width / 2 + 14 * u, y };
+  counter.bump = () => {
+    counter.setScale(1.15);
+    scene.tweens.add({ targets: counter, scale: 1, duration: 160, ease: 'Quad.easeOut' });
+  };
+  counter.tickTo = (value) => {
+    scene.tweens.addCounter({
+      from,
+      to: value,
+      duration: 500,
+      onUpdate: (tween) => amount.label.active && amount.label.setText(String(Math.round(tween.getValue()))),
+    });
+  };
+  return counter;
 }
 
 // Рисует замок с центром в (x, y)
@@ -143,17 +180,36 @@ export function addModal(scene, { title, buttons, onClose }) {
   return scene.add.container(0, 0, [shade, blocker, panel, heading, ...items]);
 }
 
-// Облачко с репликой, центр в (x, y), ширина не больше maxW
+// Облачко с репликой, центр в (x, y), ширина не больше maxW. Текст печатается по буквам.
 export function addBubble(scene, x, y, maxW, str) {
   const u = scene.u;
   const pad = 22 * u;
-  const text = addText(scene, 0, 0, str, 28, { wordWrap: { width: maxW - pad * 2 } });
-  const w = Math.min(maxW, text.width + pad * 2);
-  const h = text.height + pad * 2;
+  const text = addText(scene, 0, 0, str, 28, { align: 'left', wordWrap: { width: maxW - pad * 2 } });
+  const textW = text.width;
+  const textH = text.height;
+  const w = Math.min(maxW, textW + pad * 2);
+  const h = textH + pad * 2;
 
   const bg = scene.add.graphics();
   bg.fillStyle(COLORS.white, 1).fillRoundedRect(-w / 2, -h / 2, w, h, 22 * u);
   bg.lineStyle(3 * u, COLORS.outline, 1).strokeRoundedRect(-w / 2, -h / 2, w, h, 22 * u);
 
-  return scene.add.container(x, y, [bg, text]);
+  // Размер облачка посчитан по полному тексту. Дальше текст печатается от левого края:
+  // строки зафиксированы заранее, чтобы слова не прыгали между строками.
+  const full = text.getWrappedText(str).join('\n');
+  text.setWordWrapWidth(null).setOrigin(0, 0).setPosition(-textW / 2, -textH / 2).setText('');
+  const typing = scene.tweens.addCounter({
+    from: 0,
+    to: full.length,
+    duration: Math.min(1400, full.length * 22),
+    onUpdate: (tween) => text.active && text.setText(full.slice(0, Math.round(tween.getValue()))),
+  });
+
+  const bubble = scene.add.container(x, y, [bg, text]);
+  // облачко могут заменить новым, не дожидаясь конца печати
+  bubble.once('destroy', () => typing.stop());
+  // появляется, слегка подпрыгнув
+  bubble.setScale(0.85);
+  scene.tweens.add({ targets: bubble, scale: 1, duration: 220, ease: 'Back.easeOut' });
+  return bubble;
 }

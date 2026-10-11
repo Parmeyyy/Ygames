@@ -9,11 +9,12 @@ import { addText } from '../ui/widgets.js';
 //   shape           — вид (см. ниже); по умолчанию "chip" — кружок с подписью
 //   label | labelKey — подпись для chip, word, button
 //   size            — ширина в дизайн-единицах (для картинок, chip и word)
-//   w, h            — размер в долях поля (для button, road, ground, zone)
+//   w, h            — размер в долях поля (для button, road, ground, zone, goal, arrow)
 //   textColor       — цвет текста для word
 //   draggable       — объект можно таскать
 //   inert           — объект не реагирует на нажатия
-// Виды: chip, word, button, egg, figure, road, ground, zone и картинки из src/ui/shapes.js.
+// Виды: chip, word, button, egg, figure, road, ground, zone (невидимая зона), goal (подсвеченная зона-цель),
+// arrow (пунктирная стрелка вправо) и картинки из src/ui/shapes.js.
 // Объекты рисуются в порядке списка: следующий поверх предыдущего.
 //
 // Возвращает Map: id → { def, object, w, h } (object — контейнер с центром в точке объекта).
@@ -81,6 +82,36 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
       g.fillStyle(0x7fb069, 1).fillRect(-w / 2, -h / 2, w, h);
       g.lineStyle(4 * u, COLORS.outline, 1).lineBetween(-w / 2, -h / 2, w / 2, -h / 2);
       parts = [g];
+    } else if (shape === 'goal') {
+      w = rectW;
+      h = rectH;
+      const g = scene.add.graphics();
+      g.fillStyle(0xb9f2a4, 0.85).fillRect(-w / 2, -h / 2, w, h);
+      // пунктирная рамка
+      g.fillStyle(COLORS.success, 1);
+      const dash = 18 * u;
+      const thick = 5 * u;
+      for (let d = -w / 2; d < w / 2; d += dash * 2) {
+        const len = Math.min(dash, w / 2 - d);
+        g.fillRect(d, -h / 2, len, thick).fillRect(d, h / 2 - thick, len, thick);
+      }
+      for (let d = -h / 2; d < h / 2; d += dash * 2) {
+        const len = Math.min(dash, h / 2 - d);
+        g.fillRect(-w / 2, d, thick, len).fillRect(w / 2 - thick, d, thick, len);
+      }
+      // мягко мигает, чтобы цель было видно сразу
+      scene.tweens.add({ targets: g, alpha: 0.55, duration: 700, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 });
+      parts = [g];
+    } else if (shape === 'arrow') {
+      w = rectW;
+      h = 40 * u;
+      const g = scene.add.graphics();
+      g.fillStyle(COLORS.white, 0.95);
+      const dash = 22 * u;
+      const head = 34 * u;
+      for (let d = -w / 2; d < w / 2 - head - dash * 0.5; d += dash * 1.7) g.fillRect(d, -5 * u, dash, 10 * u);
+      g.fillTriangle(w / 2, 0, w / 2 - head, -head * 0.6, w / 2 - head, head * 0.6);
+      parts = [g];
     } else if (shape === 'zone') {
       w = rectW;
       h = rectH;
@@ -114,7 +145,9 @@ function drawFigure(scene, figure, size) {
 
 // Разрешает таскать объект. onDrop(object) вызывается, когда его отпустили.
 export function makeDraggable(scene, object, onDrop = () => {}) {
-  object.setInteractive({ draggable: true, useHandCursor: true });
+  // объект мог уже стать интерактивным (яйцо-герой), тогда настройки из setInteractive не применятся
+  object.setInteractive({ useHandCursor: true });
+  scene.input.setDraggable(object);
   object.on('drag', (pointer, dragX, dragY) => object.setPosition(dragX, dragY));
   object.on('dragend', () => onDrop(object));
 }

@@ -22,7 +22,7 @@ export class LevelSelectScene extends BaseScene {
     const levels = chapters[this.chapter];
 
     // chapter передаём всегда: без данных Phaser запустил бы сцену с прошлыми, то есть снова с секретной главой
-    const back = () => (secret ? this.scene.start('LevelSelect', { chapter: 'main' }) : this.scene.start('Menu'));
+    const back = () => (secret ? this.go('LevelSelect', { chapter: 'main' }) : this.go('Menu'));
     addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.back'), back, { fill: COLORS.secondary, size: 28 });
     const title = addText(this, W / 2, 60 * u, t(secret ? 'ui.secretChapter' : 'ui.selectLevel'), 36, { fontStyle: 'bold' });
     // длинный заголовок не должен наезжать на кнопку «Назад»
@@ -73,7 +73,7 @@ export class LevelSelectScene extends BaseScene {
     }
 
     cell.add(addText(this, 0, 0, String(level.number), 52 * (size / (130 * u)), { color: TEXT.light, fontStyle: 'bold' }));
-    makeTappable(cell, () => this.scene.start('Level', { id: level.id }));
+    makeTappable(cell, () => this.go('Level', { id: level.id }));
   }
 
   // Секретная глава открывается одним просмотром рекламы — навсегда
@@ -83,7 +83,7 @@ export class LevelSelectScene extends BaseScene {
     const h = 110 * u;
 
     if (progress.secretOpen) {
-      addButton(this, W / 2, y, w, h, t('ui.secretChapter'), () => this.scene.start('LevelSelect', { chapter: 'secret' }), {
+      addButton(this, W / 2, y, w, h, t('ui.secretChapter'), () => this.go('LevelSelect', { chapter: 'secret' }), {
         fill: COLORS.special,
         size: 32,
       });

@@ -1,3 +1,4 @@
+import { audio } from '../audio.js';
 import { COLORS } from '../config.js';
 import { t } from '../i18n/index.js';
 import { chapters } from '../levels/index.js';
@@ -32,7 +33,7 @@ export class MenuScene extends BaseScene {
     addText(this, menuX, titleY, t('game.title'), 96, { fontStyle: 'bold' });
     addBubble(this, eggX, bubbleY, 460 * u, t('egg.menu'));
     addCoinCounter(this, W - 20 * u, 50 * u, progress.coins, 'right');
-    new Egg(this, eggX, eggY, 300 * u);
+    new Egg(this, eggX, eggY, 300 * u).enableTaps();
 
     const w = 420 * u;
     const h = 84 * u;
@@ -41,14 +42,14 @@ export class MenuScene extends BaseScene {
     addButton(this, menuX, buttonsY, w, h, t('ui.play'), () => {
       // продолжаем с первого непройденного уровня
       const number = Math.min(progress.unlocked, chapters.main.length);
-      this.scene.start('Level', { id: chapters.main[number - 1].id });
+      this.go('Level', { id: chapters.main[number - 1].id });
     });
 
-    addButton(this, menuX, buttonsY + step, w, h, t('ui.levels'), () => this.scene.start('LevelSelect', { chapter: 'main' }), {
+    addButton(this, menuX, buttonsY + step, w, h, t('ui.levels'), () => this.go('LevelSelect', { chapter: 'main' }), {
       fill: COLORS.secondary,
     });
 
-    addButton(this, menuX, buttonsY + step * 2, w, h, t('ui.wardrobe'), () => this.scene.start('Wardrobe'), {
+    addButton(this, menuX, buttonsY + step * 2, w, h, t('ui.wardrobe'), () => this.go('Wardrobe'), {
       fill: COLORS.secondary,
     });
 
@@ -63,6 +64,7 @@ export class MenuScene extends BaseScene {
       () => {
         progress.sound = !progress.sound;
         this.sound.mute = !progress.sound;
+        audio.setEnabled(progress.sound);
         this.rebuild();
       },
       { fill: COLORS.secondary },

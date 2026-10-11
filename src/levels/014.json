@@ -19,5 +19,6 @@
     }
   ],
   "answer": "sun",
-  "answerMovesTo": "cloud"
+  "answerMovesTo": "cloud",
+  "background": "sunny"
 }

@@ -34,5 +34,6 @@
       "y": 0.8
     }
   ],
-  "answer": "ui:levelNumber"
+  "answer": "ui:levelNumber",
+  "eggMood": "sly"
 }

@@ -1,8 +1,11 @@
+import { audio } from '../audio.js';
 import { COLORS, ECONOMY } from '../config.js';
 import { hasText, levelText, pick, t } from '../i18n/index.js';
 import { getLevel, nextLevel } from '../levels/index.js';
 import { LEVEL_TYPES } from '../level-types/index.js';
 import { progress } from '../services/progress.js';
+import { addBackground } from '../ui/background.js';
+import { flashError } from '../ui/effects.js';
 import { Egg } from '../ui/Egg.js';
 import { addBubble, addButton, addCoinCounter, addModal, addText, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
@@ -27,6 +30,15 @@ export class LevelScene extends BaseScene {
     super.create();
     yandex.setGameplay(true);
     this.events.once('shutdown', () => yandex.setGameplay(false));
+  }
+
+  // Фон уровня: level.background, после решения — level.backgroundSolved (например, наступает ночь).
+  // Плывущих облаков нет там, где облака — часть загадки.
+  backgroundTheme() {
+    const { level } = this;
+    const theme = (this.solved && level.backgroundSolved) || level.background || 'day';
+    const clouds = !level.objects?.some((object) => object.shape === 'cloud');
+    return [theme, { clouds }];
   }
 
   // Портрет: вопрос → поле → яйцо с репликой внизу.
@@ -63,7 +75,7 @@ export class LevelScene extends BaseScene {
     this.marks = {};
 
     // isUi: нажатия на кнопки интерфейса не считаются действиями игрока на уровне
-    addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.menu'), () => this.scene.start('Menu'), {
+    addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.menu'), () => this.go('Menu'), {
       fill: COLORS.secondary,
       size: 28,
     }).isUi = true;
@@ -79,7 +91,7 @@ export class LevelScene extends BaseScene {
       wordWrap: { width: layout.question.w },
     });
 
-    this.egg = new Egg(this, layout.egg.x, layout.egg.y, layout.egg.h, level.eggMood);
+    this.egg = new Egg(this, layout.egg.x, layout.egg.y, layout.egg.h, level.eggMood).enableTaps();
     if (this.solved) this.egg.setMood('happy');
     this.say(this.line);
     if (this.mistakes >= ECONOMY.mistakesToSkip) this.addSkipButton();
@@ -131,7 +143,9 @@ export class LevelScene extends BaseScene {
       console.warn(`Уровень ${this.level.id}: нет элемента интерфейса "${name}"`);
       return;
     }
-    makeTappable(target, onTap, { cursor: false, pad: target === this.egg ? 0 : 20 * this.u });
+    // у яйца своя анимация нажатия
+    const isEgg = target === this.egg;
+    makeTappable(target, onTap, { cursor: false, pad: isEgg ? 0 : 20 * this.u, feedback: !isEgg });
   }
 
   say(line) {
@@ -199,8 +213,8 @@ export class LevelScene extends BaseScene {
     if (this.solved || !(await yandex.showRewarded())) return;
     progress.skip(this.level);
     const next = nextLevel(this.level);
-    if (next) this.scene.start('Level', { id: next.id });
-    else this.scene.start('LevelSelect', { chapter: this.level.chapter });
+    if (next) this.go('Level', { id: next.id });
+    else this.go('LevelSelect', { chapter: this.level.chapter });
   }
 
   // Возвращает true: ответ принят (типы уровней могут оборачивать correct своей проверкой)
@@ -210,16 +224,25 @@ export class LevelScene extends BaseScene {
     const reward = progress.complete(this.level);
     yandex.levelCompleted();
     yandex.setGameplay(false);
+    audio.correct();
     this.egg.react('happy');
-    this.time.delayedCall(800, () => this.scene.start('Win', { id: this.level.id, reward }));
+    if (this.level.backgroundSolved) {
+      // новый фон плавно проступает поверх старого
+      const next = addBackground(this, this.level.backgroundSolved).setAlpha(0);
+      this.children.moveTo(next, this.children.getIndex(this.background) + 1);
+      this.tweens.add({ targets: next, alpha: 1, duration: 600 });
+    }
+    this.time.delayedCall(800, () => this.go('Win', { id: this.level.id, reward }));
     return true;
   }
 
   wrong() {
     if (this.solved) return;
     this.mistakes += 1;
+    audio.wrong();
     this.egg.react('scared');
-    this.cameras.main.shake(200, 0.006);
+    this.cameras.main.shake(180, 0.005);
+    flashError(this);
     // у уровня может быть своя реплика на ошибку (levels.<id>.wrong)
     const own = `levels.${this.level.id}.wrong`;
     this.say(hasText(own) ? pick(own) : pick('egg.wrong'));

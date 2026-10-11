@@ -31,5 +31,7 @@
       "size": 80
     }
   ],
-  "answer": "switch"
+  "answer": "switch",
+  "background": "night",
+  "eggMood": "surprised"
 }

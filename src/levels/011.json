@@ -34,5 +34,7 @@
       "draggable": true
     }
   ],
-  "answer": "second"
+  "answer": "second",
+  "background": "sky",
+  "eggMood": "sad"
 }

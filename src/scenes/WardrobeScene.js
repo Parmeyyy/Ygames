@@ -1,3 +1,4 @@
+import { audio } from '../audio.js';
 import { COLORS, TEXT } from '../config.js';
 import { HATS } from '../hats.js';
 import { t } from '../i18n/index.js';
@@ -16,12 +17,13 @@ export class WardrobeScene extends BaseScene {
 
   init() {
     this.info = 'wardrobe.info';
+    this.eggMood = 'happy';
   }
 
   build() {
     const { W, H, u, portrait } = this;
 
-    addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.back'), () => this.scene.start('Menu'), {
+    addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.back'), () => this.go('Menu'), {
       fill: COLORS.secondary,
       size: 28,
     });
@@ -42,7 +44,7 @@ export class WardrobeScene extends BaseScene {
     const infoX = portrait ? W / 2 : gridX;
     const infoY = portrait ? 560 * u : 140 * u;
 
-    this.egg = new Egg(this, eggX, eggY, 280 * u, 'happy');
+    this.egg = new Egg(this, eggX, eggY, 280 * u, this.eggMood).enableTaps();
     const equipped = progress.hat ? ` · ${t(`hats.${progress.hat}`)}` : '';
     addText(this, infoX, infoY, t(this.info) + (this.info === 'wardrobe.info' ? equipped : ''), 24, {
       color: TEXT.muted,
@@ -90,15 +92,22 @@ export class WardrobeScene extends BaseScene {
 
   async onHat(hat) {
     this.info = 'wardrobe.info';
-    if (progress.ownsHat(hat.id)) {
+    this.eggMood = 'happy';
+    const ownedBefore = progress.ownsHat(hat.id);
+    if (ownedBefore) {
       // повторное нажатие на надетую шапку снимает её
       progress.equip(progress.hat === hat.id ? null : hat.id);
     } else if (hat.price) {
-      if (!progress.buyHat(hat)) this.info = 'wardrobe.noCoins';
+      if (!progress.buyHat(hat)) {
+        this.info = 'wardrobe.noCoins';
+        this.eggMood = 'sad';
+        audio.wrong();
+      }
     } else {
       if (!(await yandex.showRewarded())) return;
       progress.countHatAd(hat);
     }
+    if (!ownedBefore && progress.ownsHat(hat.id)) audio.buy();
     this.rebuild();
   }
 }
