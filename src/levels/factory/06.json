@@ -1,0 +1,58 @@
+{
+  "id": "f6",
+  "type": "combine",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "pot",
+      "shape": "pot",
+      "x": 0.62,
+      "y": 0.68,
+      "size": 240,
+      "inert": true
+    },
+    {
+      "id": "smoke",
+      "shape": "smoke",
+      "at": [
+        "pot",
+        0,
+        -1.0
+      ],
+      "size": 220,
+      "inert": true
+    },
+    {
+      "id": "tea",
+      "shape": "cupFull",
+      "x": 0.22,
+      "y": 0.82,
+      "size": 140,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "extinguisher",
+      "shape": "extinguisher",
+      "x": 0.2,
+      "y": 0.32,
+      "size": 110
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "extinguisher",
+      "onto": "pot",
+      "back": true,
+      "then": {
+        "hide": [
+          "smoke"
+        ],
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

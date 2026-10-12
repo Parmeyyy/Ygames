@@ -347,8 +347,9 @@ function drawFactory(g, s) {
   for (const x of [-0.36, -0.12, 0.12]) box(g, s, 0xbfe3ff, x, 0.08, 0.16, 0.14, 0.01);
 }
 
-// Человек в форме: цвет одежды, цвет фуражки (null — без неё), галстук
-const person = (clothes, capColor, tie) => (g, s) => {
+// Человек в форме: цвет одежды, цвет фуражки (null — без неё), галстук,
+// back — стоит спиной (лица не видно), crumbs — крошки на усах
+const person = (clothes, capColor, tie, back = false, crumbs = false) => (g, s) => {
   line(g, s);
   box(g, s, 0x3a2e39, -0.22, 0.5, 0.18, 0.48, 0.04);
   box(g, s, 0x3a2e39, 0.04, 0.5, 0.18, 0.48, 0.04);
@@ -358,8 +359,17 @@ const person = (clothes, capColor, tie) => (g, s) => {
     g.fillStyle(0xd63d3d, 1).fillTriangle(-s * 0.04, -s * 0.26, s * 0.04, -s * 0.26, 0, s * 0.12);
   }
   disc(g, s, 0xf2c9a0, 0, -0.56, 0.24);
-  g.fillStyle(INK, 1).fillCircle(-s * 0.09, -s * 0.58, s * 0.025).fillCircle(s * 0.09, -s * 0.58, s * 0.025);
-  g.lineBetween(-s * 0.08, -s * 0.44, s * 0.08, -s * 0.44);
+  if (back) {
+    // затылок: волосы вместо лица
+    g.fillStyle(0x6b4423, 1).slice(0, -s * 0.56, s * 0.22, Math.PI, 0).fillPath();
+  } else {
+    g.fillStyle(INK, 1).fillCircle(-s * 0.09, -s * 0.58, s * 0.025).fillCircle(s * 0.09, -s * 0.58, s * 0.025);
+    g.fillStyle(0x6b4423, 1).fillEllipse(0, -s * 0.47, s * 0.26, s * 0.06);
+    if (crumbs) {
+      g.fillStyle(COLORS.coin, 1);
+      for (const [x, y] of [[-0.09, -0.47], [0.02, -0.45], [0.1, -0.48], [-0.02, -0.4]]) g.fillCircle(x * s, y * s, s * 0.022);
+    }
+  }
   if (capColor !== null) {
     box(g, s, capColor, -0.26, -0.9, 0.52, 0.2, 0.05);
     box(g, s, INK, -0.3, -0.74, 0.6, 0.06, 0.02);
@@ -372,6 +382,133 @@ function drawWrench(g, s) {
   disc(g, s, 0x9aa5b1, -0.38, 0, 0.13);
   disc(g, s, 0x9aa5b1, 0.38, 0, 0.13);
   g.fillStyle(COLORS.bg, 1).fillRect(-s * 0.52, -s * 0.05, s * 0.14, s * 0.1).fillRect(s * 0.38, -s * 0.05, s * 0.14, s * 0.1);
+}
+
+// ——— завод ———
+
+function drawLever(g, s) {
+  line(g, s);
+  box(g, s, 0x9aa5b1, -0.3, -0.1, 0.6, 0.6, 0.06);
+  g.lineStyle(Math.max(4, s * 0.1), INK, 1).lineBetween(0, s * 0.2, s * 0.2, -s * 0.4);
+  line(g, s);
+  disc(g, s, 0xd63d3d, 0.2, -0.4, 0.12);
+}
+
+function drawCrate(g, s) {
+  line(g, s);
+  box(g, s, 0xc48a4f, -0.5, -0.4, 1, 0.8, 0.03);
+  g.lineBetween(-s * 0.5, -s * 0.14, s * 0.5, -s * 0.14);
+  g.lineBetween(-s * 0.5, s * 0.14, s * 0.5, s * 0.14);
+  g.lineBetween(-s * 0.36, -s * 0.4, -s * 0.36, s * 0.4);
+  g.lineBetween(s * 0.36, -s * 0.4, s * 0.36, s * 0.4);
+}
+
+// Шестерёнка: part — "full", левая или правая половина (уезжает за край), broken — с отколотым зубом
+const gear = (part, broken) => (g, s) => {
+  const from = part === 'right' ? -Math.PI / 2 : part === 'left' ? Math.PI / 2 : 0;
+  const sweep = part === 'full' ? Math.PI * 2 : Math.PI;
+  line(g, s);
+  g.fillStyle(0x9aa5b1, 1);
+  const teeth = 8;
+  for (let i = 0; i < teeth; i += 1) {
+    const angle = (Math.PI * 2 * i) / teeth;
+    const local = (angle - from + Math.PI * 2) % (Math.PI * 2);
+    if (local > sweep + 0.01 || (broken && i === 1)) continue;
+    g.fillCircle(Math.cos(angle) * s * 0.4, Math.sin(angle) * s * 0.4, s * 0.09);
+    g.strokeCircle(Math.cos(angle) * s * 0.4, Math.sin(angle) * s * 0.4, s * 0.09);
+  }
+  g.slice(0, 0, s * 0.38, from, from + sweep).fillPath().strokePath();
+  g.fillStyle(COLORS.white, 1).slice(0, 0, s * 0.13, from, from + sweep).fillPath().strokePath();
+  if (broken) {
+    g.lineStyle(Math.max(2, s * 0.03), INK, 1);
+    g.strokePoints([[0.1, -0.36], [0.02, -0.2], [0.14, -0.1], [0.04, 0.02]].map(([x, y]) => ({ x: x * s, y: y * s })));
+  }
+};
+
+// Болт с шестигранной головкой: по шлицу видно, что он крутится
+function drawBolt(g, s) {
+  line(g, s);
+  const hex = [...Array(6)].map((_, i) => ({ x: Math.cos((Math.PI * i) / 3) * s * 0.46, y: Math.sin((Math.PI * i) / 3) * s * 0.46 }));
+  g.fillStyle(0x9aa5b1, 1).fillPoints(hex, true);
+  g.strokePoints(hex, true);
+  disc(g, s, 0xc5ccd4, 0, 0, 0.28);
+  g.lineStyle(Math.max(4, s * 0.06), INK, 1).lineBetween(-s * 0.2, 0, s * 0.2, 0);
+}
+
+function drawExtinguisher(g, s) {
+  line(g, s);
+  box(g, s, 0x3a2e39, -0.14, -0.96, 0.28, 0.18, 0.04);
+  g.lineBetween(s * 0.1, -s * 0.86, s * 0.46, -s * 0.7);
+  box(g, s, 0xd63d3d, -0.36, -0.78, 0.72, 1.7, 0.16);
+  box(g, s, COLORS.white, -0.24, -0.3, 0.48, 0.4, 0.03);
+}
+
+function drawSmoke(g, s) {
+  g.fillStyle(0x6b6470, 0.75);
+  for (const [x, y, r] of [[-0.2, 0.25, 0.2], [0.1, 0.1, 0.24], [-0.08, -0.15, 0.2], [0.18, -0.3, 0.16]]) g.fillCircle(x * s, y * s, r * s);
+}
+
+function drawThermos(g, s) {
+  line(g, s);
+  box(g, s, 0x9aa5b1, -0.3, -1.05, 0.6, 0.3, 0.08);
+  box(g, s, 0x3f8f5a, -0.4, -0.8, 0.8, 1.8, 0.14);
+  g.fillStyle(COLORS.white, 0.7).fillRect(-s * 0.4, -s * 0.2, s * 0.8, s * 0.14);
+}
+
+// Труба: горячая (над ней дрожит воздух) или с дыркой, из которой брызжет вода
+const pipe = (leak) => (g, s) => {
+  line(g, s);
+  box(g, s, leak ? 0x9aa5b1 : 0xd9654a, -0.5, -0.08, 1, 0.16, 0.02);
+  for (const x of [-0.42, 0.34]) box(g, s, leak ? 0x7d848b : 0xb8482f, x, -0.11, 0.08, 0.22, 0.02);
+  if (leak) {
+    g.fillStyle(INK, 1).fillCircle(s * 0.1, -s * 0.02, s * 0.025);
+    g.lineStyle(Math.max(3, s * 0.012), 0x4aa3df, 1);
+    for (const [dx, dy] of [[-0.06, -0.14], [0, -0.18], [0.06, -0.14], [0.11, -0.08]]) g.lineBetween(s * 0.1, -s * 0.04, (0.1 + dx) * s, dy * s);
+  } else {
+    g.lineStyle(Math.max(2, s * 0.008), 0xd9654a, 0.9);
+    for (const x of [-0.2, 0, 0.2]) {
+      g.strokePoints([0, 1, 2, 3].map((i) => ({ x: (x + (i % 2 ? 0.02 : -0.02)) * s, y: (-0.12 - i * 0.03) * s })));
+    }
+  }
+};
+
+function drawForklift(g, s) {
+  line(g, s);
+  // мачта и вилы справа
+  box(g, s, 0x3a2e39, 0.22, -0.36, 0.05, 0.62, 0.01);
+  box(g, s, 0x3a2e39, 0.22, 0.2, 0.28, 0.04, 0.01);
+  // кабина и корпус
+  g.lineStyle(Math.max(4, s * 0.025), 0x3a2e39, 1).strokeRect(-s * 0.3, -s * 0.36, s * 0.36, s * 0.34);
+  line(g, s);
+  box(g, s, COLORS.coin, -0.46, -0.04, 0.68, 0.24, 0.04);
+  disc(g, s, INK, -0.3, 0.24, 0.09);
+  disc(g, s, INK, 0.08, 0.24, 0.09);
+}
+
+// Светофор: g.setLight(true) — зелёный, g.setLight(false) — красный
+function drawLight(g, s) {
+  g.setLight = (green) => {
+    g.clear();
+    g.fillStyle(INK, 1).fillRoundedRect(-s * 0.28, -s * 0.5, s * 0.56, s, s * 0.14);
+    g.fillStyle(green ? 0x5a2f2f : 0xff3b30, 1).fillCircle(0, -s * 0.23, s * 0.18);
+    g.fillStyle(green ? 0x34d058 : 0x2f5a3a, 1).fillCircle(0, s * 0.23, s * 0.18);
+  };
+  g.setLight(false);
+}
+
+function drawOilcan(g, s) {
+  line(g, s);
+  g.lineStyle(Math.max(4, s * 0.05), INK, 1).lineBetween(s * 0.1, -s * 0.1, s * 0.46, -s * 0.34);
+  line(g, s);
+  box(g, s, 0x6b6470, -0.4, -0.12, 0.6, 0.42, 0.08);
+  g.fillStyle(0x3a2a1a, 1).fillCircle(s * 0.46, -s * 0.24, s * 0.04);
+}
+
+function drawSpray(g, s) {
+  line(g, s);
+  box(g, s, 0x3a2e39, -0.2, -0.86, 0.5, 0.2, 0.04);
+  box(g, s, 0x4aa3df, -0.3, -0.64, 0.6, 1.3, 0.1);
+  g.fillStyle(0x4aa3df, 1).fillCircle(s * 0.44, -s * 0.82, s * 0.04).fillCircle(s * 0.56, -s * 0.7, s * 0.03);
 }
 
 // ——— значки разделов ———
@@ -430,8 +567,28 @@ const SHAPES = {
   house: { draw: drawHouse, aspect: 0.9 },
   factory: { draw: drawFactory, aspect: 1 },
   conductor: { draw: person(0x3f6fa8, 0x2e4a8f, false), aspect: 2 },
+  boss: { draw: person(0x4a4a55, null, true), aspect: 2 },
+  bossBack: { draw: person(0x4a4a55, null, false, true), aspect: 2 },
+  worker: { draw: person(0x3f6fa8, 0xf5b800, false), aspect: 2 },
+  workerCrumbs: { draw: person(0x3f6fa8, 0xf5b800, false, false, true), aspect: 2 },
   guard: { draw: person(0x4a4a55, 0x2a2a33, false), aspect: 2 },
   wrench: { draw: drawWrench, aspect: 0.3 },
+  lever: { draw: drawLever, aspect: 1.1 },
+  crate: { draw: drawCrate, aspect: 0.8 },
+  gear: { draw: gear('full', false), aspect: 1 },
+  gearLeft: { draw: gear('left', false), aspect: 1 },
+  gearRight: { draw: gear('right', false), aspect: 1 },
+  gearBroken: { draw: gear('full', true), aspect: 1 },
+  bolt: { draw: drawBolt, aspect: 1 },
+  extinguisher: { draw: drawExtinguisher, aspect: 2 },
+  smoke: { draw: drawSmoke, aspect: 1 },
+  thermos: { draw: drawThermos, aspect: 2.1 },
+  pipe: { draw: pipe(false), aspect: 0.3 },
+  pipeLeak: { draw: pipe(true), aspect: 0.3 },
+  forklift: { draw: drawForklift, aspect: 0.75 },
+  light: { draw: drawLight, aspect: 1 },
+  oilcan: { draw: drawOilcan, aspect: 0.7 },
+  spray: { draw: drawSpray, aspect: 1.8 },
   heart: { draw: drawHeart, aspect: 0.8 },
   fish: { draw: drawFish, aspect: 0.5 },
 };

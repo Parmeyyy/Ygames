@@ -1,0 +1,41 @@
+{
+  "id": "f17",
+  "type": "erase",
+  "heroMood": "sad",
+  "hideCoins": true,
+  "objects": [
+    {
+      "id": "sheet",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.5,
+      "w": 0.94,
+      "h": 0.5,
+      "color": "0xfffdf5",
+      "inert": true
+    },
+    {
+      "id": "minus",
+      "shape": "word",
+      "label": "−",
+      "size": 150,
+      "x": 0.17,
+      "y": 0.5,
+      "erasable": true
+    },
+    {
+      "id": "sum",
+      "shape": "word",
+      "label": "5000",
+      "size": 110,
+      "x": 0.58,
+      "y": 0.5,
+      "erasable": true,
+      "wrong": true
+    }
+  ],
+  "erase": {
+    "target": "minus",
+    "percent": 0.45
+  }
+}

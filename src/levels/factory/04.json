@@ -1,0 +1,336 @@
+{
+  "id": "f4",
+  "type": "sequence",
+  "ordered": false,
+  "objects": [
+    {
+      "id": "plateL",
+      "shape": "box",
+      "x": 0.26,
+      "y": 0.5,
+      "w": 0.44,
+      "h": 0.86,
+      "color": "0xc5ccd4",
+      "inert": true
+    },
+    {
+      "id": "plateR",
+      "shape": "box",
+      "x": 0.74,
+      "y": 0.5,
+      "w": 0.44,
+      "h": 0.86,
+      "color": "0xc5ccd4",
+      "wrong": true
+    },
+    {
+      "id": "l0",
+      "shape": "dot",
+      "at": [
+        "plateL",
+        -0.25,
+        -0.3
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "l1",
+      "shape": "dot",
+      "at": [
+        "plateL",
+        0.25,
+        -0.3
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "l2",
+      "shape": "dot",
+      "at": [
+        "plateL",
+        -0.25,
+        0
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "l3",
+      "shape": "dot",
+      "at": [
+        "plateL",
+        0.25,
+        0
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "l4",
+      "shape": "dot",
+      "at": [
+        "plateL",
+        -0.25,
+        0.3
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "l5",
+      "shape": "dot",
+      "at": [
+        "plateL",
+        0.25,
+        0.3
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "r1",
+      "shape": "dot",
+      "at": [
+        "plateR",
+        0.25,
+        -0.3
+      ],
+      "size": 54,
+      "color": "0xd63d3d",
+      "inert": true
+    },
+    {
+      "id": "r2",
+      "shape": "dot",
+      "at": [
+        "plateR",
+        -0.25,
+        0
+      ],
+      "size": 84,
+      "inert": true
+    },
+    {
+      "id": "r3",
+      "shape": "dot",
+      "at": [
+        "plateR",
+        0.25,
+        0
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "r4",
+      "shape": "dot",
+      "at": [
+        "plateR",
+        -0.25,
+        0.3
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "r5",
+      "shape": "box",
+      "at": [
+        "plateR",
+        0.25,
+        0.3
+      ],
+      "box": [
+        0.2,
+        0.1
+      ],
+      "color": "0x9aa5b1",
+      "inert": true
+    },
+    {
+      "id": "r6",
+      "shape": "dot",
+      "at": [
+        "plateR",
+        0,
+        -0.15
+      ],
+      "size": 54,
+      "inert": true
+    },
+    {
+      "id": "d1",
+      "shape": "zone",
+      "at": [
+        "plateR",
+        -0.25,
+        -0.3
+      ],
+      "box": [
+        0.36,
+        0.2
+      ]
+    },
+    {
+      "id": "markd1",
+      "shape": "ring",
+      "at": [
+        "plateR",
+        -0.25,
+        -0.3
+      ],
+      "size": 104,
+      "hidden": true,
+      "inert": true
+    },
+    {
+      "id": "d2",
+      "shape": "zone",
+      "at": [
+        "plateR",
+        0.25,
+        -0.3
+      ],
+      "box": [
+        0.36,
+        0.2
+      ]
+    },
+    {
+      "id": "markd2",
+      "shape": "ring",
+      "at": [
+        "plateR",
+        0.25,
+        -0.3
+      ],
+      "size": 104,
+      "hidden": true,
+      "inert": true
+    },
+    {
+      "id": "d3",
+      "shape": "zone",
+      "at": [
+        "plateR",
+        -0.25,
+        0
+      ],
+      "box": [
+        0.36,
+        0.2
+      ]
+    },
+    {
+      "id": "markd3",
+      "shape": "ring",
+      "at": [
+        "plateR",
+        -0.25,
+        0
+      ],
+      "size": 104,
+      "hidden": true,
+      "inert": true
+    },
+    {
+      "id": "d4",
+      "shape": "zone",
+      "at": [
+        "plateR",
+        0.25,
+        0.3
+      ],
+      "box": [
+        0.36,
+        0.2
+      ]
+    },
+    {
+      "id": "markd4",
+      "shape": "ring",
+      "at": [
+        "plateR",
+        0.25,
+        0.3
+      ],
+      "size": 104,
+      "hidden": true,
+      "inert": true
+    },
+    {
+      "id": "d5",
+      "shape": "zone",
+      "at": [
+        "plateR",
+        0,
+        -0.15
+      ],
+      "box": [
+        0.36,
+        0.2
+      ]
+    },
+    {
+      "id": "markd5",
+      "shape": "ring",
+      "at": [
+        "plateR",
+        0,
+        -0.15
+      ],
+      "size": 104,
+      "hidden": true,
+      "inert": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "d1",
+      "then": {
+        "show": [
+          "markd1"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "d2",
+      "then": {
+        "show": [
+          "markd2"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "d3",
+      "then": {
+        "show": [
+          "markd3"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "d4",
+      "then": {
+        "show": [
+          "markd4"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "d5",
+      "then": {
+        "show": [
+          "markd5"
+        ]
+      }
+    }
+  ]
+}

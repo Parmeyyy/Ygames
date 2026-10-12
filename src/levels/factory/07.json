@@ -1,0 +1,84 @@
+{
+  "id": "f7",
+  "type": "choice",
+  "hideCoins": true,
+  "objects": [
+    {
+      "id": "belt",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.62,
+      "w": 1,
+      "h": 0.3,
+      "color": "0x5c5c66",
+      "inert": true
+    },
+    {
+      "id": "g0",
+      "shape": "gearRight",
+      "x": 0.0,
+      "y": 0.4,
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "g1",
+      "shape": "gear",
+      "x": 0.2,
+      "y": 0.4,
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "g2",
+      "shape": "gear",
+      "x": 0.4,
+      "y": 0.4,
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "g3",
+      "shape": "gear",
+      "x": 0.6,
+      "y": 0.4,
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "g4",
+      "shape": "gear",
+      "x": 0.8,
+      "y": 0.4,
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "g5",
+      "shape": "gearLeft",
+      "x": 1.0,
+      "y": 0.4,
+      "size": 100,
+      "inert": true
+    }
+  ],
+  "options": [
+    {
+      "id": "4",
+      "label": "4"
+    },
+    {
+      "id": "5",
+      "label": "5"
+    },
+    {
+      "id": "6",
+      "label": "6"
+    },
+    {
+      "id": "7",
+      "label": "7"
+    }
+  ],
+  "answer": "6"
+}

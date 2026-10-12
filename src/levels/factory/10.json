@@ -1,0 +1,63 @@
+{
+  "id": "f10",
+  "type": "combine",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "pipe",
+      "shape": "pipeLeak",
+      "x": 0.5,
+      "y": 0.45,
+      "size": 520,
+      "inert": true
+    },
+    {
+      "id": "hole",
+      "shape": "zone",
+      "at": [
+        "pipe",
+        0.1,
+        -0.1
+      ],
+      "box": [
+        0.3,
+        1.6
+      ]
+    },
+    {
+      "id": "wrench",
+      "shape": "wrench",
+      "x": 0.25,
+      "y": 0.82,
+      "size": 220,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "gum",
+      "shape": "dot",
+      "at": [
+        "hero:mouth",
+        0.25,
+        0.15
+      ],
+      "size": 46,
+      "color": "0xff7eb6"
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "gum",
+      "onto": "hole",
+      "then": {
+        "swap": {
+          "pipe": "pipe"
+        },
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

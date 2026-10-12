@@ -1,0 +1,45 @@
+{
+  "id": "f9",
+  "type": "combine",
+  "objects": [
+    {
+      "id": "crate",
+      "shape": "crate",
+      "x": 0.75,
+      "y": 0.25,
+      "size": 220,
+      "inert": true
+    },
+    {
+      "id": "pipe",
+      "shape": "pipe",
+      "x": 0.5,
+      "y": 0.72,
+      "size": 520,
+      "inert": true
+    },
+    {
+      "id": "thermos",
+      "shape": "thermos",
+      "x": 0.2,
+      "y": 0.28,
+      "size": 90
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "thermos",
+      "onto": "pipe",
+      "keep": [
+        0,
+        -0.9
+      ],
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import { ECONOMY } from '../config.js';
 import { dev } from '../dev.js';
-import { ITEMS } from '../items.js';
+import { ITEMS, slotOf } from '../items.js';
 import { getSection, sections } from '../levels/index.js';
 import { yandex } from '../yandex.js';
 
@@ -15,7 +15,9 @@ const state = {
   bonusDay: 0, // номер дня, когда забрали последний ежедневный подарок
   coins: 0,
   hats: [], // id предметов гардероба, которые есть у игрока
-  hat: null, // id надетого предмета
+  hat: null, // id надетой шапки или значка
+  top: null, // id надетого верха (null — родная майка)
+  pants: null, // id надетого низа (null — родные треники)
   hatAds: {}, // id редкого предмета → сколько раз ради него посмотрели рекламу
   sound: true,
 };
@@ -38,7 +40,9 @@ export const progress = {
     if (Array.isArray(data.completed)) state.completed = data.completed;
     // предметы, которых больше нет в игре, из сохранения отбрасываются
     if (Array.isArray(data.hats)) state.hats = data.hats.filter((id) => ITEMS.some((item) => item.id === id));
-    if (state.hats.includes(data.hat)) state.hat = data.hat;
+    for (const slot of ['hat', 'top', 'pants']) {
+      if (state.hats.includes(data[slot])) state[slot] = data[slot];
+    }
   },
 
   // ——— разделы и уровни ———
@@ -170,9 +174,21 @@ export const progress = {
 
   // ——— гардероб ———
 
-  // id надетого предмета (null — родная кепка)
+  // id надетой шапки или значка (null — родная кепка), верха и низа
   get hat() {
     return state.hat;
+  },
+
+  get top() {
+    return state.top;
+  },
+
+  get pants() {
+    return state.pants;
+  },
+
+  isWearing(item) {
+    return state[slotOf(item)] === item.id;
   },
 
   ownsHat(id) {
@@ -183,9 +199,10 @@ export const progress = {
     return state.hatAds[id] ?? 0;
   },
 
-  // Надеть предмет; null — снять
-  equip(id) {
-    state.hat = id;
+  // Надеть вещь; если она уже надета — снять
+  toggle(item) {
+    const slot = slotOf(item);
+    state[slot] = state[slot] === item.id ? null : item.id;
     save();
   },
 
@@ -194,7 +211,7 @@ export const progress = {
     if (state.coins < item.price) return false;
     state.coins -= item.price;
     state.hats.push(item.id);
-    state.hat = item.id;
+    state[slotOf(item)] = item.id;
     save();
     return true;
   },
@@ -205,7 +222,7 @@ export const progress = {
     state.hatAds[item.id] = views;
     if (views >= item.ads) {
       state.hats.push(item.id);
-      state.hat = item.id;
+      state[slotOf(item)] = item.id;
     }
     save();
   },

@@ -1,0 +1,34 @@
+{
+  "id": "f11",
+  "type": "combine",
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "alarm",
+      "shape": "alarm",
+      "x": 0.28,
+      "y": 0.3,
+      "size": 230,
+      "wrong": true
+    },
+    {
+      "id": "coffee",
+      "shape": "cupFull",
+      "x": 0.7,
+      "y": 0.65,
+      "size": 170
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "coffee",
+      "onto": "hero:mouth",
+      "then": {
+        "hero": {
+          "mood": "surprised"
+        }
+      }
+    }
+  ]
+}

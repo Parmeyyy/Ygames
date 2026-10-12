@@ -1,0 +1,81 @@
+{
+  "id": "f19",
+  "type": "sequence",
+  "ordered": false,
+  "heroHat": "helmet",
+  "objects": [
+    {
+      "id": "bench",
+      "shape": "box",
+      "x": 0.72,
+      "y": 0.82,
+      "w": 0.46,
+      "h": 0.16,
+      "color": "0xa9713a",
+      "inert": true
+    },
+    {
+      "id": "oilcan",
+      "shape": "oilcan",
+      "x": 0.22,
+      "y": 0.25,
+      "size": 170
+    },
+    {
+      "id": "spray",
+      "shape": "spray",
+      "x": 0.72,
+      "y": 0.3,
+      "size": 100
+    },
+    {
+      "id": "part",
+      "shape": "gearBroken",
+      "x": 0.24,
+      "y": 0.75,
+      "size": 150
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "oilcan",
+      "onto": "hero:head",
+      "back": true,
+      "then": {
+        "hero": {
+          "props": {
+            "dirty": true
+          }
+        },
+        "say": "dirty"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "spray",
+      "onto": "hero:forehead",
+      "back": true,
+      "then": {
+        "hero": {
+          "props": {
+            "sweat": true
+          }
+        },
+        "say": "sweat"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "part",
+      "onto": "bench",
+      "keep": [
+        0,
+        -1.0
+      ],
+      "then": {
+        "say": "part"
+      }
+    }
+  ]
+}

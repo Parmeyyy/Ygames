@@ -67,7 +67,15 @@
     "helmet": "Hard hat",
     "bowtie": "Bow tie",
     "panama": "Fisherman's hat",
-    "straw": "Straw hat"
+    "straw": "Straw hat",
+    "telnyashka": "Striped shirt",
+    "tshirt": "Red T-shirt",
+    "hawaii": "Hawaiian shirt",
+    "sweater": "Sweater",
+    "jacket": "Jacket and tie",
+    "shorts": "Shorts",
+    "jeans": "Jeans",
+    "camo": "Camo trousers"
   },
   "wardrobe": {
     "info": "Rare items take 3 ad views each",
@@ -75,7 +83,9 @@
     "forSection": "This item is a reward for finishing a section",
     "equip": "Wear",
     "equipped": "Wearing",
-    "ad": "Ad {n}/{max}"
+    "ad": "Ad {n}/{max}",
+    "hats": "Hats",
+    "clothes": "Clothes"
   },
   "levels": {
     "m1": {
@@ -232,6 +242,158 @@
       "hint": "A working man wears a hard hat and holds a tool. And there should be nothing soft nearby.",
       "wrong": "No time for tea! The boss is coming!",
       "win": "\"Valera, here already? Well done!\" Beautiful!"
+    },
+    "f1": {
+      "question": "Start the machine",
+      "big": "DO NOT TOUCH",
+      "start": "The shift has begun. The machine won't start itself.",
+      "hint": "The big button is being honest. Look for something smaller on the side.",
+      "wrong": "It says do not touch! Oh, come on.",
+      "win": "It's humming! Beautiful."
+    },
+    "f2": {
+      "question": "Hide Valera from the boss",
+      "start": "The boss is coming! And I'm not working yet!",
+      "hint": "It's Valera who needs hiding. You can pick him up and carry him.",
+      "wrong": "Everyone can see me here!",
+      "win": "I'm not here. I'm a crate."
+    },
+    "f3": {
+      "question": "Hand over the size 12 wrench",
+      "start": "A twelve wrench. Quick.",
+      "hint": "The right wrench is not in sight. What here is lying in the wrong place?",
+      "wrong": "That's not a twelve! Can you read numbers?",
+      "win": "There it is! Under a part, as usual."
+    },
+    "f4": {
+      "question": "Find 5 differences between the two parts",
+      "start": "One is faulty. Find how it differs.",
+      "hint": "Compare the right part with the left, spot by spot: what's missing, what's extra, what has another colour, size or shape.",
+      "wrong": "That's the same. Look closer!",
+      "win": "Five out of five! Quality control needs you."
+    },
+    "f5": {
+      "question": "Tighten the bolt",
+      "start": "The bolt has come loose.",
+      "hint": "Bolts are tightened in a circle. Move your finger around it, clockwise.",
+      "wrong": "You're loosening it! The other way!",
+      "win": "Tight! It won't fall off now. Probably."
+    },
+    "f6": {
+      "question": "Fire in the break room!",
+      "start": "Fire! My soup is on fire!",
+      "hint": "There's something red on the wall for exactly this.",
+      "wrong": "With tea?! Be serious. This needs more!",
+      "win": "It's out! The soup has foam now, though."
+    },
+    "f7": {
+      "question": "How many parts are on the conveyor?",
+      "start": "The boss will ask. I need the exact number.",
+      "hint": "The conveyor doesn't end at the edge of the screen. Look at the very edges.",
+      "wrong": "That doesn't add up. Did you check the edges?",
+      "win": "Six! Two are halfway gone, but they count."
+    },
+    "f8": {
+      "question": "The boss needs 100 parts, and Valera has 99",
+      "start": "One is missing. Where did I put it?",
+      "hint": "The last part is on Valera. Where does a working man keep what matters most?",
+      "wrong": "I already looked there.",
+      "win": "Under my hard hat! I hid it from the rain."
+    },
+    "f9": {
+      "question": "Warm up lunch",
+      "start": "Lunch is cold. And there's no microwave.",
+      "hint": "A factory is full of hot things. One pipe is glowing with heat.",
+      "wrong": "No heat there.",
+      "win": "Nice and warm! Factory wisdom."
+    },
+    "f10": {
+      "question": "Fix the pipe",
+      "start": "It's leaking! And I've got nofing to plug it wiff!",
+      "hint": "The hole needs sealing with something. Look at what Valera is chewing.",
+      "wrong": "You can't plug a hole with a wrench!",
+      "win": "It holds! Gum is the best sealant."
+    },
+    "f11": {
+      "question": "Valera fell asleep. Wake him quietly",
+      "start": "Zzz… the plan… we'll meet it…",
+      "hint": "No noise, the boss will hear. What wakes you with a smell, not a sound?",
+      "wrong": "RIIING! Quiet! The boss will hear!",
+      "win": "Mmm, coffee… Huh? I wasn't asleep, I was thinking!"
+    },
+    "f12": {
+      "question": "Take the crate to the warehouse",
+      "start": "The crate is heavy. I only have one back.",
+      "early": "And who's going to drive? The forklift won't drive itself.",
+      "inCab": "I'm in. Now the crate.",
+      "hint": "Too heavy by hand. There's a machine for this, but it needs a driver.",
+      "wrong": "No, I'll hurt my back like that!",
+      "win": "Off we go! Beep-beep. Beautiful."
+    },
+    "f13": {
+      "question": "The sign says: 5 + 5 × 0 = ?",
+      "start": "This puzzle decides the bonus. Don't let me down.",
+      "hint": "Multiply first. Whatever you multiply by zero, what do you get?",
+      "wrong": "There goes the bonus.",
+      "win": "Five! Zero ate everything, but the five stayed."
+    },
+    "f14": {
+      "question": "Collect the bonus",
+      "break": "ON BREAK",
+      "knock": "Knock",
+      "start": "The window is shut. They're on a break.",
+      "hint": "Knocking on accounting is useless. Only patience works here.",
+      "wrong": "Don't knock! Now the wait is even longer.",
+      "win": "It opened! There's my bonus. Beautiful!"
+    },
+    "f15": {
+      "question": "Who ate Valera's lunch?",
+      "start": "My cutlets are gone. It was one of these three.",
+      "hint": "Whoever ate it left the evidence on his own face.",
+      "wrong": "Not him. He has an alibi.",
+      "win": "Crumbs on the moustache! Got you, Petrovich."
+    },
+    "f16": {
+      "question": "Get through the turnstile",
+      "go": "GO",
+      "start": "My pass is acting up again.",
+      "hint": "The turnstile only lets you through on green. Don't rush.",
+      "wrong": "Bang! Forehead into the turnstile. Oh, come on.",
+      "win": "Slipped through! Timing is everything."
+    },
+    "f17": {
+      "question": "Salary: −5000 (fine)",
+      "start": "Minus five thousand?! What for?",
+      "hint": "The digits are fine. One small sign in front of them is the problem.",
+      "wrong": "Leave the digits! I need those.",
+      "win": "Plus five thousand! Now we're talking."
+    },
+    "f18": {
+      "question": "Which gear will start turning last?",
+      "motor": "motor",
+      "start": "The motor turns the first one. You figure out the rest.",
+      "hint": "The turning passes along the chain from the motor. And one gear touches nothing, so it will never turn at all.",
+      "wrong": "Not that one. Follow the chain from the motor.",
+      "win": "The fourth! And the fifth just lies there, like me at lunch."
+    },
+    "f19": {
+      "question": "Prove to the boss that Valera was working",
+      "start": "I need to look tired. Right now.",
+      "dirty": "Oil on the hard hat. Getting there.",
+      "sweat": "Dripping with sweat! Well, sort of sweat.",
+      "part": "A broken part on the bench. I was fixing it.",
+      "hint": "A man who worked is dirty, sweaty, and has a part on his bench.",
+      "wrong": "No, that doesn't go there.",
+      "win": "\"Valera, take a rest, you work too hard!\" Beautiful."
+    },
+    "f20": {
+      "question": "End of shift! Leave before the boss does",
+      "start": "Five o'clock. And he just stands there watching.",
+      "early": "He is looking right at me!",
+      "distracted": "He turned away! Now or never.",
+      "hint": "You can't reach the door while the boss is watching. Distract him, with a crash for example.",
+      "wrong": "Quiet! Better not touch him.",
+      "win": "I'm out! See you tomorrow, dear factory."
     },
     "s1": {
       "question": "Who is the main character here?",

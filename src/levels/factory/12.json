@@ -1,0 +1,76 @@
+{
+  "id": "f12",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "forklift",
+      "shape": "forklift",
+      "x": 0.42,
+      "y": 0.62,
+      "size": 440,
+      "inert": true
+    },
+    {
+      "id": "cab",
+      "shape": "zone",
+      "at": [
+        "forklift",
+        -0.12,
+        -0.25
+      ],
+      "box": [
+        0.42,
+        0.5
+      ]
+    },
+    {
+      "id": "forks",
+      "shape": "zone",
+      "at": [
+        "forklift",
+        0.38,
+        0.12
+      ],
+      "box": [
+        0.34,
+        0.5
+      ]
+    },
+    {
+      "id": "crate",
+      "shape": "crate",
+      "x": 0.8,
+      "y": 0.2,
+      "size": 150
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "hero",
+      "onto": "cab",
+      "keep": [
+        0,
+        -0.2
+      ],
+      "then": {
+        "say": "inCab"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "crate",
+      "onto": "forks",
+      "keep": [
+        0,
+        0.05
+      ],
+      "early": "early",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

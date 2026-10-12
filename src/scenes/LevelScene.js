@@ -93,8 +93,10 @@ export class LevelScene extends BaseScene {
 
     const question = this.addQuestion();
 
+    // heroHat — шапка, которую уровень надевает на Валеру вместо его собственной
     this.hero = new Hero(this, layout.hero.x, layout.hero.y, layout.hero.h, level.heroMood, {
       props: level.heroProps,
+      ...(level.heroHat ? { item: level.heroHat } : {}),
     }).enableTaps();
     if (this.solved) this.hero.setMood('happy');
     this.say(this.line);

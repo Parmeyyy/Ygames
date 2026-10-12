@@ -1,0 +1,24 @@
+{
+  "id": "f1",
+  "type": "tap",
+  "objects": [
+    {
+      "id": "big",
+      "shape": "button",
+      "labelKey": "big",
+      "x": 0.45,
+      "y": 0.42,
+      "w": 0.76,
+      "h": 0.4,
+      "color": "0xd63d3d"
+    },
+    {
+      "id": "lever",
+      "shape": "lever",
+      "x": 0.9,
+      "y": 0.88,
+      "size": 90
+    }
+  ],
+  "answer": "lever"
+}

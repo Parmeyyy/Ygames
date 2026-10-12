@@ -1,0 +1,72 @@
+{
+  "id": "f8",
+  "type": "sequence",
+  "heroHat": "helmet",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "crate",
+      "shape": "crate",
+      "x": 0.3,
+      "y": 0.3,
+      "size": 260,
+      "wrong": true
+    },
+    {
+      "id": "belt",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.8,
+      "w": 0.96,
+      "h": 0.22,
+      "color": "0x5c5c66",
+      "wrong": true
+    },
+    {
+      "id": "g1",
+      "shape": "gear",
+      "at": [
+        "belt",
+        -0.3,
+        -0.75
+      ],
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "g2",
+      "shape": "gear",
+      "at": [
+        "belt",
+        0,
+        -0.75
+      ],
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "g3",
+      "shape": "gear",
+      "at": [
+        "belt",
+        0.3,
+        -0.75
+      ],
+      "size": 100,
+      "inert": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "hero:head",
+      "then": {
+        "hero": {
+          "hat": null,
+          "hand": "gear",
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

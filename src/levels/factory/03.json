@@ -1,0 +1,47 @@
+{
+  "id": "f3",
+  "type": "tap",
+  "objects": [
+    {
+      "id": "w10",
+      "shape": "wrench",
+      "label": "10",
+      "x": 0.28,
+      "y": 0.18,
+      "size": 230
+    },
+    {
+      "id": "w14",
+      "shape": "wrench",
+      "label": "14",
+      "x": 0.7,
+      "y": 0.36,
+      "size": 230
+    },
+    {
+      "id": "w17",
+      "shape": "wrench",
+      "label": "17",
+      "x": 0.28,
+      "y": 0.55,
+      "size": 230
+    },
+    {
+      "id": "w12",
+      "shape": "wrench",
+      "label": "12",
+      "x": 0.66,
+      "y": 0.8,
+      "size": 210
+    },
+    {
+      "id": "part",
+      "shape": "gear",
+      "x": 0.66,
+      "y": 0.8,
+      "size": 270,
+      "draggable": true
+    }
+  ],
+  "answer": "w12"
+}

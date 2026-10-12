@@ -1,0 +1,68 @@
+{
+  "id": "f18",
+  "type": "tap",
+  "objects": [
+    {
+      "id": "g1",
+      "shape": "gear",
+      "label": "1",
+      "x": 0.16,
+      "y": 0.3,
+      "size": 130
+    },
+    {
+      "id": "g2",
+      "shape": "gear",
+      "label": "2",
+      "at": [
+        "g1",
+        0.94,
+        0
+      ],
+      "size": 130
+    },
+    {
+      "id": "g3",
+      "shape": "gear",
+      "label": "3",
+      "at": [
+        "g2",
+        0.94,
+        0
+      ],
+      "size": 130
+    },
+    {
+      "id": "g4",
+      "shape": "gear",
+      "label": "4",
+      "at": [
+        "g3",
+        0.94,
+        0
+      ],
+      "size": 130
+    },
+    {
+      "id": "motor",
+      "shape": "word",
+      "labelKey": "motor",
+      "size": 28,
+      "at": [
+        "g1",
+        0,
+        0.85
+      ],
+      "inert": true
+    },
+    {
+      "id": "g5",
+      "shape": "gear",
+      "label": "5",
+      "x": 0.5,
+      "y": 0.78,
+      "size": 130
+    }
+  ],
+  "answer": "g4"
+}

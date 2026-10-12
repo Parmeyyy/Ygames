@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { COLORS } from '../config.js';
 import { getItem } from '../items.js';
 import { progress } from '../services/progress.js';
+import { PANTS, TOPS } from './clothes.js';
 import { addHat } from './hats.js';
 import { addShape } from './shapes.js';
 
@@ -15,7 +16,6 @@ import { addShape } from './shapes.js';
 
 const SKIN = 0xf2c9a0;
 const SKIN_DARK = 0xdba77c;
-const PANTS = 0x2e4a8f;
 const HAIR = 0x6b4423;
 
 // eyes: dot — точки, wide — круглые от страха или удивления, arcUp — зажмурено от радости,
@@ -44,11 +44,13 @@ const ZONE_RADIUS = { head: 0.2, forehead: 0.09, mouth: 0.16, chest: 0.11, hand:
 
 export class Hero extends Phaser.GameObjects.Container {
   // (x, y) — центр фигуры, height — рост в пикселях (вместе с кепкой).
-  // options: item — id надетого предмета гардероба (по умолчанию из прогресса), props — детали для уровня:
+  // options: item, top, pants — id надетых вещей (по умолчанию из прогресса), props — детали для уровня:
   //   socks: true         — вместо тапок носки
   //   glasses: "forehead" | "eyes"
   //   pass: "back" | "front" — пропуск на шнурке: перевёрнут или лицом
-  constructor(scene, x, y, height, mood = 'idle', { item = progress.hat, props = {} } = {}) {
+  //   dirty: true         — пятна на шапке, sweat: true — капли пота
+  constructor(scene, x, y, height, mood = 'idle', options = {}) {
+    const { item = progress.hat, top = progress.top, pants = progress.pants, props = {} } = options;
     super(scene, x, y);
     this.homeX = x;
     this.homeY = y;
@@ -57,6 +59,8 @@ export class Hero extends Phaser.GameObjects.Container {
     this.baseMood = mood;
     this.props = { ...props };
     this.item = item;
+    this.top = top;
+    this.pants = pants;
     this.held = null;
 
     const k = height;
@@ -100,13 +104,26 @@ export class Hero extends Phaser.GameObjects.Container {
     const k = this.heroH;
     const g = this.torso.clear();
     const stroke = Math.max(2, k * 0.012);
+    const top = TOPS[this.top] ?? TOPS.tank;
+    const pants = PANTS[this.pants] ?? PANTS.track;
     g.lineStyle(stroke, COLORS.outline, 1);
 
-    // ноги в трениках с лампасами
+    // ноги: штаны или шорты
     for (const side of [-1, 1]) {
-      g.fillStyle(PANTS, 1).fillRoundedRect(side * k * 0.1 - k * 0.075, -k * 0.34, k * 0.15, k * 0.31, k * 0.04);
-      g.strokeRoundedRect(side * k * 0.1 - k * 0.075, -k * 0.34, k * 0.15, k * 0.31, k * 0.04);
-      g.fillStyle(COLORS.white, 1).fillRect(side * k * 0.16 - k * 0.008, -k * 0.32, k * 0.016, k * 0.27);
+      const x = side * k * 0.1 - k * 0.075;
+      if (pants.short) {
+        g.fillStyle(SKIN, 1).fillRoundedRect(x + k * 0.02, -k * 0.24, k * 0.11, k * 0.21, k * 0.04);
+        g.strokeRoundedRect(x + k * 0.02, -k * 0.24, k * 0.11, k * 0.21, k * 0.04);
+      }
+      const length = pants.short ? 0.14 : 0.31;
+      g.fillStyle(pants.color, 1).fillRoundedRect(x, -k * 0.34, k * 0.15, k * length, k * 0.04);
+      g.strokeRoundedRect(x, -k * 0.34, k * 0.15, k * length, k * 0.04);
+      if (pants.stripe) g.fillStyle(pants.stripe, 1).fillRect(side * k * 0.16 - k * 0.008, -k * 0.32, k * 0.016, k * (length - 0.04));
+      if (pants.seam) g.fillStyle(pants.seam, 1).fillRect(side * k * 0.1 - k * 0.004, -k * 0.26, k * 0.008, k * (length - 0.1));
+      if (pants.spots) {
+        g.fillStyle(pants.spots, 1);
+        g.fillCircle(side * k * 0.09, -k * 0.26, k * 0.022).fillCircle(side * k * 0.12, -k * 0.16, k * 0.02).fillCircle(side * k * 0.08, -k * 0.08, k * 0.018);
+      }
     }
     // обувь: тапки или носки
     for (const side of [-1, 1]) {
@@ -119,16 +136,58 @@ export class Hero extends Phaser.GameObjects.Container {
         g.strokeEllipse(side * k * 0.11, -k * 0.025, k * 0.18, k * 0.06);
       }
     }
-    // руки
+
+    // руки: плечо → локоть → запястье, потом кисть. Часть руки — «капсула» с обводкой.
+    const limb = (x1, y1, x2, y2, thick, color) => {
+      g.lineStyle(thick + stroke * 2, COLORS.outline, 1).lineBetween(x1, y1, x2, y2);
+      g.fillStyle(COLORS.outline, 1).fillCircle(x1, y1, thick / 2 + stroke).fillCircle(x2, y2, thick / 2 + stroke);
+      g.lineStyle(thick, color, 1).lineBetween(x1, y1, x2, y2);
+      g.fillStyle(color, 1).fillCircle(x1, y1, thick / 2).fillCircle(x2, y2, thick / 2);
+    };
     for (const side of [-1, 1]) {
-      g.fillStyle(SKIN, 1).fillEllipse(side * k * 0.265, -k * 0.44, k * 0.1, k * 0.3);
-      g.strokeEllipse(side * k * 0.265, -k * 0.44, k * 0.1, k * 0.3);
+      const shoulder = [side * k * 0.2, -k * 0.57];
+      const elbow = [side * k * 0.285, -k * 0.45];
+      const wrist = [side * k * 0.272, -k * 0.345];
+      limb(...elbow, ...wrist, k * 0.062, top.sleeves === 2 ? top.color : SKIN);
+      limb(...shoulder, ...elbow, k * 0.07, top.sleeves ? top.color : SKIN);
+      // кисть: ладонь, большой палец к телу и пальцы
+      const [hx, hy] = [side * k * 0.27, -k * 0.305];
+      g.lineStyle(stroke, COLORS.outline, 1);
+      g.fillStyle(SKIN, 1).fillCircle(hx - side * k * 0.036, hy - k * 0.008, k * 0.018);
+      g.strokeCircle(hx - side * k * 0.036, hy - k * 0.008, k * 0.018);
+      g.fillEllipse(hx, hy, k * 0.075, k * 0.085);
+      g.strokeEllipse(hx, hy, k * 0.075, k * 0.085);
+      g.lineStyle(Math.max(1, stroke * 0.7), SKIN_DARK, 1);
+      for (const dx of [-0.014, 0.006]) g.lineBetween(hx + dx * k, hy + k * 0.012, hx + dx * k, hy + k * 0.038);
     }
-    // пузо в майке
-    g.fillStyle(COLORS.white, 1).fillEllipse(0, -k * 0.45, k * 0.5, k * 0.4);
+
+    // туловище с пузиком
+    g.lineStyle(stroke, COLORS.outline, 1);
+    g.fillStyle(top.color, 1).fillEllipse(0, -k * 0.45, k * 0.5, k * 0.4);
     g.strokeEllipse(0, -k * 0.45, k * 0.5, k * 0.4);
-    // вырез майки
-    g.fillStyle(SKIN, 1).slice(0, -k * 0.635, k * 0.1, 0, Math.PI).fillPath().strokePath();
+    // узоры ложатся по форме пуза: половина ширины на высоте y
+    const half = (y) => k * 0.25 * Math.sqrt(Math.max(0, 1 - ((y + k * 0.45) / (k * 0.2)) ** 2)) - stroke;
+    if (top.stripes) {
+      g.lineStyle(k * 0.016, top.stripes, 1);
+      for (let y = -k * 0.6; y < -k * 0.27; y += k * 0.04) g.lineBetween(-half(y), y, half(y), y);
+    }
+    if (top.dots) {
+      g.fillStyle(top.dots, 1);
+      for (const [x, y] of [[-0.1, -0.52], [0.08, -0.46], [-0.06, -0.38], [0.13, -0.36], [-0.15, -0.44], [0.02, -0.31]]) {
+        g.fillCircle(x * k, y * k, k * 0.02);
+      }
+    }
+    if (top.zigzag) {
+      g.lineStyle(k * 0.014, top.zigzag, 1);
+      g.strokePoints([-0.2, -0.12, -0.04, 0.04, 0.12, 0.2].map((x, i) => ({ x: x * k, y: (i % 2 ? -0.5 : -0.46) * k })));
+    }
+    g.lineStyle(stroke, COLORS.outline, 1);
+    // шея и вырез
+    g.fillStyle(SKIN, 1).slice(0, -k * 0.635, k * (top.sleeves ? 0.07 : 0.1), 0, Math.PI).fillPath().strokePath();
+    if (top.tie) {
+      g.fillStyle(COLORS.white, 1).fillTriangle(-k * 0.07, -k * 0.63, k * 0.07, -k * 0.63, 0, -k * 0.5);
+      g.fillStyle(0xd63d3d, 1).fillTriangle(-k * 0.022, -k * 0.6, k * 0.022, -k * 0.6, 0, -k * 0.42);
+    }
     // голова и уши
     g.fillStyle(SKIN, 1);
     g.fillCircle(-k * 0.14, -k * 0.73, k * 0.03).fillCircle(k * 0.14, -k * 0.73, k * 0.03);
@@ -168,6 +227,21 @@ export class Hero extends Phaser.GameObjects.Container {
         g.strokeCircle(side * k * 0.055, y, k * 0.036);
       }
       g.lineBetween(-k * 0.02, y, k * 0.02, y);
+    }
+
+    if (this.props.dirty) {
+      g.fillStyle(0x3a2a1a, 0.85);
+      for (const [x, y, r] of [[-0.06, -0.93, 0.02], [0.05, -0.9, 0.026], [0.0, -0.955, 0.016], [0.09, -0.94, 0.014]]) {
+        g.fillCircle(x * k, y * k, r * k);
+      }
+    }
+
+    if (this.props.sweat) {
+      g.fillStyle(0x4aa3df, 1);
+      for (const [x, y] of [[-0.13, -0.8], [0.14, -0.78], [-0.16, -0.72], [0.17, -0.7]]) {
+        g.fillTriangle((x - 0.012) * k, y * k, (x + 0.012) * k, y * k, x * k, (y - 0.03) * k);
+        g.fillCircle(x * k, y * k, 0.012 * k);
+      }
     }
 
     if (this.props.pass) {

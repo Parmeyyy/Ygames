@@ -1,0 +1,38 @@
+{
+  "id": "f14",
+  "type": "wait",
+  "seconds": 5,
+  "objects": [
+    {
+      "id": "window",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.42,
+      "w": 0.8,
+      "h": 0.5,
+      "color": "0xbfe3ff",
+      "inert": true
+    },
+    {
+      "id": "sign",
+      "shape": "button",
+      "labelKey": "break",
+      "x": 0.5,
+      "y": 0.42,
+      "w": 0.6,
+      "h": 0.22,
+      "color": "0x8d7b68",
+      "inert": true
+    },
+    {
+      "id": "knock",
+      "shape": "button",
+      "labelKey": "knock",
+      "x": 0.5,
+      "y": 0.86,
+      "w": 0.6,
+      "h": 0.18,
+      "inert": true
+    }
+  ]
+}

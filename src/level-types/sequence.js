@@ -87,7 +87,9 @@ export function buildSequence(scene, level, field, api) {
       const target = resolve(step.onto);
       if (step.keep) {
         dragged.object.setPosition(target.object.x + step.keep[0] * target.w, target.object.y + step.keep[1] * target.h);
-        dragged.object.disableInteractive();
+        // Валера запоминает новое место, иначе после прыжка вернётся на старое
+        if (dragged.object === hero) Object.assign(hero, { homeX: hero.x, homeY: hero.y });
+        else dragged.object.disableInteractive();
       } else if (!step.back) {
         dragged.object.setVisible(false).disableInteractive();
       }

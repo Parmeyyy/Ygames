@@ -6,9 +6,10 @@ import { addText } from '../ui/widgets.js';
 
 // Общий слой объектов уровня. Каждый объект из level.objects:
 //   id, x, y        — центр в долях игрового поля (0..1)
-//   at              — вместо x, y: [id, dx, dy] — относительно другого объекта, в долях его размера
+//   at              — вместо x, y: [id, dx, dy] — относительно другого объекта, в долях его размера;
+//                     id может быть частью Валеры: "hero:mouth", "hero:hand" и т. п.
 //   shape           — вид (см. ниже); по умолчанию "chip" — кружок с подписью
-//   label | labelKey — подпись для chip, word, button
+//   label | labelKey — подпись для chip, word, button; у картинки — надпись поверх неё
 //   size            — ширина в дизайн-единицах (для картинок, chip и word)
 //   w, h            — размер в долях поля (для button, box, zone, card)
 //   box             — вместо w, h: [w, h] в долях размера объекта из at
@@ -19,7 +20,8 @@ import { addText } from '../ui/widgets.js';
 //   inert           — объект не реагирует на нажатия
 //   wrong           — нажать (или стереть, или перетащить) этот объект — ошибка
 //   erasable        — объект можно стереть (для типа erase)
-// Виды: chip, word, button, figure, box (цветной прямоугольник), zone (невидимая зона),
+// Виды: chip, word, button, figure, box (цветной прямоугольник), dot (цветной кружок),
+// ring (кольцо-отметка), zone (невидимая зона),
 // card (защитный слой), clock (часы со стрелкой), item (предмет гардероба)
 // и картинки из src/ui/shapes.js.
 // Объекты рисуются в порядке списка: следующий поверх предыдущего.
@@ -32,7 +34,11 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
   const entries = new Map();
 
   for (const def of list) {
-    const parent = def.at ? entries.get(def.at[0]) : null;
+    let parent = def.at ? entries.get(def.at[0]) : null;
+    if (def.at?.[0].startsWith('hero:')) {
+      const zone = api.target('hero').zone(def.at[0].slice(5));
+      parent = { object: zone, w: zone.radius * 2, h: zone.radius * 2 };
+    }
     const x = parent ? parent.object.x + def.at[1] * parent.w : field.x + def.x * field.w;
     const y = parent ? parent.object.y + def.at[2] * parent.h : field.y + def.y * field.h;
     const shape = def.shape ?? 'chip';
@@ -78,6 +84,15 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
       g.fillStyle(Number(def.color ?? COLORS.locked), 1).fillRoundedRect(-w / 2, -h / 2, w, h, 12 * u);
       g.lineStyle(4 * u, COLORS.outline, 1).strokeRoundedRect(-w / 2, -h / 2, w, h, 12 * u);
       parts = [g];
+    } else if (shape === 'dot' || shape === 'ring') {
+      const g = scene.add.graphics();
+      if (shape === 'dot') {
+        g.fillStyle(Number(def.color ?? 0x9aa5b1), 1).fillCircle(0, 0, size / 2);
+        g.lineStyle(3 * u, COLORS.outline, 1).strokeCircle(0, 0, size / 2);
+      } else {
+        g.lineStyle(7 * u, Number(def.color ?? 0xd63d3d), 1).strokeCircle(0, 0, size / 2);
+      }
+      parts = [g];
     } else if (shape === 'card') {
       w = rectW;
       h = rectH;
@@ -100,6 +115,16 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
       parts = [picture.object];
       w = picture.w;
       h = picture.h;
+      if (def.label || def.labelKey) {
+        // белая обводка, чтобы надпись читалась на любой картинке
+        parts.push(
+          addText(scene, 0, 0, labelOf(level, def), def.labelSize ?? 34, {
+            fontStyle: 'bold',
+            stroke: '#ffffff',
+            strokeThickness: 7 * u,
+          }),
+        );
+      }
     } else {
       console.warn(`Уровень ${level.id}: неизвестный вид объекта "${shape}"`);
       continue;

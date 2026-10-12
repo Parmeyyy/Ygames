@@ -1,0 +1,29 @@
+{
+  "id": "f16",
+  "type": "timed",
+  "objects": [
+    {
+      "id": "light",
+      "shape": "light",
+      "x": 0.5,
+      "y": 0.3,
+      "size": 220,
+      "inert": true
+    },
+    {
+      "id": "go",
+      "shape": "button",
+      "labelKey": "go",
+      "x": 0.5,
+      "y": 0.82,
+      "w": 0.64,
+      "h": 0.22
+    }
+  ],
+  "answer": "go",
+  "signal": {
+    "light": "light",
+    "red": 2000,
+    "green": 900
+  }
+}

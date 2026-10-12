@@ -4,7 +4,7 @@ import { COLORS } from '../config.js';
 // У каждого уровня свой id (например "m7"); тексты — в src/i18n/*.json, раздел levels.<id>:
 // question, hint, win, wrong, start, partial и подписи labelKey.
 //
-// Общие поля уровня: id, type, heroMood, heroProps, background, hideCoins, word.
+// Общие поля уровня: id, type, heroMood, heroProps, heroHat, background, hideCoins, word.
 // Что нужно каждому типу, описано в начале его файла в src/level-types/.
 
 // Разделы по порядку. Следующий открывается, когда пройден последний уровень предыдущего.

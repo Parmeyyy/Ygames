@@ -1,0 +1,29 @@
+{
+  "id": "f15",
+  "type": "tap",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "w1",
+      "shape": "worker",
+      "x": 0.2,
+      "y": 0.5,
+      "size": 150
+    },
+    {
+      "id": "w2",
+      "shape": "worker",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 150
+    },
+    {
+      "id": "w3",
+      "shape": "workerCrumbs",
+      "x": 0.8,
+      "y": 0.5,
+      "size": 150
+    }
+  ],
+  "answer": "w3"
+}

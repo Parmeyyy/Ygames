@@ -1,0 +1,51 @@
+{
+  "id": "f20",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "door",
+      "shape": "door",
+      "x": 0.86,
+      "y": 0.5,
+      "size": 150,
+      "inert": true
+    },
+    {
+      "id": "boss",
+      "shape": "boss",
+      "x": 0.5,
+      "y": 0.55,
+      "size": 160,
+      "wrong": true
+    },
+    {
+      "id": "crate",
+      "shape": "crate",
+      "x": 0.16,
+      "y": 0.16,
+      "size": 150
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "crate",
+      "then": {
+        "swap": {
+          "boss": "bossBack"
+        },
+        "say": "distracted"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "hero",
+      "onto": "door",
+      "keep": [
+        0,
+        0
+      ],
+      "early": "early"
+    }
+  ]
+}
