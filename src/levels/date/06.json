@@ -1,0 +1,20 @@
+{
+  "id": "d6",
+  "type": "action",
+  "action": {
+    "kind": "tap",
+    "target": "ui:hero",
+    "count": 3,
+    "within": 1500
+  },
+  "objects": [
+    {
+      "id": "dasha",
+      "shape": "dasha",
+      "x": 0.55,
+      "y": 0.5,
+      "size": 160,
+      "inert": true
+    }
+  ]
+}

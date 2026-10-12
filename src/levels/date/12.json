@@ -1,0 +1,29 @@
+{
+  "id": "d12",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "sausage",
+      "shape": "sausage",
+      "x": 0.22,
+      "y": 0.85,
+      "size": 160,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.5,
+      "y": 0.45,
+      "size": 340
+    }
+  ],
+  "steps": [
+    {
+      "do": "hold",
+      "target": "cat",
+      "ms": 2000
+    }
+  ]
+}

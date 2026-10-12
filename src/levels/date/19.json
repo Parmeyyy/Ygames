@@ -1,0 +1,33 @@
+{
+  "id": "d19",
+  "type": "sequence",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "dad",
+      "shape": "dad",
+      "x": 0.5,
+      "y": 0.42,
+      "size": 190
+    },
+    {
+      "id": "push",
+      "shape": "button",
+      "labelKey": "push",
+      "x": 0.5,
+      "y": 0.92,
+      "w": 0.6,
+      "h": 0.13,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "dad",
+      "count": 4,
+      "within": 2000,
+      "partial": "partial"
+    }
+  ]
+}

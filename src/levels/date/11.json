@@ -1,0 +1,56 @@
+{
+  "id": "d11",
+  "type": "catch",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "shelf",
+      "shape": "box",
+      "x": 0.7,
+      "y": 0.2,
+      "w": 0.42,
+      "h": 0.04,
+      "color": "0xa9713a",
+      "inert": true
+    },
+    {
+      "id": "mark",
+      "shape": "ring",
+      "x": 0.7,
+      "y": 0.88,
+      "size": 150,
+      "color": "0x8d7b68",
+      "inert": true
+    },
+    {
+      "id": "spot",
+      "shape": "zone",
+      "x": 0.7,
+      "y": 0.88,
+      "w": 0.3,
+      "h": 0.16
+    },
+    {
+      "id": "vase",
+      "shape": "vase",
+      "x": 0.7,
+      "y": 0.08,
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.22,
+      "y": 0.6,
+      "size": 230
+    }
+  ],
+  "catch": {
+    "fall": "vase",
+    "onto": "spot",
+    "with": "pillow",
+    "ms": 2400,
+    "delay": 1300
+  }
+}

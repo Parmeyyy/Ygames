@@ -1,0 +1,40 @@
+{
+  "id": "d16",
+  "type": "erase",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "dad",
+      "shape": "dad",
+      "x": 0.6,
+      "y": 0.4,
+      "size": 150,
+      "inert": true
+    },
+    {
+      "id": "plate",
+      "shape": "dot",
+      "x": 0.25,
+      "y": 0.8,
+      "size": 170,
+      "color": "0xffffff",
+      "inert": true
+    },
+    {
+      "id": "crumbs",
+      "shape": "crumbs",
+      "at": [
+        "hero:chest",
+        0,
+        -0.2
+      ],
+      "size": 170,
+      "erasable": true
+    }
+  ],
+  "erase": {
+    "target": "crumbs",
+    "percent": 0.5,
+    "tool": "napkin"
+  }
+}

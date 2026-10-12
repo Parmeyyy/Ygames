@@ -1,0 +1,115 @@
+{
+  "id": "d2",
+  "type": "sequence",
+  "ordered": false,
+  "objects": [
+    {
+      "id": "lawn",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.55,
+      "w": 1,
+      "h": 0.86,
+      "color": "0xbfe6a8",
+      "inert": true
+    },
+    {
+      "id": "t1",
+      "shape": "thistle",
+      "x": 0.5,
+      "y": 0.3,
+      "size": 100,
+      "wrong": true
+    },
+    {
+      "id": "t2",
+      "shape": "thistle",
+      "x": 0.2,
+      "y": 0.62,
+      "size": 100,
+      "wrong": true
+    },
+    {
+      "id": "f1",
+      "shape": "dandelion",
+      "x": 0.18,
+      "y": 0.28,
+      "size": 90
+    },
+    {
+      "id": "f2",
+      "shape": "dandelion",
+      "x": 0.8,
+      "y": 0.25,
+      "size": 90
+    },
+    {
+      "id": "f3",
+      "shape": "dandelion",
+      "x": 0.55,
+      "y": 0.58,
+      "size": 90
+    },
+    {
+      "id": "f4",
+      "shape": "dandelion",
+      "x": 0.85,
+      "y": 0.72,
+      "size": 90
+    },
+    {
+      "id": "f5",
+      "shape": "dandelion",
+      "x": 0.38,
+      "y": 0.85,
+      "size": 90
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "f1",
+      "then": {
+        "hide": [
+          "f1"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "f2",
+      "then": {
+        "hide": [
+          "f2"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "f3",
+      "then": {
+        "hide": [
+          "f3"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "f4",
+      "then": {
+        "hide": [
+          "f4"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "f5",
+      "then": {
+        "hide": [
+          "f5"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "d13",
+  "type": "combine",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "closet",
+      "shape": "closet",
+      "x": 0.24,
+      "y": 0.4,
+      "size": 190,
+      "wrong": true
+    },
+    {
+      "id": "bed",
+      "shape": "bed",
+      "x": 0.7,
+      "y": 0.78,
+      "size": 320,
+      "wrong": true
+    },
+    {
+      "id": "coat",
+      "shape": "coat",
+      "x": 0.74,
+      "y": 0.25,
+      "size": 170
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "coat",
+      "onto": "hero",
+      "then": {
+        "hero": {
+          "top": "coat",
+          "mood": "sly"
+        }
+      }
+    }
+  ]
+}

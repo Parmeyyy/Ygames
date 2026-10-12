@@ -1,4 +1,5 @@
 import { buildAction } from './action.js';
+import { buildCatch } from './catch.js';
 import { buildChoice } from './choice.js';
 import { buildDrag } from './drag.js';
 import { buildErase } from './erase.js';
@@ -31,6 +32,7 @@ export const LEVEL_TYPES = {
   flashlight: buildFlashlight,
   timed: buildTimed,
   erase: buildErase,
+  catch: buildCatch,
   // уровни из шагов: один строитель, тип называет главную хитрость
   sequence: buildSequence,
   combine: buildSequence,

@@ -37,10 +37,11 @@ const ANCHORS = {
   mouth: [0, -0.65],
   chest: [0, -0.47],
   hand: [0.27, -0.31],
+  pocket: [0.13, -0.3],
   body: [0, -0.45],
 };
 // Радиусы зон вокруг этих точек (в долях роста): куда можно попасть предметом или пальцем
-const ZONE_RADIUS = { head: 0.2, forehead: 0.09, mouth: 0.16, chest: 0.11, hand: 0.17, body: 0.25 };
+const ZONE_RADIUS = { head: 0.2, forehead: 0.09, mouth: 0.16, chest: 0.11, hand: 0.17, pocket: 0.1, body: 0.25 };
 
 export class Hero extends Phaser.GameObjects.Container {
   // (x, y) — центр фигуры, height — рост в пикселях (вместе с кепкой).
@@ -120,6 +121,10 @@ export class Hero extends Phaser.GameObjects.Container {
       g.strokeRoundedRect(x, -k * 0.34, k * 0.15, k * length, k * 0.04);
       if (pants.stripe) g.fillStyle(pants.stripe, 1).fillRect(side * k * 0.16 - k * 0.008, -k * 0.32, k * 0.016, k * (length - 0.04));
       if (pants.seam) g.fillStyle(pants.seam, 1).fillRect(side * k * 0.1 - k * 0.004, -k * 0.26, k * 0.008, k * (length - 0.1));
+      if (pants.vstripes) {
+        g.fillStyle(pants.vstripes, 1);
+        for (const dx of [-0.045, 0, 0.045]) g.fillRect(side * k * 0.1 + dx * k - k * 0.006, -k * 0.33, k * 0.012, k * (length - 0.02));
+      }
       if (pants.spots) {
         g.fillStyle(pants.spots, 1);
         g.fillCircle(side * k * 0.09, -k * 0.26, k * 0.022).fillCircle(side * k * 0.12, -k * 0.16, k * 0.02).fillCircle(side * k * 0.08, -k * 0.08, k * 0.018);
@@ -184,9 +189,24 @@ export class Hero extends Phaser.GameObjects.Container {
     g.lineStyle(stroke, COLORS.outline, 1);
     // шея и вырез
     g.fillStyle(SKIN, 1).slice(0, -k * 0.635, k * (top.sleeves ? 0.07 : 0.1), 0, Math.PI).fillPath().strokePath();
-    if (top.tie) {
+    if (top.tie || top.bow) {
       g.fillStyle(COLORS.white, 1).fillTriangle(-k * 0.07, -k * 0.63, k * 0.07, -k * 0.63, 0, -k * 0.5);
-      g.fillStyle(0xd63d3d, 1).fillTriangle(-k * 0.022, -k * 0.6, k * 0.022, -k * 0.6, 0, -k * 0.42);
+      g.strokeTriangle(-k * 0.07, -k * 0.63, k * 0.07, -k * 0.63, 0, -k * 0.5);
+    }
+    if (top.tie) g.fillStyle(0xd63d3d, 1).fillTriangle(-k * 0.022, -k * 0.6, k * 0.022, -k * 0.6, 0, -k * 0.42);
+    if (top.bow) {
+      g.fillStyle(COLORS.outline, 1);
+      g.fillTriangle(0, -k * 0.6, -k * 0.045, -k * 0.625, -k * 0.045, -k * 0.575);
+      g.fillTriangle(0, -k * 0.6, k * 0.045, -k * 0.625, k * 0.045, -k * 0.575);
+    }
+    if (top.emblem) {
+      g.fillStyle(top.emblem, 1).fillCircle(0, -k * 0.46, k * 0.06);
+      g.strokeCircle(0, -k * 0.46, k * 0.06);
+      g.fillStyle(top.color, 1).fillTriangle(-k * 0.03, -k * 0.44, k * 0.03, -k * 0.44, 0, -k * 0.5);
+    }
+    if (top.buttons) {
+      g.fillStyle(top.buttons, 1);
+      for (const y of [-0.54, -0.46, -0.38]) g.fillCircle(0, y * k, k * 0.012);
     }
     // голова и уши
     g.fillStyle(SKIN, 1);
@@ -351,6 +371,13 @@ export class Hero extends Phaser.GameObjects.Container {
   setHat(id) {
     this.item = id;
     this.drawHat();
+    return this;
+  }
+
+  // Переодеть верх: id из src/ui/clothes.js (null — родная майка)
+  setTop(id) {
+    this.top = id;
+    this.drawBody();
     return this;
   }
 

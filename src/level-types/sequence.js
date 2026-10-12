@@ -18,7 +18,9 @@ import { buildObjects, makeDraggable } from './objects.js';
 //                                     (в долях размера объекта: кончик щётки, носик лейки)
 //   offscreen { drag }              — увести объект за край экрана
 //   uncover   { drag, from }        — сдвинуть объект с того, что он закрывает
-//   tap       { target }            — нажать
+//   pull      { drag, dy }          — потянуть объект на себя: вниз не меньше чем на dy дизайн-единиц
+//   tap       { target, count, within } — нажать; count — сколько раз подряд (по умолчанию 1),
+//                                     within — за сколько миллисекунд
 //   hold      { target, ms }        — удерживать палец
 //   rotate    { target, turns }     — круговое движение вокруг объекта; turns — сколько оборотов,
 //                                     со знаком: минус — против часовой стрелки
@@ -30,8 +32,8 @@ import { buildObjects, makeDraggable } from './objects.js';
 //
 // then — что происходит после шага:
 //   hide: [id], show: [id], swap: { id: вид }, say: ключ реплики,
-//   hero: { mood, hat, hand, props } — настроение, шапка, предмет в руке, детали Валеры
-// early — ключ реплики, если шаг сделали раньше времени.
+//   hero: { mood, hat, top, hand, props } — настроение, шапка, верх одежды, предмет в руке, детали Валеры
+// early — ключ реплики, если шаг сделали раньше времени; partial — реплика на неполное число нажатий.
 //
 // Ошибки: объект отпустили не там; нажали на объект с wrong: true; сделали шаг раньше времени;
 // покрутили не в ту сторону.
@@ -78,8 +80,14 @@ export function buildSequence(scene, level, field, api) {
     for (const key of ['drag', 'onto', 'target', 'from']) if (step[key]) resolve(step[key]);
   }
 
-  const inside = (object, target) =>
-    Math.abs(object.x - target.object.x) <= target.w / 2 && Math.abs(object.y - target.object.y) <= target.h / 2;
+  // Середина объекта: у слова из задания точка отсчёта — левый край, а не центр
+  const centerOf = (object) => ({
+    x: object.x + (0.5 - (object.originX ?? 0.5)) * (object.displayWidth ?? 0),
+    y: object.y + (0.5 - (object.originY ?? 0.5)) * (object.displayHeight ?? 0),
+  });
+
+  const inside = (point, target) =>
+    Math.abs(point.x - target.object.x) <= target.w / 2 && Math.abs(point.y - target.object.y) <= target.h / 2;
 
   // ——— что меняет выполненный шаг ———
 
@@ -113,8 +121,9 @@ export function buildSequence(scene, level, field, api) {
       if (entry) redrawShape(entry.picture, shape, entry.size);
     }
     if (effects.hero) {
-      const { mood, hat, hand, props } = effects.hero;
+      const { mood, hat, top, hand, props } = effects.hero;
       if (hat !== undefined) hero.setHat(hat);
+      if (top !== undefined) hero.setTop(top);
       if (hand !== undefined) hero.hold(hand);
       if (props) hero.setProps(props);
       if (mood) {
@@ -153,16 +162,20 @@ export function buildSequence(scene, level, field, api) {
 
   // ——— перетаскивание ———
 
-  const nearEdge = (object) =>
-    object.x < 30 * u || object.y < 30 * u || object.x > scene.W - 30 * u || object.y > scene.H - 30 * u;
+  const nearEdge = (object) => {
+    const { x, y } = centerOf(object);
+    return x < 30 * u || y < 30 * u || x > scene.W - 30 * u || y > scene.H - 30 * u;
+  };
 
-  const matchDrop = (id, object) =>
+  const matchDrop = (id, object, start) =>
     pending().find(({ step }) => {
       if (step.drag !== id) return false;
+      if (step.do === 'pull') return object.y - start.y >= (step.dy ?? 110) * u;
       if (step.do === 'combine') {
         const entry = resolve(id);
         const [dx, dy] = step.tip ?? [0, 0];
-        return inside({ x: object.x + dx * entry.w, y: object.y + dy * entry.h }, resolve(step.onto));
+        const center = centerOf(object);
+        return inside({ x: center.x + dx * entry.w, y: center.y + dy * entry.h }, resolve(step.onto));
       }
       if (step.do === 'offscreen') return nearEdge(object);
       if (step.do === 'uncover') {
@@ -186,7 +199,7 @@ export function buildSequence(scene, level, field, api) {
     // то, что просто двигают по полю, не должно закрыть собой кнопки «Меню» и «Подсказка»
     const options = freeIds.has(id) && !steps.some((step) => step.drag === id) ? { minY: 130 * u } : {};
     makeDraggable(scene, entry.object, (object, start) => {
-      const match = matchDrop(id, object);
+      const match = matchDrop(id, object, start);
       const goHome = () => scene.tweens.add({ targets: object, x: start.x, y: start.y, duration: 250, ease: 'Quad.easeOut' });
       if (match && attempt(match.index)) {
         if (match.step.back) goHome();
@@ -209,7 +222,19 @@ export function buildSequence(scene, level, field, api) {
     const object = target.object;
 
     if (step.do === 'tap') {
-      makeTappable(object, () => !state.done.includes(index) && attempt(index), { cursor: false, feedback: false });
+      const count = step.count ?? 1;
+      let taps = [];
+      makeTappable(
+        object,
+        () => {
+          if (state.done.includes(index)) return;
+          const now = scene.time.now;
+          taps = [...taps.filter((time) => now - time <= (step.within ?? Infinity)), now];
+          if (taps.length >= count) attempt(index);
+          else if (step.partial) api.say(levelText(level, step.partial));
+        },
+        { cursor: false, feedback: count > 1 },
+      );
       return;
     }
 

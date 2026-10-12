@@ -1,0 +1,31 @@
+{
+  "id": "d7",
+  "type": "erase",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "shirt",
+      "shape": "shirt",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 360,
+      "inert": true
+    },
+    {
+      "id": "stain",
+      "shape": "stain",
+      "at": [
+        "shirt",
+        0.04,
+        0.12
+      ],
+      "size": 170,
+      "erasable": true
+    }
+  ],
+  "erase": {
+    "target": "stain",
+    "percent": 0.5,
+    "tool": "napkin"
+  }
+}

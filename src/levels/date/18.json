@@ -1,0 +1,36 @@
+{
+  "id": "d18",
+  "type": "rotate",
+  "objects": [
+    {
+      "id": "faucet",
+      "shape": "faucet",
+      "x": 0.5,
+      "y": 0.62,
+      "size": 320,
+      "inert": true
+    },
+    {
+      "id": "valve",
+      "shape": "valve",
+      "at": [
+        "faucet",
+        -0.0,
+        -0.62
+      ],
+      "size": 170
+    }
+  ],
+  "steps": [
+    {
+      "do": "rotate",
+      "target": "valve",
+      "turns": 1,
+      "then": {
+        "swap": {
+          "faucet": "faucetDry"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "d15",
+  "type": "offscreen",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "dad",
+      "shape": "dad",
+      "x": 0.78,
+      "y": 0.35,
+      "size": 130,
+      "inert": true
+    },
+    {
+      "id": "boots",
+      "shape": "boots",
+      "x": 0.4,
+      "y": 0.7,
+      "size": 240
+    }
+  ],
+  "steps": [
+    {
+      "do": "offscreen",
+      "drag": "boots"
+    }
+  ]
+}

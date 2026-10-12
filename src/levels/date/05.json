@@ -1,0 +1,32 @@
+{
+  "id": "d5",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "door",
+      "shape": "door",
+      "labelKey": "sign",
+      "labelSize": 24,
+      "x": 0.5,
+      "y": 0.42,
+      "size": 180
+    },
+    {
+      "id": "push",
+      "shape": "button",
+      "labelKey": "push",
+      "x": 0.5,
+      "y": 0.93,
+      "w": 0.56,
+      "h": 0.12,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "pull",
+      "drag": "door",
+      "dy": 100
+    }
+  ]
+}

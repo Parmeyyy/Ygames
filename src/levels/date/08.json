@@ -1,0 +1,44 @@
+{
+  "id": "d8",
+  "type": "choice",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "dasha",
+      "shape": "dasha",
+      "x": 0.32,
+      "y": 0.5,
+      "size": 110,
+      "inert": true
+    },
+    {
+      "id": "bag",
+      "shape": "handbag",
+      "labelKey": "name",
+      "labelSize": 26,
+      "x": 0.68,
+      "y": 0.6,
+      "size": 170,
+      "inert": true
+    }
+  ],
+  "options": [
+    {
+      "id": "masha",
+      "labelKey": "masha"
+    },
+    {
+      "id": "glasha",
+      "labelKey": "glasha"
+    },
+    {
+      "id": "dasha",
+      "labelKey": "dasha"
+    },
+    {
+      "id": "sasha",
+      "labelKey": "sasha"
+    }
+  ],
+  "answer": "dasha"
+}

@@ -14,7 +14,7 @@ const dicts = { ru: read('src/i18n/ru.json'), en: read('src/i18n/en.json') };
 const shapes = new Set([...source('src/ui/shapes.js').matchAll(/^ {2}(\w+): \{ draw:/gm)].map((m) => m[1]));
 const builtIn = new Set(['chip', 'word', 'button', 'figure', 'box', 'dot', 'ring', 'card', 'zone', 'clock', 'item']);
 const types = new Set([...source('src/level-types/index.js').matchAll(/^ {2}(\w+): build/gm)].map((m) => m[1]));
-const heroParts = new Set(['head', 'forehead', 'mouth', 'chest', 'hand', 'body']);
+const heroParts = new Set(['head', 'forehead', 'mouth', 'chest', 'hand', 'pocket', 'body']);
 
 const problems = [];
 let count = 0;
@@ -36,6 +36,7 @@ for (const section of readdirSync(path.join(root, 'src/levels'), { withFileTypes
     }
     for (const step of level.steps ?? []) {
       if (step.early) keys.add(step.early);
+      if (step.partial) keys.add(step.partial);
       if (step.then?.say) keys.add(step.then.say);
     }
     if (level.action?.count > 1) keys.add('partial');
@@ -95,6 +96,7 @@ for (const section of readdirSync(path.join(root, 'src/levels'), { withFileTypes
     if (level.type === 'choice' && !level.compute && !level.options?.some((o) => o.id === level.answer)) fail('ответа нет среди вариантов');
     if (level.type === 'erase' && !ids.has(level.erase?.target)) fail(`нет объекта для стирания "${level.erase?.target}"`);
     if (level.goal) for (const ref of [level.goal.drag, level.goal.onto]) if (!exists(ref)) fail(`цель: нет объекта "${ref}"`);
+    if (level.catch) for (const ref of [level.catch.fall, level.catch.onto, level.catch.with]) if (!ids.has(ref)) fail(`catch: нет объекта "${ref}"`);
     if (level.signal?.frames) for (const frame of level.signal.frames) if (!ids.has(frame.id)) fail(`сигнал: нет объекта "${frame.id}"`);
   }
 }

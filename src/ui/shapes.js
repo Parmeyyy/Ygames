@@ -511,6 +511,232 @@ function drawSpray(g, s) {
   g.fillStyle(0x4aa3df, 1).fillCircle(s * 0.44, -s * 0.82, s * 0.04).fillCircle(s * 0.56, -s * 0.7, s * 0.03);
 }
 
+// ——— свидание ———
+
+// Девушка: цвет платья и красная деталь — шарф, шляпка или сумка
+const lady = (dress, { scarf = false, hat = false, bag = false } = {}) => (g, s) => {
+  const red = 0xd63d3d;
+  line(g, s);
+  box(g, s, 0xf2c9a0, -0.16, 0.5, 0.1, 0.4, 0.04);
+  box(g, s, 0xf2c9a0, 0.06, 0.5, 0.1, 0.4, 0.04);
+  box(g, s, INK, -0.2, 0.88, 0.18, 0.08, 0.03);
+  box(g, s, INK, 0.02, 0.88, 0.18, 0.08, 0.03);
+  const skirt = [[-0.2, -0.3], [0.2, -0.3], [0.38, 0.56], [-0.38, 0.56]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(dress, 1).fillPoints(skirt, true);
+  g.strokePoints(skirt, true);
+  // волосы за головой, потом лицо
+  g.fillStyle(0x6b4423, 1).fillEllipse(0, -s * 0.5, s * 0.58, s * 0.62);
+  disc(g, s, 0xf2c9a0, 0, -0.56, 0.22);
+  g.fillStyle(0x6b4423, 1).slice(0, -s * 0.6, s * 0.22, Math.PI, 0).fillPath();
+  g.fillStyle(INK, 1).fillCircle(-s * 0.08, -s * 0.54, s * 0.022).fillCircle(s * 0.08, -s * 0.54, s * 0.022);
+  g.beginPath().arc(0, -s * 0.48, s * 0.07, 0.15 * Math.PI, 0.85 * Math.PI).strokePath();
+  if (scarf) {
+    box(g, s, red, -0.24, -0.38, 0.48, 0.12, 0.05);
+    box(g, s, red, 0.08, -0.3, 0.12, 0.34, 0.04);
+  }
+  if (hat) {
+    box(g, s, red, -0.3, -0.82, 0.6, 0.08, 0.03);
+    box(g, s, red, -0.18, -0.98, 0.36, 0.2, 0.06);
+  }
+  if (bag) {
+    g.beginPath().arc(s * 0.36, s * 0.08, s * 0.1, Math.PI, 0).strokePath();
+    box(g, s, red, 0.22, 0.08, 0.28, 0.24, 0.04);
+  }
+};
+
+// Лицо Валеры крупно, без кепки — для уровня с расчёской
+function drawFace(g, s) {
+  line(g, s);
+  disc(g, s, 0xf2c9a0, -0.46, 0.02, 0.09);
+  disc(g, s, 0xf2c9a0, 0.46, 0.02, 0.09);
+  disc(g, s, 0xf2c9a0, 0, 0, 0.46);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.17, -s * 0.06, s * 0.045).fillCircle(s * 0.17, -s * 0.06, s * 0.045);
+  g.fillStyle(0xdba77c, 1).fillEllipse(0, s * 0.08, s * 0.14, s * 0.12);
+  g.fillStyle(0x6b4423, 1).fillEllipse(-s * 0.13, s * 0.2, s * 0.3, s * 0.12).fillEllipse(s * 0.13, s * 0.2, s * 0.3, s * 0.12);
+  g.beginPath().arc(0, s * 0.24, s * 0.1, 0.15 * Math.PI, 0.85 * Math.PI).strokePath();
+  // аккуратная причёска под лохмами
+  g.fillStyle(0x6b4423, 1).slice(0, -s * 0.1, s * 0.4, 1.1 * Math.PI, 1.9 * Math.PI).fillPath();
+}
+
+// Лохмы: рисуются отдельным слоем, который расчёсывают (стирают)
+function drawMess(g, s) {
+  g.lineStyle(Math.max(4, s * 0.045), 0x6b4423, 1);
+  for (let i = 0; i < 9; i += 1) {
+    const x = (-0.4 + i * 0.1) * s;
+    g.strokePoints([0, 1, 2, 3].map((n) => ({ x: x + (n % 2 ? 0.07 : -0.05) * s, y: (0.3 - n * 0.2) * s })));
+  }
+}
+
+function drawComb(g, s) {
+  line(g, s);
+  box(g, s, 0x4aa3df, -0.5, -0.28, 1, 0.2, 0.04);
+  g.fillStyle(0x4aa3df, 1);
+  for (let x = -0.46; x < 0.46; x += 0.1) g.fillRect(x * s, -s * 0.1, s * 0.05, s * 0.36);
+}
+
+function drawDandelion(g, s) {
+  g.lineStyle(Math.max(3, s * 0.06), COLORS.success, 1).lineBetween(0, -s * 0.1, 0, s * 0.5);
+  line(g, s);
+  disc(g, s, COLORS.coin, 0, -0.2, 0.3);
+  g.fillStyle(0xf5a300, 1).fillCircle(0, -s * 0.2, s * 0.14);
+}
+
+function drawThistle(g, s) {
+  g.lineStyle(Math.max(3, s * 0.06), COLORS.success, 1).lineBetween(0, -s * 0.1, 0, s * 0.5);
+  line(g, s);
+  const spikes = [...Array(10)].map((_, i) => {
+    const angle = (Math.PI * 2 * i) / 10;
+    const r = i % 2 ? 0.16 : 0.34;
+    return { x: Math.cos(angle) * r * s, y: (-0.2 + Math.sin(angle) * r) * s };
+  });
+  g.fillStyle(0x9b6bb3, 1).fillPoints(spikes, true);
+  g.strokePoints(spikes, true);
+}
+
+function drawBouquet(g, s) {
+  line(g, s);
+  g.fillStyle(0xf3efe4, 1).fillTriangle(-s * 0.26, 0, s * 0.26, 0, 0, s * 0.5);
+  g.strokeTriangle(-s * 0.26, 0, s * 0.26, 0, 0, s * 0.5);
+  for (const [x, y, color] of [[-0.2, -0.12, 0xe8527a], [0.2, -0.12, COLORS.coin], [0, -0.26, 0xe8527a], [0, -0.04, COLORS.coin]]) {
+    disc(g, s, color, x, y, 0.16);
+  }
+}
+
+function drawScooter(g, s) {
+  line(g, s);
+  g.lineStyle(Math.max(5, s * 0.03), 0x4aa3df, 1);
+  g.lineBetween(-s * 0.3, s * 0.2, s * 0.26, s * 0.2);
+  g.lineBetween(s * 0.26, s * 0.2, s * 0.2, -s * 0.34);
+  g.lineBetween(s * 0.1, -s * 0.34, s * 0.32, -s * 0.34);
+  line(g, s);
+  disc(g, s, INK, -0.34, 0.26, 0.09);
+  disc(g, s, INK, 0.3, 0.26, 0.09);
+}
+
+function drawStain(g, s) {
+  g.fillStyle(0xb0304a, 0.9);
+  for (const [x, y, r] of [[0, 0, 0.3], [-0.24, 0.12, 0.18], [0.26, -0.08, 0.16], [0.08, 0.26, 0.14], [-0.1, -0.26, 0.12]]) g.fillCircle(x * s, y * s, r * s);
+}
+
+function drawNapkin(g, s) {
+  line(g, s);
+  box(g, s, COLORS.white, -0.42, -0.42, 0.84, 0.84, 0.04);
+  g.lineBetween(-s * 0.42, -s * 0.42, s * 0.42, s * 0.42);
+}
+
+function drawHandbag(g, s) {
+  line(g, s);
+  g.beginPath().arc(0, -s * 0.14, s * 0.24, Math.PI, 0).strokePath();
+  box(g, s, 0xe88a8a, -0.46, -0.16, 0.92, 0.6, 0.08);
+}
+
+function drawChoco(g, s) {
+  line(g, s);
+  box(g, s, 0x6e4520, -0.48, -0.3, 0.96, 0.6, 0.05);
+  g.lineBetween(-s * 0.16, -s * 0.3, -s * 0.16, s * 0.3);
+  g.lineBetween(s * 0.16, -s * 0.3, s * 0.16, s * 0.3);
+  g.lineBetween(-s * 0.48, 0, s * 0.48, 0);
+}
+
+function drawVase(g, s) {
+  line(g, s);
+  g.fillStyle(0x4aa3df, 1).fillEllipse(0, s * 0.2, s * 0.7, s * 0.9);
+  g.strokeEllipse(0, s * 0.2, s * 0.7, s * 0.9);
+  box(g, s, 0x4aa3df, -0.18, -0.6, 0.36, 0.4, 0.04);
+  box(g, s, 0x3f8fc4, -0.24, -0.66, 0.48, 0.1, 0.03);
+}
+
+function drawCoat(g, s) {
+  const brown = 0x8a5a2b;
+  line(g, s);
+  for (const side of [-1, 1]) {
+    const sleeve = [[side * 0.26, -0.46], [side * 0.5, -0.34], [side * 0.44, 0.2], [side * 0.26, 0.1]].map(([x, y]) => ({ x: x * s, y: y * s }));
+    g.fillStyle(brown, 1).fillPoints(sleeve, true);
+    g.strokePoints(sleeve, true);
+  }
+  box(g, s, brown, -0.28, -0.5, 0.56, 1.1, 0.05);
+  g.lineBetween(0, -s * 0.36, 0, s * 0.6);
+  g.fillStyle(0x3a2a1a, 1);
+  for (const y of [-0.2, 0, 0.2]) g.fillCircle(s * 0.07, y * s, s * 0.025);
+}
+
+function drawCloset(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.5, -0.8, 1, 1.6, 0.03);
+  g.lineBetween(0, -s * 0.8, 0, s * 0.8);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.08, 0, s * 0.03).fillCircle(s * 0.08, 0, s * 0.03);
+}
+
+function drawBed(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.5, -0.24, 0.1, 0.5, 0.02);
+  box(g, s, 0xa9713a, 0.4, -0.06, 0.1, 0.32, 0.02);
+  box(g, s, 0x8ec5ff, -0.42, 0, 0.84, 0.2, 0.04);
+  box(g, s, COLORS.white, -0.38, -0.12, 0.26, 0.14, 0.05);
+}
+
+function drawRemote(g, s) {
+  line(g, s);
+  box(g, s, 0x3a2e39, -0.24, -0.5, 0.48, 1, 0.08);
+  disc(g, s, 0xd63d3d, 0, -0.32, 0.07);
+  g.fillStyle(0x9aa5b1, 1);
+  for (const [x, y] of [[-0.1, -0.08], [0.1, -0.08], [-0.1, 0.12], [0.1, 0.12], [-0.1, 0.32], [0.1, 0.32]]) g.fillCircle(x * s, y * s, s * 0.045);
+}
+
+// Телевизор: выключен или показывает футбол
+const tv = (on) => (g, s) => {
+  line(g, s);
+  box(g, s, 0x3a2e39, -0.5, -0.36, 1, 0.66, 0.04);
+  box(g, s, on ? COLORS.success : 0x55505c, -0.44, -0.3, 0.88, 0.54, 0.02);
+  box(g, s, 0x3a2e39, -0.16, 0.3, 0.32, 0.06, 0.02);
+  if (on) {
+    g.lineStyle(Math.max(2, s * 0.012), COLORS.white, 1);
+    g.lineBetween(0, -s * 0.3, 0, s * 0.24);
+    g.strokeCircle(0, -s * 0.03, s * 0.09);
+    g.fillStyle(COLORS.white, 1).fillCircle(s * 0.16, s * 0.04, s * 0.04);
+  }
+};
+
+function drawBoots(g, s) {
+  line(g, s);
+  for (const x of [-0.26, 0.24]) {
+    box(g, s, 0x3a2a1a, x - 0.1, -0.34, 0.22, 0.5, 0.04);
+    box(g, s, 0x3a2a1a, x - 0.1, 0.06, 0.34, 0.2, 0.08);
+  }
+}
+
+function drawCrumbs(g, s) {
+  g.fillStyle(0xc48a4f, 1);
+  for (const [x, y, r] of [[-0.3, -0.2, 0.05], [-0.1, -0.3, 0.04], [0.14, -0.22, 0.055], [0.32, -0.1, 0.04], [-0.22, 0.05, 0.045], [0.02, 0, 0.05], [0.24, 0.14, 0.045], [-0.08, 0.24, 0.04], [0.12, 0.3, 0.035], [-0.34, 0.26, 0.04]]) {
+    g.fillCircle(x * s, y * s, r * s);
+    g.lineStyle(Math.max(1, s * 0.012), INK, 1).strokeCircle(x * s, y * s, r * s);
+  }
+}
+
+// Вентиль крана: по спицам видно, что он крутится
+function drawValve(g, s) {
+  g.lineStyle(Math.max(6, s * 0.12), 0xd63d3d, 1).strokeCircle(0, 0, s * 0.4);
+  g.lineBetween(-s * 0.4, 0, s * 0.4, 0);
+  g.lineBetween(0, -s * 0.4, 0, s * 0.4);
+  line(g, s);
+  disc(g, s, 0x9aa5b1, 0, 0, 0.1);
+}
+
+// Кран: капает или закрыт
+const faucet = (dripping) => (g, s) => {
+  line(g, s);
+  box(g, s, 0x9aa5b1, -0.08, -0.5, 0.16, 0.4, 0.03);
+  box(g, s, 0x9aa5b1, -0.44, -0.16, 0.7, 0.16, 0.06);
+  box(g, s, 0x9aa5b1, 0.14, -0.16, 0.14, 0.34, 0.04);
+  if (dripping) {
+    g.fillStyle(0x4aa3df, 1);
+    for (const y of [0.26, 0.4, 0.54]) {
+      g.fillTriangle(s * 0.19, y * s, s * 0.23, y * s, s * 0.21, (y - 0.06) * s);
+      g.fillCircle(s * 0.21, y * s, s * 0.022);
+    }
+  }
+};
+
 // ——— значки разделов ———
 
 function drawHeart(g, s) {
@@ -567,12 +793,41 @@ const SHAPES = {
   house: { draw: drawHouse, aspect: 0.9 },
   factory: { draw: drawFactory, aspect: 1 },
   conductor: { draw: person(0x3f6fa8, 0x2e4a8f, false), aspect: 2 },
+  dad: { draw: person(0x7a6a58, null, false), aspect: 2 },
+  waiter: { draw: person(0xf3efe4, null, true), aspect: 2 },
+  dasha: { draw: lady(0x4a6fa5, { scarf: true }), aspect: 2 },
+  ladyDress: { draw: lady(0xd63d3d), aspect: 2 },
+  ladyHat: { draw: lady(0x3f8f5a, { hat: true }), aspect: 2 },
+  ladyBag: { draw: lady(0x9b6bb3, { bag: true }), aspect: 2 },
   boss: { draw: person(0x4a4a55, null, true), aspect: 2 },
   bossBack: { draw: person(0x4a4a55, null, false, true), aspect: 2 },
   worker: { draw: person(0x3f6fa8, 0xf5b800, false), aspect: 2 },
   workerCrumbs: { draw: person(0x3f6fa8, 0xf5b800, false, false, true), aspect: 2 },
   guard: { draw: person(0x4a4a55, 0x2a2a33, false), aspect: 2 },
   wrench: { draw: drawWrench, aspect: 0.3 },
+  face: { draw: drawFace, aspect: 1 },
+  mess: { draw: drawMess, aspect: 0.7 },
+  comb: { draw: drawComb, aspect: 0.6 },
+  dandelion: { draw: drawDandelion, aspect: 1 },
+  thistle: { draw: drawThistle, aspect: 1 },
+  bouquet: { draw: drawBouquet, aspect: 1 },
+  scooter: { draw: drawScooter, aspect: 0.75 },
+  stain: { draw: drawStain, aspect: 0.8 },
+  napkin: { draw: drawNapkin, aspect: 0.85 },
+  handbag: { draw: drawHandbag, aspect: 0.8 },
+  choco: { draw: drawChoco, aspect: 0.6 },
+  vase: { draw: drawVase, aspect: 1.35 },
+  coat: { draw: drawCoat, aspect: 1.15 },
+  closet: { draw: drawCloset, aspect: 1.6 },
+  bed: { draw: drawBed, aspect: 0.5 },
+  remote: { draw: drawRemote, aspect: 2 },
+  tv: { draw: tv(false), aspect: 0.72 },
+  tvOn: { draw: tv(true), aspect: 0.72 },
+  boots: { draw: drawBoots, aspect: 0.6 },
+  crumbs: { draw: drawCrumbs, aspect: 0.8 },
+  valve: { draw: drawValve, aspect: 1 },
+  faucet: { draw: faucet(true), aspect: 1.1 },
+  faucetDry: { draw: faucet(false), aspect: 1.1 },
   lever: { draw: drawLever, aspect: 1.1 },
   crate: { draw: drawCrate, aspect: 0.8 },
   gear: { draw: gear('full', false), aspect: 1 },

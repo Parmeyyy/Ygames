@@ -76,7 +76,10 @@
     "jacket": "Jacket and tie",
     "shorts": "Shorts",
     "jeans": "Jeans",
-    "camo": "Camo trousers"
+    "camo": "Camo trousers",
+    "tuxedo": "Tuxedo",
+    "superhero": "Hero T-shirt",
+    "pajama": "Pyjama trousers"
   },
   "wardrobe": {
     "info": "Rare items take 3 ad views each",
@@ -395,6 +398,155 @@
       "hint": "You can't reach the door while the boss is watching. Distract him, with a crash for example.",
       "wrong": "Quiet! Better not touch him.",
       "win": "I'm out! See you tomorrow, dear factory."
+    },
+    "d1": {
+      "question": "Make Valera handsome",
+      "start": "I have a date! And a bird's nest on my head.",
+      "hint": "Messy hair fears a comb. Run it over his head.",
+      "win": "Gorgeous! I'd fall for myself."
+    },
+    "d2": {
+      "question": "Pick a bouquet",
+      "start": "I need flowers. I have no money. But there's a lawn.",
+      "hint": "The yellow ones will do. The purple ones prick.",
+      "wrong": "Ouch! A thistle! You don't give those.",
+      "win": "Bouquet done! Modest, but from the heart."
+    },
+    "d3": {
+      "question": "Get to the café",
+      "start": "I won't make it on foot. What can I ride?",
+      "hint": "There's a ride standing nearby. Valera himself has to get on.",
+      "wrong": "No, I won't get there like that.",
+      "win": "Off we go! Wind in my moustache."
+    },
+    "d4": {
+      "question": "Find Dasha: she is wearing a red scarf",
+      "start": "We met online. I've never seen her.",
+      "hint": "There's a lot of red here. Only one of them has a scarf.",
+      "wrong": "Sorry, wrong person!",
+      "win": "Dasha! I knew you at once. Almost."
+    },
+    "d5": {
+      "question": "Open the door for Dasha",
+      "sign": "PULL",
+      "push": "Push",
+      "start": "Allow me, gallantly… and it won't open.",
+      "hint": "It's written on the door. You don't push it, you pull it towards you.",
+      "wrong": "It won't open! What does the sign say?",
+      "win": "After you! I'm a gentleman, you know."
+    },
+    "d6": {
+      "question": "Make Dasha laugh",
+      "start": "She's bored. I must do something.",
+      "partial": "Whoa, the chair is wobbling!",
+      "hint": "Jokes won't help. Rock Valera himself: fast, several times.",
+      "wrong": "Not funny.",
+      "win": "Crash! Fell off the chair. But Dasha is laughing."
+    },
+    "d7": {
+      "question": "Valera spilled juice on his shirt",
+      "start": "Oh, come on! My only shirt!",
+      "hint": "The stain is fresh. Rub it with a napkin.",
+      "win": "Good as new! Dasha didn't notice a thing."
+    },
+    "d8": {
+      "question": "What's her name? Valera forgot",
+      "name": "DASHA",
+      "masha": "Masha",
+      "glasha": "Glasha",
+      "dasha": "Dasha",
+      "sasha": "Sasha",
+      "start": "I forgot! Nerves wiped it clean.",
+      "hint": "Asking would be awkward. But her name is written on one of her things.",
+      "wrong": "\"Who?\" Oops. Awkward.",
+      "win": "Dasha! Of course, Dasha. I never forgot."
+    },
+    "d9": {
+      "question": "Dasha doesn't like flowers: she is allergic",
+      "start": "That sneeze is for my bouquet. So what do I give her?",
+      "found": "Oh, chocolate! I was saving it for a rainy day.",
+      "hint": "Flowers won't do. Valera has something better tucked in his pocket.",
+      "wrong": "Achoo! Take the flowers away!",
+      "win": "Everybody loves chocolate. Beautiful!"
+    },
+    "d10": {
+      "question": "Pay for dinner",
+      "start": "The bill is here. And I have zero again.",
+      "hint": "Valera's pockets are empty. But something jingles at the top of the screen.",
+      "wrong": "It's empty, I checked.",
+      "win": "Thanks, friend! Keep the change."
+    },
+    "d11": {
+      "question": "Don't break the vase",
+      "start": "Oh no! The vase is falling!",
+      "hint": "You can't catch the vase. But you can put something soft where it lands.",
+      "wrong": "Smash! Good thing that was a rehearsal.",
+      "win": "Caught it! A soft landing."
+    },
+    "d12": {
+      "question": "Make friends with Dasha's cat",
+      "start": "Here, kitty… He looks at me like my boss.",
+      "hint": "Cats like long strokes. Keep your finger on him.",
+      "wrong": "He's full. And offended.",
+      "win": "He's purring! We're friends now."
+    },
+    "d13": {
+      "question": "Dasha's dad is back! Hide Valera",
+      "start": "Her dad! I'm done for!",
+      "hint": "Dad will check the closet and the bed first. But not a coat rack.",
+      "wrong": "Dad will look there first!",
+      "win": "I'm not Valera. I'm a coat rack."
+    },
+    "d14": {
+      "question": "Distract Dad",
+      "start": "He's pacing the room. He'll spot me soon.",
+      "hint": "Football will distract Dad. But the remote is missing: someone is sleeping on it.",
+      "wrong": "Not that.",
+      "win": "Goal! Dad has no time for me now."
+    },
+    "d15": {
+      "question": "Dad: \"Whose boots are these?\"",
+      "start": "Mine! I mean… nobody's.",
+      "hint": "No boots, no questions. The screen isn't endless.",
+      "wrong": "He's still looking at them!",
+      "win": "What boots? There were no boots."
+    },
+    "d16": {
+      "question": "Dad: \"Who ate the cutlets?\"",
+      "start": "Not me! (It was me.)",
+      "hint": "The evidence is right on Valera. You can brush it off.",
+      "win": "Clean as a whistle. The cutlets were tasty."
+    },
+    "d17": {
+      "question": "Dad: \"And who are you?!\"",
+      "start": "I… er… I…",
+      "hint": "He needs a respectable job. Put in Valera's hand what people bring on a house call.",
+      "wrong": "With flowers? Then he's a suitor for sure!",
+      "win": "I'm the plumber! Here to fix the tap."
+    },
+    "d18": {
+      "question": "Then fix the tap",
+      "start": "Dad: \"Go on then, plumber.\"",
+      "hint": "The tap drips because it isn't shut. Turn the valve clockwise.",
+      "wrong": "It's leaking more! The other way!",
+      "win": "No more drips! I really am a plumber."
+    },
+    "d19": {
+      "question": "Dad challenges Valera to arm wrestling",
+      "push": "Strain",
+      "start": "His arm is the size of my leg.",
+      "partial": "Hee… Dad is holding on!",
+      "hint": "Force won't work. But Dad is ticklish: fast, and many times.",
+      "wrong": "Crack! Force won't do it.",
+      "win": "Victory! Tickling is the smart man's weapon."
+    },
+    "d20": {
+      "question": "Dasha is waiting on the balcony for flowers",
+      "word": "flowers",
+      "start": "Dad said yes! But what do I bring her?",
+      "hint": "Everything you need is already in the task. Read it word by word.",
+      "wrong": "Not that.",
+      "win": "\"For me?\" \"For you.\" Beautiful!"
     },
     "s1": {
       "question": "Who is the main character here?",

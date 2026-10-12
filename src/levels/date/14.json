@@ -1,0 +1,48 @@
+{
+  "id": "d14",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "tv",
+      "shape": "tv",
+      "x": 0.68,
+      "y": 0.28,
+      "size": 300,
+      "inert": true
+    },
+    {
+      "id": "dad",
+      "shape": "dad",
+      "x": 0.78,
+      "y": 0.75,
+      "size": 110,
+      "inert": true
+    },
+    {
+      "id": "remote",
+      "shape": "remote",
+      "x": 0.28,
+      "y": 0.72,
+      "size": 80
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.28,
+      "y": 0.72,
+      "size": 300,
+      "draggable": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "remote",
+      "then": {
+        "swap": {
+          "tv": "tvOn"
+        }
+      }
+    }
+  ]
+}

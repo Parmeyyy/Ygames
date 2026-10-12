@@ -1,0 +1,37 @@
+{
+  "id": "d20",
+  "type": "wordDrag",
+  "word": "word",
+  "objects": [
+    {
+      "id": "balcony",
+      "shape": "box",
+      "x": 0.6,
+      "y": 0.8,
+      "w": 0.6,
+      "h": 0.14,
+      "color": "0xc5ccd4",
+      "inert": true
+    },
+    {
+      "id": "dasha",
+      "shape": "dasha",
+      "x": 0.6,
+      "y": 0.42,
+      "size": 170,
+      "inert": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "word",
+      "onto": "dasha",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

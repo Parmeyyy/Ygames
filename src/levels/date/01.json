@@ -1,0 +1,31 @@
+{
+  "id": "d1",
+  "type": "erase",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "face",
+      "shape": "face",
+      "x": 0.5,
+      "y": 0.58,
+      "size": 340,
+      "inert": true
+    },
+    {
+      "id": "mess",
+      "shape": "mess",
+      "at": [
+        "face",
+        0,
+        -0.5
+      ],
+      "size": 330,
+      "erasable": true
+    }
+  ],
+  "erase": {
+    "target": "mess",
+    "percent": 0.5,
+    "tool": "comb"
+  }
+}

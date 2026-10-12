@@ -30,6 +30,9 @@ export const ITEMS = [
   { id: 'shorts', price: 70, kind: 'pants' },
   { id: 'jeans', price: 110, kind: 'pants' },
   { id: 'camo', price: 160, kind: 'pants' },
+  { id: 'tuxedo', ads: 3, kind: 'top' },
+  { id: 'superhero', ads: 3, kind: 'top' },
+  { id: 'pajama', ads: 3, kind: 'pants' },
 ];
 
 // Слот, который занимает вещь: шапки и значки делят один слот

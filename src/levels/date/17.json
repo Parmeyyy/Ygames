@@ -1,0 +1,44 @@
+{
+  "id": "d17",
+  "type": "combine",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "dad",
+      "shape": "dad",
+      "x": 0.6,
+      "y": 0.68,
+      "size": 130,
+      "inert": true
+    },
+    {
+      "id": "bouquet",
+      "shape": "bouquet",
+      "x": 0.24,
+      "y": 0.26,
+      "size": 170,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "wrench",
+      "shape": "wrench",
+      "x": 0.7,
+      "y": 0.22,
+      "size": 240
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "wrench",
+      "onto": "hero:hand",
+      "then": {
+        "hero": {
+          "hand": "wrench",
+          "mood": "sly"
+        }
+      }
+    }
+  ]
+}
