@@ -20,7 +20,8 @@ export function buildTap(scene, level, field, api) {
   for (const entry of objects.values()) {
     const { def, object } = entry;
     if (def.inert) continue;
-    if (def.draggable) makeDraggable(scene, object);
+    // сдвигаемые объекты не должны закрыть собой кнопки «Меню» и «Подсказка»
+    if (def.draggable) makeDraggable(scene, object, undefined, { minY: 130 * scene.u });
     else makeTappable(object, def.id === level.answer ? () => onAnswer(entry) : api.wrong);
   }
 

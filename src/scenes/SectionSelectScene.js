@@ -10,7 +10,8 @@ import { BaseScene } from './BaseScene.js';
 // Значок раздела: картинка из src/ui/shapes.js
 const ICONS = { morning: 'alarm', factory: 'factory', date: 'heart', fishing: 'fish', dacha: 'house' };
 
-// Выбор раздела: Утро, Завод, Ухажёр, Рыбалка, Дача и секретный раздел
+// Выбор раздела: Утро, Завод, Ухажёр, Рыбалка, Дача и секретный раздел.
+// Закрытый раздел, в котором уже есть уровни, можно открыть просмотром рекламы.
 export class SectionSelectScene extends BaseScene {
   constructor() {
     super('SectionSelect');
@@ -48,7 +49,9 @@ export class SectionSelectScene extends BaseScene {
 
     const bg = this.add.graphics();
     bg.fillStyle(COLORS.outline, 0.18).fillRoundedRect(-w / 2, -h / 2 + 6 * u, w, h, 28 * u);
-    bg.fillStyle(playable || (section.secret && !open) ? section.color : COLORS.locked, 1);
+    // закрытый раздел, который можно открыть рекламой, остаётся цветным
+    const adUnlock = !open && !empty;
+    bg.fillStyle(playable || adUnlock ? section.color : COLORS.locked, 1);
     bg.fillRoundedRect(-w / 2, -h / 2, w, h, 28 * u);
     const card = this.add.container(x, y, [bg]).setSize(w, h);
 
@@ -70,7 +73,7 @@ export class SectionSelectScene extends BaseScene {
     else if (empty) status = t('ui.soon');
     else if (!open) status = t('ui.sectionLocked');
     else status = `${progress.completedIn(section)} / ${section.levels.length}`;
-    const label = addText(this, 0, h * 0.37, status, 22, { fontStyle: 'bold', color: TEXT.light, wordWrap: { width: w - 30 * u } });
+    const label = addText(this, 0, h * 0.37, status, adUnlock && !section.secret ? 18 : 22, { fontStyle: 'bold', color: TEXT.light, wordWrap: { width: w - 30 * u } });
     card.add(label);
 
     if (!open) {
@@ -80,13 +83,14 @@ export class SectionSelectScene extends BaseScene {
     }
 
     if (playable) makeTappable(card, () => this.go('LevelSelect', { section: section.id }));
-    else if (section.secret && !open) makeTappable(card, () => this.openSecret());
+    else if (adUnlock) makeTappable(card, () => this.openForAd(section));
   }
 
-  // Секретный раздел открывается одним просмотром рекламы — навсегда
-  async openSecret() {
+  // Раздел открывается одним просмотром рекламы — навсегда
+  async openForAd(section) {
     if (!(await yandex.showRewarded())) return;
-    progress.openSecret();
+    if (section.secret) progress.openSecret();
+    else progress.openSection(section);
     this.rebuild();
   }
 }

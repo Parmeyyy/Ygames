@@ -169,8 +169,8 @@ function drawClock(scene, size) {
 }
 
 // Разрешает таскать объект. onDrop(object, start) вызывается, когда его отпустили;
-// start — где он был, когда его взяли.
-export function makeDraggable(scene, object, onDrop = () => {}) {
+// start — где он был, когда его взяли. minY — выше этой линии объект не поднимается.
+export function makeDraggable(scene, object, onDrop = () => {}, { minY = -Infinity } = {}) {
   // объект мог уже стать интерактивным (Валера), тогда настройки из setInteractive не применятся
   object.setInteractive({ useHandCursor: true });
   scene.input.setDraggable(object);
@@ -178,6 +178,6 @@ export function makeDraggable(scene, object, onDrop = () => {}) {
   object.on('dragstart', () => {
     start = { x: object.x, y: object.y };
   });
-  object.on('drag', (pointer, dragX, dragY) => object.setPosition(dragX, dragY));
+  object.on('drag', (pointer, dragX, dragY) => object.setPosition(dragX, Math.max(dragY, minY)));
   object.on('dragend', () => onDrop(object, start));
 }

@@ -10,6 +10,7 @@ import { yandex } from '../yandex.js';
 const state = {
   opened: {}, // id раздела → до какого номера открыты его уровни (по умолчанию 1)
   secretOpen: false, // секретный раздел открыт (навсегда)
+  adSections: [], // id разделов, открытых просмотром рекламы (навсегда)
   completed: [], // id пройденных уровней
   stars: {}, // id уровня → лучшая оценка, от 1 до 3 звёзд
   bonusDay: 0, // номер дня, когда забрали последний ежедневный подарок
@@ -38,6 +39,7 @@ export const progress = {
       if (isObject(data[key])) state[key] = data[key];
     }
     if (Array.isArray(data.completed)) state.completed = data.completed;
+    if (Array.isArray(data.adSections)) state.adSections = data.adSections;
     // предметы, которых больше нет в игре, из сохранения отбрасываются
     if (Array.isArray(data.hats)) state.hats = data.hats.filter((id) => ITEMS.some((item) => item.id === id));
     for (const slot of ['hat', 'top', 'pants']) {
@@ -56,6 +58,7 @@ export const progress = {
   isSectionOpen(section) {
     if (dev.unlockAll) return true;
     if (section.secret) return state.secretOpen;
+    if (state.adSections.includes(section.id)) return true;
     const index = sections.indexOf(section);
     return index === 0 || this.isSectionDone(sections[index - 1]);
   },
@@ -133,6 +136,12 @@ export const progress = {
 
   openSecret() {
     state.secretOpen = true;
+    save();
+  },
+
+  // Раздел открыт просмотром рекламы, не дожидаясь прохождения предыдущего
+  openSection(section) {
+    if (!state.adSections.includes(section.id)) state.adSections.push(section.id);
     save();
   },
 

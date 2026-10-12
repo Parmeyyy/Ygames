@@ -1,7 +1,7 @@
 import { audio } from '../audio.js';
 import { COLORS, TEXT } from '../config.js';
 import { levelText, t } from '../i18n/index.js';
-import { getLevel, getSection, nextLevel } from '../levels/index.js';
+import { getLevel, getSection, nextLevel, sections } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { confetti, flyCoins } from '../ui/effects.js';
 import { Hero } from '../ui/Hero.js';
@@ -38,7 +38,9 @@ export class WinScene extends BaseScene {
     const titleY = portrait ? H * 0.08 : H * 0.12;
     const rewardY = portrait ? H * 0.585 : H * 0.24;
     const bubbleY = portrait ? H * 0.665 : H * 0.38;
-    const buttonsY = portrait ? H * 0.78 : H * 0.56;
+    // после последнего уровня раздела строк больше — они стоят плотнее
+    const compact = this.sectionDone;
+    const buttonsY = portrait ? H * (compact ? 0.745 : 0.78) : H * 0.56;
     const bubbleW = portrait ? Math.min(W - 80 * u, 600 * u) : 520 * u;
 
     // последний уровень раздела — свой заголовок
@@ -68,11 +70,12 @@ export class WinScene extends BaseScene {
     }
 
     const w = 420 * u;
-    const h = 80 * u;
+    const h = (compact ? 70 : 80) * u;
+    const step = (compact ? 82 : 94) * u;
     let y = buttonsY;
     const place = (label, onTap, options) => {
       addButton(this, sideX, y, w, h, label, onTap, { size: 30, ...options });
-      y += 94 * u;
+      y += step;
     };
 
     if (this.reward > 0 && !this.doubled) {
@@ -88,7 +91,12 @@ export class WinScene extends BaseScene {
         fontStyle: this.item ? 'bold' : 'normal',
         wordWrap: { width: bubbleW },
       });
-      y += 94 * u;
+      y += step;
+      // если следующий раздел уже готов, зовём сразу туда
+      const following = sections[sections.indexOf(this.section) + 1];
+      if (following && !following.secret && following.levels.length && progress.isSectionOpen(following)) {
+        place(t('ui.nextSection'), () => this.go('LevelSelect', { section: following.id }));
+      }
     }
     place(t('ui.menu'), () => this.go('Menu'), { fill: COLORS.secondary });
 

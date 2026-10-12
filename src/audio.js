@@ -8,6 +8,7 @@ let ctx = null;
 let master = null;
 let enabled = true;
 let paused = false;
+let focused = true;
 let musicTimer = null;
 let nextNoteTime = 0;
 let noteIndex = 0;
@@ -17,7 +18,7 @@ const MUSIC_VOLUME = 0.05;
 
 // Нота: частота в герцах, начало и длительность в секундах от «сейчас»
 function tone(frequency, start, duration, { type = 'sine', volume = SFX_VOLUME, slideTo } = {}) {
-  if (!ctx || !enabled || paused) return;
+  if (!ctx || !enabled || paused || !focused) return;
   const at = ctx.currentTime + start;
   playAt(frequency, at, duration, type, volume, slideTo);
 }
@@ -47,7 +48,7 @@ const MELODY = [0, 4, 7, 9, 7, 4, 2, null, 0, 2, 4, 7, 4, 2, 0, null];
 const BASS = [-12, null, null, null, -5, null, null, null, -8, null, null, null, -5, null, null, null];
 
 function scheduleMusic() {
-  if (!ctx || !enabled || paused) return;
+  if (!ctx || !enabled || paused || !focused) return;
   // если таймер отстал (вкладка была в фоне), не пытаемся доиграть пропущенное
   nextNoteTime = Math.max(nextNoteTime, ctx.currentTime + 0.05);
   while (nextNoteTime < ctx.currentTime + 0.4) {
@@ -60,7 +61,7 @@ function scheduleMusic() {
 }
 
 function syncMusic() {
-  const shouldPlay = Boolean(ctx) && enabled && !paused;
+  const shouldPlay = Boolean(ctx) && enabled && !paused && focused;
   if (shouldPlay && !musicTimer) {
     musicTimer = setInterval(scheduleMusic, 120);
     scheduleMusic();
@@ -84,6 +85,18 @@ export const audio = {
     syncMusic();
   },
 
+  // Окно игры потеряло или вернуло фокус (например, игрок переключился на другое окно).
+  // Звук замолкает, а сама игра не останавливается.
+  setFocused(value) {
+    if (focused === value) return;
+    focused = value;
+    if (ctx && !paused) {
+      if (focused) ctx.resume();
+      else ctx.suspend();
+    }
+    syncMusic();
+  },
+
   // Кнопка звука в меню: выключает и эффекты, и мелодию
   setEnabled(value) {
     enabled = value;
@@ -94,7 +107,7 @@ export const audio = {
   setPaused(value) {
     paused = value;
     if (ctx) {
-      if (paused) ctx.suspend();
+      if (paused || !focused) ctx.suspend();
       else ctx.resume();
     }
     syncMusic();

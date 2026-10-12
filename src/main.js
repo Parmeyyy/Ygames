@@ -16,11 +16,12 @@ setLang(yandex.lang);
 
 // Канвас рисуется в физических пикселях (чёткий текст на retina),
 // а zoom возвращает его к размеру окна в CSS-пикселях.
-// Игра занимает окно без полосы под баннер внизу.
+// Игра занимает окно без полосы под баннер внизу. На очень широких окнах поле не шире
+// двух своих высот (требование Яндекс Игр 1.6.2.2) и стоит по центру.
 function viewport() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const cssWidth = window.innerWidth;
   const cssHeight = window.innerHeight - yandex.bannerHeight;
+  const cssWidth = Math.min(window.innerWidth, Math.round(cssHeight * 2));
   return {
     cssWidth,
     cssHeight,
@@ -62,16 +63,25 @@ yandex.onPauseChange((paused) => {
 });
 
 // Браузер разрешает звук только после первого действия игрока
-window.addEventListener('pointerdown', () => audio.unlock());
+window.addEventListener('pointerdown', () => {
+  audio.setFocused(true);
+  audio.unlock();
+});
+// Звук замолкает, когда окно игры теряет фокус, и возвращается вместе с ним
+window.addEventListener('blur', () => audio.setFocused(false));
+window.addEventListener('focus', () => audio.setFocused(true));
 
 function applyViewport() {
   const { cssWidth, cssHeight, width, height, zoom } = viewport();
   // CSS-размер ставим сами: при zoom = 1 Phaser в resize() его не обновляет
   game.canvas.style.width = `${cssWidth}px`;
   game.canvas.style.height = `${cssHeight}px`;
+  game.canvas.style.marginLeft = `${(window.innerWidth - cssWidth) / 2}px`;
   game.scale.zoom = zoom;
   game.scale.resize(width, height);
 }
 
 window.addEventListener('resize', applyViewport);
+// первый раз — когда канвас создан: ставит его по центру широкого окна
+game.events.once('ready', applyViewport);
 yandex.onLayoutChange(applyViewport);

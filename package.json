@@ -1,12 +1,14 @@
 {
-  "name": "egg-puzzle",
+  "name": "help-valera",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pack": "npm run build && rm -f help-valera.zip && cd dist && zip -qr ../help-valera.zip . && cd .. && ls -lh help-valera.zip",
+    "check": "node scripts/check-levels.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

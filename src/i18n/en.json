@@ -27,8 +27,9 @@
     "sectionDone": "Section complete!",
     "newItem": "New wardrobe item: {name}",
     "soon": "Coming soon",
-    "sectionLocked": "Finish the previous section",
-    "secretAd": "Watch an ad to open"
+    "sectionLocked": "Finish the previous section\nor watch an ad to open",
+    "secretAd": "Watch an ad to open",
+    "nextSection": "Next section"
   },
   "game": {
     "title": "Help Valera"
@@ -130,7 +131,7 @@
       "start": "Teeth don't brush themselves.",
       "early": "A brush with no toothpaste? Not fair.",
       "paste": "There it goes. Now give me the brush.",
-      "hint": "Toothpaste gets squeezed: press the tube and hold. Then the brush goes to his mouth.",
+      "hint": "Toothpaste gets squeezed: press the tube and hold. Then bring the bristles of the brush to his mouth.",
       "wrong": "Nope. I'm brushing teeth, not that.",
       "win": "Beautiful! A movie star smile."
     },

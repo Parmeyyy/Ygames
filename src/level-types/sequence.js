@@ -14,6 +14,8 @@ import { buildObjects, makeDraggable } from './objects.js';
 //   combine   { drag, onto }        — перетащить один объект на другой
 //                 keep: [dx, dy]    — объект остаётся на цели, со сдвигом в долях её размера
 //                 back: true        — объект возвращается на место (иначе исчезает)
+//                 tip: [dx, dy]     — к цели нужно поднести не середину объекта, а эту его точку
+//                                     (в долях размера объекта: кончик щётки, носик лейки)
 //   offscreen { drag }              — увести объект за край экрана
 //   uncover   { drag, from }        — сдвинуть объект с того, что он закрывает
 //   tap       { target }            — нажать
@@ -102,6 +104,8 @@ export function buildSequence(scene, level, field, api) {
       const entry = objects.get(id);
       if (!entry) continue;
       entry.object.setVisible(true);
+      // появившееся видно поверх остального (огонь под кастрюлей, колбаса в холодильнике)
+      scene.children.bringToTop(entry.object);
       if (entry.object.input) entry.object.setInteractive();
     }
     for (const [id, shape] of Object.entries(effects.swap ?? {})) {
@@ -155,7 +159,11 @@ export function buildSequence(scene, level, field, api) {
   const matchDrop = (id, object) =>
     pending().find(({ step }) => {
       if (step.drag !== id) return false;
-      if (step.do === 'combine') return inside(object, resolve(step.onto));
+      if (step.do === 'combine') {
+        const entry = resolve(id);
+        const [dx, dy] = step.tip ?? [0, 0];
+        return inside({ x: object.x + dx * entry.w, y: object.y + dy * entry.h }, resolve(step.onto));
+      }
       if (step.do === 'offscreen') return nearEdge(object);
       if (step.do === 'uncover') {
         const cover = resolve(step.from);
@@ -175,6 +183,8 @@ export function buildSequence(scene, level, field, api) {
   for (const id of draggableIds) {
     const entry = resolve(id);
     if (!entry) continue;
+    // то, что просто двигают по полю, не должно закрыть собой кнопки «Меню» и «Подсказка»
+    const options = freeIds.has(id) && !steps.some((step) => step.drag === id) ? { minY: 130 * u } : {};
     makeDraggable(scene, entry.object, (object, start) => {
       const match = matchDrop(id, object);
       const goHome = () => scene.tweens.add({ targets: object, x: start.x, y: start.y, duration: 250, ease: 'Quad.easeOut' });
@@ -186,7 +196,7 @@ export function buildSequence(scene, level, field, api) {
       if (!match && freeIds.has(id)) return;
       if (!match && moved) api.wrong();
       goHome();
-    });
+    }, options);
     entry.object.on('dragstart', () => scene.children.bringToTop(entry.object));
   }
 
@@ -232,7 +242,11 @@ export function buildSequence(scene, level, field, api) {
 
   // объекты-обманки: нажатие на них — ошибка
   for (const { def, object } of objects.values()) {
-    if (def.wrong && !def.draggable && !def.erasable) makeTappable(object, () => api.wrong(), { cursor: false });
+    if (def.wrong && !def.draggable && !def.erasable) {
+      // большие подложки не сжимаются от нажатия: на них лежат другие объекты
+      const flat = def.shape === 'box' || def.shape === 'zone';
+      makeTappable(object, () => api.wrong(), { cursor: false, feedback: !flat });
+    }
   }
 
   // ——— вращение ———
