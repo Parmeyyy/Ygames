@@ -1,0 +1,34 @@
+{
+  "id": "m2",
+  "type": "sequence",
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "window",
+      "shape": "window",
+      "x": 0.5,
+      "y": 0.45,
+      "size": 330,
+      "inert": true
+    },
+    {
+      "id": "curtain",
+      "shape": "curtain",
+      "x": 0.5,
+      "y": 0.45,
+      "size": 330
+    }
+  ],
+  "steps": [
+    {
+      "do": "uncover",
+      "drag": "curtain",
+      "from": "window",
+      "then": {
+        "hero": {
+          "mood": "surprised"
+        }
+      }
+    }
+  ]
+}

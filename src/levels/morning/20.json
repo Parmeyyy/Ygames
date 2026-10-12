@@ -1,0 +1,70 @@
+{
+  "id": "m20",
+  "type": "sequence",
+  "ordered": false,
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "helmet",
+      "shape": "item",
+      "item": "helmet",
+      "x": 0.25,
+      "y": 0.25,
+      "size": 220
+    },
+    {
+      "id": "wrench",
+      "shape": "wrench",
+      "x": 0.72,
+      "y": 0.3,
+      "size": 240
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.3,
+      "y": 0.75,
+      "size": 240
+    },
+    {
+      "id": "tea",
+      "shape": "cupFull",
+      "x": 0.75,
+      "y": 0.75,
+      "size": 150,
+      "draggable": true,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "helmet",
+      "onto": "hero:head",
+      "then": {
+        "hero": {
+          "hat": "helmet"
+        },
+        "say": "helmetOn"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "wrench",
+      "onto": "hero:hand",
+      "then": {
+        "hero": {
+          "hand": "wrench"
+        },
+        "say": "wrenchOn"
+      }
+    },
+    {
+      "do": "offscreen",
+      "drag": "pillow",
+      "then": {
+        "say": "pillowOff"
+      }
+    }
+  ]
+}

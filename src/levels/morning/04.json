@@ -1,26 +1,30 @@
 {
-  "id": 5,
+  "id": "m4",
   "type": "choice",
+  "hideCoins": true,
+  "heroProps": {
+    "socks": true
+  },
   "objects": [
     {
-      "id": "egg1",
-      "shape": "egg",
+      "id": "sock1",
+      "shape": "sock",
       "x": 0.2,
       "y": 0.5,
       "size": 120,
       "inert": true
     },
     {
-      "id": "egg2",
-      "shape": "egg",
+      "id": "sock2",
+      "shape": "sock",
       "x": 0.5,
       "y": 0.5,
       "size": 120,
       "inert": true
     },
     {
-      "id": "egg3",
-      "shape": "egg",
+      "id": "sock3",
+      "shape": "sock",
       "x": 0.8,
       "y": 0.5,
       "size": 120,
@@ -28,10 +32,6 @@
     }
   ],
   "options": [
-    {
-      "id": "2",
-      "label": "2"
-    },
     {
       "id": "3",
       "label": "3"
@@ -43,7 +43,11 @@
     {
       "id": "5",
       "label": "5"
+    },
+    {
+      "id": "6",
+      "label": "6"
     }
   ],
-  "answer": "4"
+  "answer": "5"
 }

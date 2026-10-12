@@ -1,0 +1,29 @@
+{
+  "id": "m1",
+  "type": "tap",
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "alarm",
+      "shape": "alarm",
+      "x": 0.5,
+      "y": 0.35,
+      "size": 230
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.24,
+      "y": 0.8,
+      "size": 240
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.76,
+      "y": 0.8,
+      "size": 220
+    }
+  ],
+  "answer": "alarm"
+}

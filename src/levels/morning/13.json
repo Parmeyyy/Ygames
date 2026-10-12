@@ -1,0 +1,79 @@
+{
+  "id": "m13",
+  "type": "combine",
+  "objects": [
+    {
+      "id": "door",
+      "shape": "door",
+      "x": 0.78,
+      "y": 0.45,
+      "size": 170,
+      "wrong": true
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.78,
+      "y": 0.84,
+      "size": 230,
+      "wrong": true
+    },
+    {
+      "id": "fridge",
+      "shape": "fridge",
+      "x": 0.25,
+      "y": 0.5,
+      "size": 200,
+      "inert": true
+    },
+    {
+      "id": "fridgeDoor",
+      "shape": "zone",
+      "at": [
+        "fridge",
+        0,
+        0
+      ],
+      "box": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "sausage",
+      "shape": "sausage",
+      "at": [
+        "fridge",
+        0,
+        0.12
+      ],
+      "size": 130,
+      "hidden": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "fridgeDoor",
+      "then": {
+        "show": [
+          "sausage"
+        ],
+        "hide": [
+          "fridgeDoor"
+        ],
+        "say": "found"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "sausage",
+      "onto": "cat",
+      "then": {
+        "hide": [
+          "cat"
+        ]
+      }
+    }
+  ]
+}

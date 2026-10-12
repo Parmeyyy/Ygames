@@ -1,0 +1,85 @@
+{
+  "id": "m18",
+  "type": "timed",
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "view",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.38,
+      "w": 0.86,
+      "h": 0.58,
+      "color": "0xbfe3ff",
+      "inert": true
+    },
+    {
+      "id": "house",
+      "shape": "house",
+      "x": 0.5,
+      "y": 0.4,
+      "size": 200,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "tree",
+      "shape": "tree",
+      "x": 0.5,
+      "y": 0.4,
+      "size": 200,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "bush",
+      "shape": "bush",
+      "x": 0.5,
+      "y": 0.42,
+      "size": 200,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "factory",
+      "shape": "factory",
+      "x": 0.5,
+      "y": 0.4,
+      "size": 200,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "stop",
+      "shape": "button",
+      "labelKey": "stop",
+      "x": 0.5,
+      "y": 0.87,
+      "w": 0.6,
+      "h": 0.2,
+      "color": "0xd63d3d"
+    }
+  ],
+  "answer": "stop",
+  "signal": {
+    "frames": [
+      {
+        "id": "house",
+        "ms": 1000
+      },
+      {
+        "id": "tree",
+        "ms": 1000
+      },
+      {
+        "id": "bush",
+        "ms": 900
+      },
+      {
+        "id": "factory",
+        "ms": 1200
+      }
+    ],
+    "good": "factory"
+  }
+}

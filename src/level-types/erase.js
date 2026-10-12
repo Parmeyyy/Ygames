@@ -1,8 +1,10 @@
+import { addShape } from '../ui/shapes.js';
 import { buildObjects } from './objects.js';
 
 // erase — сотри часть картинки пальцем или мышью (как стирают защитный слой).
 //   объекты с erasable: true можно стирать
-//   erase: { target, percent } — какой объект нужно стереть и на какую долю (по умолчанию 0.5)
+//   erase: { target, percent, tool } — какой объект нужно стереть и на какую долю (по умолчанию 0.5);
+//                                      tool — картинка, которая ездит под пальцем (утюг и т. п.)
 //   объект с wrong: true — стирать его нельзя: это ошибка, и он восстанавливается
 //   объект с wiggle: true слегка шевелится, пока его не начали стирать
 // Под стираемым объектом может лежать то, что он прячет (объекты рисуются в порядке списка).
@@ -37,6 +39,12 @@ export function buildErase(scene, level, field, api) {
       cover.wiggle = scene.tweens.add({ targets: texture, angle: { from: -3, to: 3 }, duration: 160, yoyo: true, repeat: -1 });
     }
     covers.push(cover);
+  }
+
+  let tool = null;
+  if (level.erase.tool && !scene.solved) {
+    tool = addShape(scene, level.erase.tool, 150 * u).object.setPosition(field.x + field.w * 0.85, field.y + field.h * 0.88);
+    scene.children.bringToTop(tool);
   }
 
   const eraseAt = (cover, x, y) => {
@@ -76,6 +84,7 @@ export function buildErase(scene, level, field, api) {
 
   const onPointer = (pointer) => {
     if (!pointer.isDown || locked || scene.solved || api.isUiPress([])) return;
+    tool?.setPosition(pointer.x, pointer.y - 20 * u);
     // между двумя событиями палец мог уйти далеко — стираем по всему отрезку
     const from = pointer.prevPosition;
     const steps = Math.max(1, Math.ceil(Math.hypot(pointer.x - from.x, pointer.y - from.y) / (radius * 0.5)));

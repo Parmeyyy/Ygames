@@ -1,37 +1,41 @@
-// Каждый *.json — один уровень. Основные уровни лежат прямо в этой папке (порядок задаёт числовой id),
-// уровни секретной главы — в папке secret/ (порядок по имени файла, id вида "s1").
+import { COLORS } from '../config.js';
+
+// Уровни лежат по папкам разделов: src/levels/<раздел>/NN.json, порядок — по имени файла.
+// У каждого уровня свой id (например "m7"); тексты — в src/i18n/*.json, раздел levels.<id>:
+// question, hint, win, wrong, start, partial и подписи labelKey.
 //
-// Общие поля:   id, type, eggMood, background, hideCoins (последние три необязательны)
-// tap:          objects [{ id, label | labelKey, x, y }] (x, y — доли поля 0..1), answer
-// choice:       options [{ id, label | labelKey }], answer
-// action:       action { kind: "tap", target, count, within }, decoys [{ id, label | labelKey }]
-// остальные типы (drag, wait, flashlight, timed, erase) описаны в начале своих файлов в src/level-types/
-//
-// answer / target — id объекта либо элемент интерфейса: "ui:levelNumber", "ui:question", "ui:egg".
-// Тексты уровня — в src/i18n/*.json, раздел levels.<id> (question, hint, win, start и подписи labelKey).
+// Общие поля уровня: id, type, heroMood, heroProps, background, hideCoins, word.
+// Что нужно каждому типу, описано в начале его файла в src/level-types/.
 
-const mainModules = import.meta.glob('./*.json', { eager: true, import: 'default' });
-const secretModules = import.meta.glob('./secret/*.json', { eager: true, import: 'default' });
+// Разделы по порядку. Следующий открывается, когда пройден последний уровень предыдущего.
+//   theme  — фон раздела (src/ui/background.js), color — цвет карточки и кнопок раздела
+//   reward — предмет гардероба за прохождение раздела (src/items.js)
+//   secret — открывается просмотром рекламы, а не прохождением
+const SECTIONS = [
+  { id: 'morning', theme: 'morning', color: 0xffb347, reward: 'medal' },
+  { id: 'factory', theme: 'factory', color: 0x7f8fa6, reward: 'helmet' },
+  { id: 'date', theme: 'date', color: 0xff8fab, reward: 'bowtie' },
+  { id: 'fishing', theme: 'lake', color: 0x5fa8d3, reward: 'panama' },
+  { id: 'dacha', theme: 'garden', color: 0x7fb069, reward: 'straw' },
+  { id: 'secret', theme: 'night', color: COLORS.special, secret: true },
+];
 
-// number — порядковый номер уровня внутри главы, с 1
-const toChapter = (list, chapter) => list.map((level, index) => ({ ...level, chapter, number: index + 1 }));
+const modules = import.meta.glob('./*/*.json', { eager: true, import: 'default' });
 
-export const chapters = {
-  main: toChapter(
-    Object.values(mainModules).sort((a, b) => a.id - b.id),
-    'main',
-  ),
-  secret: toChapter(
-    Object.keys(secretModules)
-      .sort()
-      .map((path) => secretModules[path]),
-    'secret',
-  ),
-};
+export const sections = SECTIONS.map((def) => ({
+  ...def,
+  // number — порядковый номер уровня внутри раздела, с 1
+  levels: Object.keys(modules)
+    .filter((path) => path.startsWith(`./${def.id}/`))
+    .sort()
+    .map((path, index) => ({ ...modules[path], section: def.id, number: index + 1 })),
+}));
 
-const byId = new Map([...chapters.main, ...chapters.secret].map((level) => [level.id, level]));
+const byId = new Map(sections.flatMap((section) => section.levels).map((level) => [level.id, level]));
+
+export const getSection = (id) => sections.find((section) => section.id === id);
 
 export const getLevel = (id) => byId.get(id);
 
-// Следующий уровень той же главы или undefined
-export const nextLevel = (level) => chapters[level.chapter][level.number];
+// Следующий уровень того же раздела или undefined
+export const nextLevel = (level) => getSection(level.section).levels[level.number];

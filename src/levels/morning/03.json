@@ -1,0 +1,46 @@
+{
+  "id": "m3",
+  "type": "tap",
+  "objects": [
+    {
+      "id": "first",
+      "shape": "slipper",
+      "x": 0.2,
+      "y": 0.25,
+      "size": 150,
+      "inert": true
+    },
+    {
+      "id": "slipper",
+      "shape": "slipper",
+      "x": 0.62,
+      "y": 0.6,
+      "size": 150
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.62,
+      "y": 0.6,
+      "size": 300,
+      "draggable": true
+    },
+    {
+      "id": "rug",
+      "shape": "rug",
+      "x": 0.28,
+      "y": 0.84,
+      "size": 280,
+      "draggable": true
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.78,
+      "y": 0.22,
+      "size": 220,
+      "draggable": true
+    }
+  ],
+  "answer": "slipper"
+}

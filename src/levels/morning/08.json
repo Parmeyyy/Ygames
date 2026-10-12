@@ -1,0 +1,45 @@
+{
+  "id": "m8",
+  "type": "wordDrag",
+  "word": "word",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "nightstand",
+      "shape": "nightstand",
+      "x": 0.25,
+      "y": 0.4,
+      "size": 230,
+      "wrong": true
+    },
+    {
+      "id": "rug",
+      "shape": "rug",
+      "x": 0.68,
+      "y": 0.8,
+      "size": 300,
+      "wrong": true
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.75,
+      "y": 0.26,
+      "size": 220,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "word",
+      "onto": "hero",
+      "then": {
+        "hero": {
+          "hand": "keys",
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

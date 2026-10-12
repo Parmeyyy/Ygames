@@ -1,0 +1,44 @@
+{
+  "id": "m6",
+  "type": "combine",
+  "objects": [
+    {
+      "id": "tube",
+      "shape": "tube",
+      "x": 0.32,
+      "y": 0.28,
+      "size": 250
+    },
+    {
+      "id": "brush",
+      "shape": "brush",
+      "x": 0.58,
+      "y": 0.65,
+      "size": 300
+    }
+  ],
+  "steps": [
+    {
+      "do": "hold",
+      "target": "tube",
+      "ms": 1000,
+      "then": {
+        "swap": {
+          "brush": "brushPaste"
+        },
+        "say": "paste"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "brush",
+      "onto": "hero:mouth",
+      "early": "early",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

@@ -1,61 +1,72 @@
 import { ECONOMY } from '../config.js';
 import { dev } from '../dev.js';
-import { HATS } from '../hats.js';
-import { chapters } from '../levels/index.js';
+import { ITEMS } from '../items.js';
+import { getSection, sections } from '../levels/index.js';
 import { yandex } from '../yandex.js';
 
 // Прогресс игрока. Хранится в данных игрока SDK Яндекс Игр (облако),
 // при локальном запуске — в localStorage (см. src/yandex.js).
 
 const state = {
-  unlocked: 1, // до какого номера открыты основные уровни
-  secretOpen: false, // секретная глава открыта (навсегда)
-  secretUnlocked: 1, // до какого номера открыты уровни секретной главы
+  opened: {}, // id раздела → до какого номера открыты его уровни (по умолчанию 1)
+  secretOpen: false, // секретный раздел открыт (навсегда)
   completed: [], // id пройденных уровней
   stars: {}, // id уровня → лучшая оценка, от 1 до 3 звёзд
   bonusDay: 0, // номер дня, когда забрали последний ежедневный подарок
-  cracks: 0, // сколько трещин на яйце: по одной за финал каждой главы
   coins: 0,
-  hats: [], // id купленных и полученных шапок
-  hat: null, // id надетой шапки
-  hatAds: {}, // id редкой шапки → сколько раз ради неё посмотрели рекламу
+  hats: [], // id предметов гардероба, которые есть у игрока
+  hat: null, // id надетого предмета
+  hatAds: {}, // id редкого предмета → сколько раз ради него посмотрели рекламу
   sound: true,
 };
 
 const save = () => yandex.saveData({ ...state });
+const isObject = (value) => value && typeof value === 'object' && !Array.isArray(value);
 
 export const progress = {
   async load() {
     const data = await yandex.loadData();
-    for (const key of ['unlocked', 'secretUnlocked', 'coins', 'cracks', 'bonusDay']) {
+    for (const key of ['coins', 'bonusDay']) {
       if (Number.isInteger(data[key]) && data[key] >= 0) state[key] = data[key];
     }
     for (const key of ['secretOpen', 'sound']) {
       if (typeof data[key] === 'boolean') state[key] = data[key];
     }
+    for (const key of ['opened', 'stars', 'hatAds']) {
+      if (isObject(data[key])) state[key] = data[key];
+    }
     if (Array.isArray(data.completed)) state.completed = data.completed;
-    // шапки, которых больше нет в игре, из сохранения отбрасываются
-    if (Array.isArray(data.hats)) state.hats = data.hats.filter((id) => HATS.some((hat) => hat.id === id));
-    if (data.hatAds && typeof data.hatAds === 'object') state.hatAds = data.hatAds;
-    if (data.stars && typeof data.stars === 'object') state.stars = data.stars;
+    // предметы, которых больше нет в игре, из сохранения отбрасываются
+    if (Array.isArray(data.hats)) state.hats = data.hats.filter((id) => ITEMS.some((item) => item.id === id));
     if (state.hats.includes(data.hat)) state.hat = data.hat;
   },
 
-  // ——— уровни ———
+  // ——— разделы и уровни ———
 
-  // Номер первого непройденного открытого уровня основной главы
-  get unlocked() {
-    return state.unlocked;
+  // Раздел пройден, когда пройден его последний уровень
+  isSectionDone(section) {
+    const last = section.levels.at(-1);
+    return Boolean(last) && state.completed.includes(last.id);
+  },
+
+  isSectionOpen(section) {
+    if (dev.unlockAll) return true;
+    if (section.secret) return state.secretOpen;
+    const index = sections.indexOf(section);
+    return index === 0 || this.isSectionDone(sections[index - 1]);
   },
 
   isUnlocked(level) {
     if (dev.unlockAll) return true;
-    if (level.chapter === 'secret') return state.secretOpen && level.number <= state.secretUnlocked;
-    return level.number <= state.unlocked;
+    return this.isSectionOpen(getSection(level.section)) && level.number <= (state.opened[level.section] ?? 1);
   },
 
   isCompleted(level) {
     return state.completed.includes(level.id);
+  },
+
+  completedIn(section) {
+    return section.levels.filter((level) => state.completed.includes(level.id)).length;
   },
 
   // Сколько звёзд у уровня (0 — не пройден)
@@ -67,8 +78,21 @@ export const progress = {
     return Object.values(state.stars).reduce((sum, value) => sum + value, 0);
   },
 
+  // Уровень, с которого продолжит кнопка «Играть»: первый непройденный из открытых
+  continueLevel() {
+    const playable = sections.filter((section) => !section.secret && section.levels.length);
+    for (const section of playable) {
+      if (!this.isSectionDone(section) || section === playable.at(-1)) {
+        const number = Math.min(state.opened[section.id] ?? 1, section.levels.length);
+        return section.levels[number - 1];
+      }
+    }
+    return undefined;
+  },
+
   // Уровень пройден на stars звёзд (хранится лучший результат).
-  // Возвращает, сколько монет начислено: награда даётся только за первое прохождение.
+  // Возвращает { coins, item }: монеты даются только за первое прохождение,
+  // item — предмет гардероба, если этим уровнем закончен раздел.
   complete(level, stars = 1) {
     state.stars[level.id] = Math.max(state.stars[level.id] ?? 0, stars);
     const first = !state.completed.includes(level.id);
@@ -76,11 +100,16 @@ export const progress = {
       state.completed.push(level.id);
       state.coins += ECONOMY.levelReward;
     }
-    // финал главы: level.finale — номер трещины, которая появляется на яйце
-    if (level.finale) state.cracks = Math.max(state.cracks, level.finale);
     this.openNext(level, false);
+
+    const section = getSection(level.section);
+    let item = null;
+    if (first && section.reward && level === section.levels.at(-1) && !state.hats.includes(section.reward)) {
+      item = section.reward;
+      state.hats.push(item);
+    }
     save();
-    return first ? ECONOMY.levelReward : 0;
+    return { coins: first ? ECONOMY.levelReward : 0, item };
   },
 
   // Уровень пропущен: следующий открывается, но этот остаётся непройденным и монет не даёт
@@ -89,14 +118,9 @@ export const progress = {
   },
 
   openNext(level, andSave = true) {
-    const key = level.chapter === 'secret' ? 'secretUnlocked' : 'unlocked';
-    const last = chapters[level.chapter].length;
-    state[key] = Math.max(state[key], Math.min(level.number + 1, last));
+    const last = getSection(level.section).levels.length;
+    state.opened[level.section] = Math.max(state.opened[level.section] ?? 1, Math.min(level.number + 1, last));
     if (andSave) save();
-  },
-
-  get cracks() {
-    return state.cracks;
   },
 
   get secretOpen() {
@@ -144,8 +168,9 @@ export const progress = {
     return true;
   },
 
-  // ——— шапки ———
+  // ——— гардероб ———
 
+  // id надетого предмета (null — родная кепка)
   get hat() {
     return state.hat;
   },
@@ -158,29 +183,29 @@ export const progress = {
     return state.hatAds[id] ?? 0;
   },
 
-  // Надеть шапку; null — снять
+  // Надеть предмет; null — снять
   equip(id) {
     state.hat = id;
     save();
   },
 
-  // Покупка за монеты: шапка сразу надевается. Возвращает, получилось ли.
-  buyHat(hat) {
-    if (state.coins < hat.price) return false;
-    state.coins -= hat.price;
-    state.hats.push(hat.id);
-    state.hat = hat.id;
+  // Покупка за монеты: предмет сразу надевается. Возвращает, получилось ли.
+  buyHat(item) {
+    if (state.coins < item.price) return false;
+    state.coins -= item.price;
+    state.hats.push(item.id);
+    state.hat = item.id;
     save();
     return true;
   },
 
-  // Засчитывает просмотр рекламы ради редкой шапки; когда просмотров хватает, шапка выдаётся и надевается
-  countHatAd(hat) {
-    const views = this.hatAdViews(hat.id) + 1;
-    state.hatAds[hat.id] = views;
-    if (views >= hat.ads) {
-      state.hats.push(hat.id);
-      state.hat = hat.id;
+  // Засчитывает просмотр рекламы ради редкого предмета; когда просмотров хватает, он выдаётся и надевается
+  countHatAd(item) {
+    const views = this.hatAdViews(item.id) + 1;
+    state.hatAds[item.id] = views;
+    if (views >= item.ads) {
+      state.hats.push(item.id);
+      state.hat = item.id;
     }
     save();
   },

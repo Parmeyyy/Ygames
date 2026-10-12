@@ -1,0 +1,88 @@
+{
+  "id": "m12",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "stove",
+      "shape": "stove",
+      "x": 0.62,
+      "y": 0.64,
+      "size": 300,
+      "inert": true
+    },
+    {
+      "id": "fire",
+      "shape": "flame",
+      "at": [
+        "stove",
+        0,
+        -0.56
+      ],
+      "size": 70,
+      "hidden": true
+    },
+    {
+      "id": "knob",
+      "shape": "zone",
+      "at": [
+        "stove",
+        -0.32,
+        -0.22
+      ],
+      "box": [
+        0.24,
+        0.26
+      ]
+    },
+    {
+      "id": "pelmeni",
+      "shape": "pelmeni",
+      "x": 0.2,
+      "y": 0.82,
+      "size": 140
+    },
+    {
+      "id": "pot",
+      "shape": "pot",
+      "x": 0.22,
+      "y": 0.25,
+      "size": 190
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "pot",
+      "onto": "stove",
+      "keep": [
+        0,
+        -0.7
+      ],
+      "then": {
+        "say": "potOn"
+      }
+    },
+    {
+      "do": "tap",
+      "target": "knob",
+      "early": "earlyKnob",
+      "then": {
+        "show": [
+          "fire"
+        ],
+        "say": "fireOn"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "pelmeni",
+      "onto": "pot",
+      "early": "earlyPelmeni",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

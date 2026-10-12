@@ -1,0 +1,26 @@
+{
+  "id": "m15",
+  "type": "offscreen",
+  "heroMood": "sad",
+  "background": "rain",
+  "objects": [
+    {
+      "id": "cloud",
+      "shape": "raincloud",
+      "x": 0.5,
+      "y": 0.45,
+      "size": 330
+    }
+  ],
+  "steps": [
+    {
+      "do": "offscreen",
+      "drag": "cloud",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

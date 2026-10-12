@@ -1,0 +1,32 @@
+{
+  "id": "m19",
+  "type": "sequence",
+  "heroMood": "sad",
+  "heroProps": {
+    "pass": "back"
+  },
+  "objects": [
+    {
+      "id": "guard",
+      "shape": "guard",
+      "x": 0.6,
+      "y": 0.5,
+      "size": 170,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "hero:chest",
+      "then": {
+        "hero": {
+          "props": {
+            "pass": "front"
+          },
+          "mood": "sly"
+        }
+      }
+    }
+  ]
+}

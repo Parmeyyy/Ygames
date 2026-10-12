@@ -8,6 +8,13 @@ const THEMES = {
   sky: { top: '#dcefff', bottom: '#fff1d6', clouds: true },
   dusk: { top: '#ffcfb0', bottom: '#ffe9c4', clouds: true },
   night: { top: '#8b90c9', bottom: '#dccbea', stars: true },
+  rain: { top: '#b9c6d3', bottom: '#e6e2d8' },
+  // фоны разделов
+  morning: { top: '#ffe9b8', bottom: '#ffd3a8', clouds: true },
+  factory: { top: '#cfd8e3', bottom: '#eee6da', clouds: true },
+  date: { top: '#ffd6e3', bottom: '#fff0e0', clouds: true },
+  lake: { top: '#cdeaf7', bottom: '#e3f4e1', clouds: true },
+  garden: { top: '#dff3c8', bottom: '#fff1c9', clouds: true },
 };
 
 function gradientTexture(scene, name) {

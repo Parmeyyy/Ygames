@@ -2,7 +2,7 @@ import { uiTarget } from './index.js';
 import { buildObjects, makeDraggable } from './objects.js';
 
 // drag — перетащи объект в целевую зону.
-//   goal: { drag, onto } — что тащить и куда; оба значения — id объекта или "ui:egg" (само яйцо-герой)
+//   goal: { drag, onto } — что тащить и куда; оба значения — id объекта или "ui:hero" (сам Валера)
 // Засчитывается, когда центр объекта отпущен внутри цели. Отпустили мимо — ошибка, объект возвращается.
 export function buildDrag(scene, level, field, api) {
   const u = scene.u;
@@ -23,14 +23,14 @@ export function buildDrag(scene, level, field, api) {
     return { objects };
   }
 
-  const hero = dragged.object === api.target('egg');
+  const hero = dragged.object === api.target('hero');
   const home = { x: dragged.object.x, y: dragged.object.y };
 
   const onDrop = (object) => {
     const inside =
       Math.abs(object.x - target.object.x) <= target.w / 2 && Math.abs(object.y - target.object.y) <= target.h / 2;
     if (inside) {
-      // яйцо-герой остаётся там, куда его положили
+      // Валера остаётся там, куда его поставили
       if (hero) Object.assign(object, { homeX: object.x, homeY: object.y });
       if (api.correct()) return;
     } else if (Math.hypot(object.x - home.x, object.y - home.y) > 40 * u) {
@@ -41,7 +41,7 @@ export function buildDrag(scene, level, field, api) {
   };
 
   makeDraggable(scene, dragged.object, onDrop);
-  // яйцо-герой создано раньше объектов поля — поднимаем его наверх, чтобы не пряталось под ними
+  // Валера создан раньше объектов поля — поднимаем его наверх, чтобы не прятался под ними
   if (hero) dragged.object.on('dragstart', () => scene.children.bringToTop(dragged.object));
 
   for (const { def, object } of objects.values()) {

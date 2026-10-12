@@ -7,7 +7,6 @@ export const COLORS = {
   success: 0x5fad56,
   locked: 0xd9cfc1,
   white: 0xffffff,
-  egg: 0xfffdf5,
   outline: 0x3a2e39,
   blush: 0xffb4a2,
   coin: 0xffc93c,

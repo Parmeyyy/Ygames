@@ -1,0 +1,34 @@
+{
+  "id": "m17",
+  "type": "combine",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "conductor",
+      "shape": "conductor",
+      "x": 0.62,
+      "y": 0.5,
+      "size": 170
+    },
+    {
+      "id": "wallet",
+      "shape": "wallet",
+      "x": 0.22,
+      "y": 0.75,
+      "size": 170,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "ui:coin",
+      "onto": "conductor",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

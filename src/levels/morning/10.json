@@ -1,0 +1,48 @@
+{
+  "id": "m10",
+  "type": "sequence",
+  "heroMood": "sad",
+  "heroProps": {
+    "glasses": "forehead"
+  },
+  "objects": [
+    {
+      "id": "nightstand",
+      "shape": "nightstand",
+      "x": 0.25,
+      "y": 0.4,
+      "size": 230,
+      "wrong": true
+    },
+    {
+      "id": "rug",
+      "shape": "rug",
+      "x": 0.68,
+      "y": 0.8,
+      "size": 300,
+      "wrong": true
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.75,
+      "y": 0.26,
+      "size": 220,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "hero:forehead",
+      "then": {
+        "hero": {
+          "props": {
+            "glasses": "eyes"
+          },
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

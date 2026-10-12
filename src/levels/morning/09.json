@@ -1,0 +1,27 @@
+{
+  "id": "m9",
+  "type": "erase",
+  "objects": [
+    {
+      "id": "shirt",
+      "shape": "shirt",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 360,
+      "inert": true
+    },
+    {
+      "id": "wrinkles",
+      "shape": "wrinkles",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 300,
+      "erasable": true
+    }
+  ],
+  "erase": {
+    "target": "wrinkles",
+    "percent": 0.5,
+    "tool": "iron"
+  }
+}

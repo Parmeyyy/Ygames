@@ -4,7 +4,7 @@
 // данные игрока лежат в localStorage, вместо рекламы — серый экран на 2 секунды,
 // вместо стики-баннера — серая полоса внизу.
 
-const STORAGE_KEY = 'egg-progress-v1';
+const STORAGE_KEY = 'valera-progress-v1';
 const LEVELS_PER_INTERSTITIAL = 3;
 const STUB_AD_DURATION = 2000;
 const STUB_BANNER_HEIGHT = 50;

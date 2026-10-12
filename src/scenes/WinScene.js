@@ -1,15 +1,16 @@
 import { audio } from '../audio.js';
 import { COLORS, TEXT } from '../config.js';
 import { levelText, t } from '../i18n/index.js';
-import { getLevel, nextLevel } from '../levels/index.js';
+import { getLevel, getSection, nextLevel } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { confetti, flyCoins } from '../ui/effects.js';
-import { Egg } from '../ui/Egg.js';
+import { Hero } from '../ui/Hero.js';
 import { addBubble, addButton, addCoinAmount, addCoinCounter, addStars, addText } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
-// Экран победы между уровнями: награда, удвоение за рекламу, переход дальше.
+// Экран победы между уровнями: звёзды, монеты, удвоение за рекламу, переход дальше.
+// После последнего уровня раздела — «Раздел пройден!» и предмет в гардероб.
 export class WinScene extends BaseScene {
   constructor() {
     super('Win');
@@ -20,6 +21,9 @@ export class WinScene extends BaseScene {
     this.next = nextLevel(this.level);
     this.reward = data.reward ?? 0; // монеты за это прохождение (0 при повторном)
     this.stars = data.stars ?? 1; // оценка этого прохождения
+    this.item = data.item ?? null; // предмет гардероба за пройденный раздел
+    this.section = getSection(this.level.section);
+    this.sectionDone = !this.next; // это был последний уровень раздела
     this.doubled = false;
     this.flying = this.reward; // монеты, которые ещё не «долетели» до счётчика
     this.celebrated = false;
@@ -28,8 +32,8 @@ export class WinScene extends BaseScene {
   build() {
     const { W, H, u, portrait } = this;
 
-    const eggX = portrait ? W / 2 : W * 0.3;
-    const eggY = portrait ? H * 0.42 : H * 0.56;
+    const heroX = portrait ? W / 2 : W * 0.3;
+    const heroY = portrait ? H * 0.42 : H * 0.56;
     const sideX = portrait ? W / 2 : W * 0.68;
     const titleY = portrait ? H * 0.08 : H * 0.12;
     const rewardY = portrait ? H * 0.585 : H * 0.24;
@@ -37,10 +41,13 @@ export class WinScene extends BaseScene {
     const buttonsY = portrait ? H * 0.78 : H * 0.56;
     const bubbleW = portrait ? Math.min(W - 80 * u, 600 * u) : 520 * u;
 
-    // финал главы — свой заголовок
-    const title = this.level.finale ? t('ui.chapterDone', { n: this.level.finale }) : t('ui.win');
-    addText(this, sideX, titleY, title, this.level.finale ? 52 : 72, { fontStyle: 'bold' });
-    new Egg(this, eggX, eggY, 320 * u, 'happy').enableTaps().react('happy');
+    // последний уровень раздела — свой заголовок
+    const title = addText(this, sideX, titleY, this.sectionDone ? t('ui.sectionDone') : t('ui.win'), this.sectionDone ? 56 : 72, {
+      fontStyle: 'bold',
+    });
+    const maxTitle = (portrait ? W : W * 0.6) - 60 * u;
+    if (title.width > maxTitle) title.setScale(maxTitle / title.width);
+    new Hero(this, heroX, heroY, 340 * u, 'happy').enableTaps().react('happy');
     addBubble(this, sideX, bubbleY, bubbleW, levelText(this.level, 'win'));
 
     // Счётчик показывает сумму без летящих монет и докручивается, когда они долетят
@@ -74,7 +81,13 @@ export class WinScene extends BaseScene {
     if (this.next) {
       place(t('ui.next'), () => this.goNext());
     } else {
-      addText(this, sideX, y, t('ui.allDone'), 28, { color: TEXT.muted, wordWrap: { width: bubbleW } });
+      // раздел пройден: новый предмет в гардеробе или просто «продолжение следует»
+      const line = this.item ? t('ui.newItem', { name: t(`items.${this.item}`) }) : t('ui.allDone');
+      addText(this, sideX, y, line, 26, {
+        color: this.item ? TEXT.dark : TEXT.muted,
+        fontStyle: this.item ? 'bold' : 'normal',
+        wordWrap: { width: bubbleW },
+      });
       y += 94 * u;
     }
     place(t('ui.menu'), () => this.go('Menu'), { fill: COLORS.secondary });

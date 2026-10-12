@@ -5,6 +5,7 @@ import { setLang } from './i18n/index.js';
 import { BootScene } from './scenes/BootScene.js';
 import { MenuScene } from './scenes/MenuScene.js';
 import { LevelSelectScene } from './scenes/LevelSelectScene.js';
+import { SectionSelectScene } from './scenes/SectionSelectScene.js';
 import { LevelScene } from './scenes/LevelScene.js';
 import { WardrobeScene } from './scenes/WardrobeScene.js';
 import { WinScene } from './scenes/WinScene.js';
@@ -42,7 +43,7 @@ const game = new Phaser.Game({
     height: initial.height,
     zoom: initial.zoom,
   },
-  scene: [BootScene, MenuScene, LevelSelectScene, LevelScene, WinScene, WardrobeScene],
+  scene: [BootScene, MenuScene, SectionSelectScene, LevelSelectScene, LevelScene, WinScene, WardrobeScene],
 });
 
 // Паузой звука управляем сами (реклама, уход со вкладки), иначе Phaser

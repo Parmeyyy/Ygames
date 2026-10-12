@@ -18,6 +18,34 @@ export function addText(scene, x, y, str, size, style = {}) {
     .setOrigin(0.5);
 }
 
+// Текст, разложенный на отдельные слова: строки по центру вокруг (x, y), перенос по ширине maxW.
+// Нужен, когда одно из слов становится предметом, который можно утащить. Возвращает массив слов-объектов.
+export function addWordFlow(scene, x, y, str, size, maxW, style = {}) {
+  const words = str.split(' ').map((word) => addText(scene, 0, 0, word, size, style).setOrigin(0, 0.5));
+  const space = size * scene.u * 0.3;
+  const lines = [[]];
+  let lineWidth = 0;
+  for (const word of words) {
+    const extra = lines.at(-1).length ? space + word.width : word.width;
+    if (lineWidth + extra > maxW && lines.at(-1).length) {
+      lines.push([]);
+      lineWidth = 0;
+    }
+    lineWidth += lines.at(-1).length ? space + word.width : word.width;
+    lines.at(-1).push(word);
+  }
+  const lineHeight = size * scene.u * 1.25;
+  lines.forEach((line, row) => {
+    const width = line.reduce((sum, word) => sum + word.width, 0) + space * (line.length - 1);
+    let cursor = x - width / 2;
+    for (const word of line) {
+      word.setPosition(cursor, y + (row - (lines.length - 1) / 2) * lineHeight);
+      cursor += word.width + space;
+    }
+  });
+  return words;
+}
+
 // Делает объект нажимаемым. Срабатывает, только если палец и опустился, и поднялся на объекте.
 // При нажатии объект сжимается и пружинит обратно, при наведении мыши чуть увеличивается.
 // cursor: false — не показывать «руку» и не увеличивать при наведении (для спрятанных ответов).

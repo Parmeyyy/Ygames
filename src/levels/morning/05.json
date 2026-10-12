@@ -1,0 +1,47 @@
+{
+  "id": "m5",
+  "type": "combine",
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "jar",
+      "shape": "jar",
+      "x": 0.24,
+      "y": 0.35,
+      "size": 150
+    },
+    {
+      "id": "cup",
+      "shape": "cup",
+      "x": 0.72,
+      "y": 0.45,
+      "size": 170
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "jar",
+      "onto": "cup",
+      "back": true,
+      "then": {
+        "swap": {
+          "cup": "cupFull"
+        },
+        "say": "poured"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "cup",
+      "onto": "hero",
+      "early": "early",
+      "then": {
+        "hero": {
+          "hand": "cupFull",
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "m7",
+  "type": "rotate",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "clock",
+      "shape": "clock",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 320
+    }
+  ],
+  "steps": [
+    {
+      "do": "rotate",
+      "target": "clock",
+      "turns": -0.25
+    }
+  ]
+}

@@ -1,39 +1,41 @@
 import { COLORS, TEXT } from '../config.js';
 import { t } from '../i18n/index.js';
-import { chapters } from '../levels/index.js';
+import { getSection } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { addButton, addStars, addText, drawLock, makeTappable } from '../ui/widgets.js';
-import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
-// Сетка уровней одной главы: основной ("main") или секретной ("secret")
+// Сетка уровней одного раздела
 export class LevelSelectScene extends BaseScene {
   constructor() {
     super('LevelSelect');
   }
 
   init(data) {
-    this.chapter = data.chapter ?? 'main';
+    this.section = getSection(data.section) ?? getSection('morning');
+  }
+
+  backgroundTheme() {
+    return [this.section.theme];
   }
 
   build() {
     const { W, u } = this;
-    const secret = this.chapter === 'secret';
-    const levels = chapters[this.chapter];
+    const levels = this.section.levels;
 
-    // chapter передаём всегда: без данных Phaser запустил бы сцену с прошлыми, то есть снова с секретной главой
-    const back = () => (secret ? this.go('LevelSelect', { chapter: 'main' }) : this.go('Menu'));
-    addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.back'), back, { fill: COLORS.secondary, size: 28 });
-    const title = addText(this, W / 2, 60 * u, t(secret ? 'ui.secretChapter' : 'ui.selectLevel'), 36, { fontStyle: 'bold' });
+    addButton(this, 110 * u, 60 * u, 180 * u, 72 * u, t('ui.back'), () => this.go('SectionSelect'), {
+      fill: COLORS.secondary,
+      size: 28,
+    });
+    const title = addText(this, W / 2, 60 * u, t(`sections.${this.section.id}`), 36, { fontStyle: 'bold' });
     // длинный заголовок не должен наезжать на кнопку «Назад»
     const maxTitle = W - 440 * u;
     if (title.width > maxTitle) title.setScale(maxTitle / title.width);
 
-    const withSecret = !secret && chapters.secret.length > 0;
     const top = 150 * u;
     const gap = 24 * u;
-    // Ячейки уменьшаются, пока вся сетка (и кнопка секретной главы) не поместится по высоте
-    const room = this.H - top - (withSecret ? 150 * u : 20 * u);
+    // Ячейки уменьшаются, пока вся сетка не поместится по высоте
+    const room = this.H - top - 20 * u;
     let cell;
     let cols;
     let rows;
@@ -51,14 +53,12 @@ export class LevelSelectScene extends BaseScene {
       const y = top + Math.floor(index / cols) * (cell + gap) + cell / 2;
       this.addCell(x, y, cell, level);
     });
-
-    if (withSecret) this.addSecretButton(top + rows * (cell + gap) + 70 * u);
   }
 
   addCell(x, y, size, level) {
     const u = this.u;
     const locked = !progress.isUnlocked(level);
-    const fill = locked ? COLORS.locked : progress.isCompleted(level) ? COLORS.success : COLORS.accent;
+    const fill = locked ? COLORS.locked : progress.isCompleted(level) ? COLORS.success : this.section.color;
 
     const bg = this.add.graphics();
     const radius = size * 0.18;
@@ -74,36 +74,12 @@ export class LevelSelectScene extends BaseScene {
 
     const stars = progress.starsOf(level);
     if (stars > 0) cell.add(addStars(this, 0, size * 0.3, stars, size * 0.1));
-    cell.add(addText(this, 0, stars > 0 ? -size * 0.1 : 0, String(level.number), 52 * (size / (130 * u)), { color: TEXT.light, fontStyle: 'bold' }));
+    cell.add(
+      addText(this, 0, stars > 0 ? -size * 0.1 : 0, String(level.number), 52 * (size / (130 * u)), {
+        color: TEXT.light,
+        fontStyle: 'bold',
+      }),
+    );
     makeTappable(cell, () => this.go('Level', { id: level.id }));
-  }
-
-  // Секретная глава открывается одним просмотром рекламы — навсегда
-  addSecretButton(y) {
-    const { W, u } = this;
-    const w = 500 * u;
-    const h = 110 * u;
-
-    if (progress.secretOpen) {
-      addButton(this, W / 2, y, w, h, t('ui.secretChapter'), () => this.go('LevelSelect', { chapter: 'secret' }), {
-        fill: COLORS.special,
-        size: 32,
-      });
-      return;
-    }
-
-    const button = addButton(this, W / 2, y, w, h, t('ui.secretChapterAd'), () => this.openSecret(), {
-      fill: COLORS.special,
-      size: 25,
-    });
-    const lock = this.add.graphics();
-    drawLock(lock, -w / 2 + 50 * u, 4 * u, 36 * u, COLORS.white);
-    button.add(lock);
-  }
-
-  async openSecret() {
-    if (!(await yandex.showRewarded())) return;
-    progress.openSecret();
-    this.rebuild();
   }
 }

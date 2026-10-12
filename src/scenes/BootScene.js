@@ -24,7 +24,7 @@ export class BootScene extends BaseScene {
   }
 
   preload() {
-    // this.load.image('egg', 'assets/egg.png');
+    // this.load.image('valera', 'assets/valera.png');
   }
 
   create() {
@@ -66,8 +66,8 @@ export class BootScene extends BaseScene {
 
   update() {
     if (this.drawBar() < 1 || !this.ready) return;
-    // режим разработки: ?level=15 сразу открывает уровень
-    const level = dev.level && (getLevel(Number(dev.level)) ?? getLevel(dev.level));
+    // режим разработки: ?level=m15 сразу открывает уровень
+    const level = dev.level && getLevel(dev.level);
     if (level) {
       yandex.gameReady();
       this.go('Level', { id: level.id });

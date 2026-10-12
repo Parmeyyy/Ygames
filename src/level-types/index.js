@@ -3,6 +3,7 @@ import { buildChoice } from './choice.js';
 import { buildDrag } from './drag.js';
 import { buildErase } from './erase.js';
 import { buildFlashlight } from './flashlight.js';
+import { buildSequence } from './sequence.js';
 import { buildTap } from './tap.js';
 import { buildTimed } from './timed.js';
 import { buildWait } from './wait.js';
@@ -11,10 +12,12 @@ import { buildWait } from './wait.js';
 //   field — прямоугольник игрового поля { x, y, w, h } в пикселях
 //   api   — что уровень может делать со сценой:
 //     correct()             — уровень решён; возвращает true, если ответ принят
-//     wrong()               — ошибка
+//     wrong(line)           — ошибка; line — своя реплика Валеры (необязательно)
 //     bindTarget(name, fn)  — сделать элемент интерфейса нажимаемым
-//     target(name)          — элемент интерфейса: "egg", "question", "levelNumber"
-//     say(line)             — реплика яйца
+//     target(name)          — элемент интерфейса: "hero", "question", "levelNumber", "word"
+//     coinSource()          — монета, которую можно вытащить из счётчика монет
+//     say(line)             — реплика Валеры
+//     state                 — объект, который переживает пересборку сцены (прогресс внутри уровня)
 //     isUiPress(over)       — нажатие пришлось на кнопки интерфейса
 //     mark(id, object)      — запомнить объект под именем (нужно автотестам в режиме разработки)
 // Строитель вызывается заново при каждом изменении размера окна.
@@ -24,11 +27,17 @@ export const LEVEL_TYPES = {
   choice: buildChoice,
   action: buildAction,
   drag: buildDrag,
-  erase: buildErase,
   wait: buildWait,
   flashlight: buildFlashlight,
   timed: buildTimed,
+  erase: buildErase,
+  // уровни из шагов: один строитель, тип называет главную хитрость
+  sequence: buildSequence,
+  combine: buildSequence,
+  wordDrag: buildSequence,
+  offscreen: buildSequence,
+  rotate: buildSequence,
 };
 
-// "ui:egg" → "egg"; для обычных id объектов — null
+// "ui:hero" → "hero"; для обычных id объектов — null
 export const uiTarget = (id) => (typeof id === 'string' && id.startsWith('ui:') ? id.slice(3) : null);

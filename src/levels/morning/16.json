@@ -1,0 +1,21 @@
+{
+  "id": "m16",
+  "type": "action",
+  "heroMood": "scared",
+  "action": {
+    "kind": "tap",
+    "target": "ui:hero",
+    "count": 8,
+    "within": 2500
+  },
+  "objects": [
+    {
+      "id": "bus",
+      "shape": "bus",
+      "x": 0.55,
+      "y": 0.45,
+      "size": 420,
+      "inert": true
+    }
+  ]
+}

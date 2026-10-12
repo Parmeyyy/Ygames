@@ -1,7 +1,4 @@
 {
-  "game": {
-    "title": "Egg"
-  },
   "ui": {
     "loading": "Loading…",
     "play": "Play",
@@ -12,219 +9,257 @@
     "back": "Back",
     "hint": "Hint",
     "next": "Next",
-    "selectLevel": "Select level",
     "level": "Level {n}",
     "win": "Correct!",
-    "allDone": "That's all the levels for now. More coming soon!",
+    "allDone": "More is coming soon!",
     "wardrobe": "Wardrobe",
     "secretLevel": "Secret {n}",
-    "secretChapter": "Secret chapter",
-    "secretChapterAd": "Secret chapter\n(watch an ad to open)",
     "hintTitle": "Get a hint",
     "hintForCoins": "For {n} coins",
     "hintForAd": "Watch an ad",
     "cancel": "Cancel",
     "skipAd": "Skip (ad)",
     "doubleAd": "x2 coins (ad)",
-    "chapterDone": "Chapter {n} complete!",
     "dailyTitle": "Daily gift: +{n} coins",
     "dailyTake": "Collect",
-    "dailyDouble": "Collect x2 (ad)"
+    "dailyDouble": "Collect x2 (ad)",
+    "sections": "Sections",
+    "sectionDone": "Section complete!",
+    "newItem": "New wardrobe item: {name}",
+    "soon": "Coming soon",
+    "sectionLocked": "Finish the previous section",
+    "secretAd": "Watch an ad to open"
   },
-  "egg": {
-    "menu": "Hi! Please don't drop me!",
+  "game": {
+    "title": "Help Valera"
+  },
+  "hero": {
+    "menu": "Easy does it! Just give me a hand.",
     "start": [
-      "Careful, I'm fragile!",
-      "Take your time. And don't shake me!",
-      "Oh, I'm nervous…"
+      "Easy does it.",
+      "So, what do we do?",
+      "Right. Stay calm. Think."
     ],
     "wrong": [
-      "Oops! Not that!",
-      "Ouch, I almost cracked!",
-      "Missed… Try again!"
+      "Oh, come on!",
+      "Nope, not that.",
+      "Missed. One more try."
     ]
   },
+  "sections": {
+    "morning": "Morning",
+    "factory": "Factory",
+    "date": "The Date",
+    "fishing": "Fishing",
+    "dacha": "The Dacha",
+    "secret": "Secret section"
+  },
+  "items": {
+    "redcap": "Red cap",
+    "bandana": "Bandana",
+    "beanie": "Bobble hat",
+    "ushanka": "Fur hat",
+    "fedora": "Fedora",
+    "crown": "Crown",
+    "chef": "Chef's hat",
+    "paper": "Newspaper hat",
+    "medal": "Alarm clock medal",
+    "helmet": "Hard hat",
+    "bowtie": "Bow tie",
+    "panama": "Fisherman's hat",
+    "straw": "Straw hat"
+  },
+  "wardrobe": {
+    "info": "Rare items take 3 ad views each",
+    "noCoins": "Not enough coins!",
+    "forSection": "This item is a reward for finishing a section",
+    "equip": "Wear",
+    "equipped": "Wearing",
+    "ad": "Ad {n}/{max}"
+  },
   "levels": {
-    "1": {
-      "question": "Tap the egg",
-      "hint": "There is only one here. It is standing there, smiling.",
-      "start": "Hi! I'm right here!",
-      "win": "That tickles! You found me!"
+    "m1": {
+      "question": "Wake Valera up",
+      "start": "Zzz… five more minutes…",
+      "hint": "What in the house was made specially for waking people?",
+      "wrong": "Zzz… Leave me be, I'm asleep.",
+      "win": "Huh? What? Okay, okay, I'm up! Oh, for crying out loud…"
     },
-    "2": {
-      "question": "Which number is the biggest?",
-      "hint": "No tricks here. Just compare the numbers.",
-      "wrong": "There is a bigger one!",
-      "win": "Twelve! That's a full box of eggs."
+    "m2": {
+      "question": "Valera can't open his eyes",
+      "start": "My eyes won't open. It's dark!",
+      "hint": "Something shines through the window in the morning. But something is in its way.",
+      "wrong": "Nope, still dark.",
+      "win": "Whoa, the sun! Right in my eye! Okay, I'm awake."
     },
-    "3": {
-      "question": "Find the smallest number",
-      "hint": "Not every number lives on the playing field. Look higher.",
-      "wrong": "Small, but there is a smaller one!",
-      "win": "The three was hiding in the level number. Sneaky!"
+    "m3": {
+      "question": "Find the second slipper",
+      "start": "I've got one slipper. Where's the other?",
+      "hint": "The cat looks a bit too comfortable. You can move him.",
+      "wrong": "That's not a slipper. I know my slippers!",
+      "win": "There it is! Whiskers, that's not a pillow."
     },
-    "4": {
-      "question": "Press the button",
-      "big": "NOT THIS ONE",
-      "hint": "The big button is being honest. Check the corners.",
-      "wrong": "It told you it's not this one!",
-      "win": "Small but real. Just like me!"
+    "m4": {
+      "question": "How many socks does Valera have?",
+      "start": "Count carefully. I lost track myself.",
+      "hint": "Socks are not only on the floor. Take a look at Valera himself.",
+      "wrong": "That doesn't add up. Did you count the ones on me?",
+      "win": "Five! Three on the floor and two on me. Still no matching pair."
     },
-    "5": {
-      "question": "How many eggs are on the screen?",
-      "hint": "The screen is more than the picture. Who is talking to you?",
-      "wrong": "Hey, did you count me?",
-      "win": "Four! Thanks for not forgetting me."
+    "m5": {
+      "question": "Make Valera some coffee",
+      "start": "No coffee, no Valera…",
+      "early": "An empty mug! I don't drink air.",
+      "poured": "Oh, that smell! Hand it over.",
+      "hint": "First the coffee goes into the mug. Then the mug goes to Valera.",
+      "wrong": "Oh, come on, not like that!",
+      "win": "Beautiful! Now life can begin."
     },
-    "6": {
-      "question": "The egg is freezing. Warm it up",
-      "start": "Brr… S-so cold…",
-      "hint": "Something warm is hiding behind the cloud. You can pick it up.",
-      "wrong": "N-not that… Still c-cold!",
-      "win": "Ahh, warm! Just don't boil me."
+    "m6": {
+      "question": "Brush Valera's teeth",
+      "start": "Teeth don't brush themselves.",
+      "early": "A brush with no toothpaste? Not fair.",
+      "paste": "There it goes. Now give me the brush.",
+      "hint": "Toothpaste gets squeezed: press the tube and hold. Then the brush goes to his mouth.",
+      "wrong": "Nope. I'm brushing teeth, not that.",
+      "win": "Beautiful! A movie star smile."
     },
-    "7": {
-      "question": "Tap the green one",
-      "red": "RED",
-      "green": "GREEN",
-      "blue": "BLUE",
-      "black": "BLACK",
-      "hint": "Don't read the words. Look at the paint they are written in.",
-      "wrong": "It says one thing, but the colour is another!",
-      "win": "Eyes beat letters! I can't read anyway."
+    "m7": {
+      "question": "Valera is running late. Help him",
+      "start": "I'm late! Help!",
+      "hint": "If there's not enough time, you can… wind it back. Turn the clock hand.",
+      "wrong": "Wrong way! Now I'm even later!",
+      "win": "Easy does it! Plenty of time now."
     },
-    "8": {
-      "question": "Which is heavier: a kilo of feathers or a kilo of nails?",
-      "fluff": "Feathers",
-      "nails": "Nails",
-      "same": "The same",
-      "hint": "Read the question again. How much does each one weigh?",
-      "wrong": "Put them on the scales!",
-      "win": "A kilo is a kilo. But feathers are softer to land on."
+    "m8": {
+      "question": "Help find the keys",
+      "word": "keys",
+      "start": "Where are my keys? They were right here!",
+      "hint": "The keys are right in front of you. Read the task again, one word at a time.",
+      "wrong": "Not there. I already looked. Twice.",
+      "win": "There they are! In plain sight the whole time."
     },
-    "9": {
-      "question": "Help the egg hide",
-      "start": "Oh no, everyone can see me!",
-      "hint": "The one who is scared should hide. You can pick it up and carry it.",
-      "wrong": "I'm still visible here! I need a cosier place.",
-      "win": "Nobody will find me in the nest. Except the hen."
+    "m9": {
+      "question": "The shirt is wrinkled",
+      "start": "I can't go out looking like this.",
+      "hint": "Wrinkles hate an iron. Rub it over the shirt.",
+      "win": "Beautiful! Ready for a wedding."
     },
-    "10": {
-      "question": "Tap the heaviest one",
-      "hint": "Size in a picture is not weight. Who is really heavy here?",
-      "wrong": "Big, but light!",
-      "win": "The elephant! Looks tiny, but please don't let it sit on me."
+    "m10": {
+      "question": "Valera lost his glasses",
+      "start": "I can't see a thing! Where are my glasses?",
+      "hint": "Glasses usually are where you pushed them yourself. Look at Valera more closely.",
+      "wrong": "Not there. Though without glasses I can't see what's there.",
+      "win": "On my forehead?! Oh, come on. Tell no one."
     },
-    "11": {
-      "question": "Find the second egg",
-      "hint": "The clouds are not glued down. Try moving them.",
-      "wrong": "Not that! Look for my friend.",
-      "win": "There you are! I thought you flew away."
+    "m11": {
+      "question": "The fridge is empty. Feed Valera",
+      "start": "I'm starving. And the fridge is a desert.",
+      "found": "Dumplings! We live!",
+      "hint": "A fridge has more than one door. Look where it's colder.",
+      "wrong": "I told you, it's empty!",
+      "win": "Dumplings! Now that's a breakfast."
     },
-    "12": {
-      "question": "Make the egg laugh",
-      "joke": "Tell a joke",
-      "face": "Make a funny face",
-      "partial": "Hee… More!",
-      "hint": "The egg is ticklish. Tickle fast, and more than once.",
-      "wrong": "Not funny. I am a serious egg.",
-      "win": "Ha-ha-ha! Stop, I'll crack up!"
+    "m12": {
+      "question": "Cook the dumplings",
+      "start": "Dumplings don't cook themselves. I checked.",
+      "potOn": "Pot is in place. What's next?",
+      "fireOn": "There, it's boiling!",
+      "earlyKnob": "The stove is heating nothing! Pot first.",
+      "earlyPelmeni": "Into cold water? That's not how we do it.",
+      "hint": "Just like at home: pot on the stove, then the heat, then the dumplings.",
+      "wrong": "That's not how you cook, come on!",
+      "win": "Beautiful! Best with sour cream."
     },
-    "13": {
-      "question": "What is 2 + 2 × 2?",
-      "hint": "Which comes first: adding or multiplying?",
-      "wrong": "The maths teacher is sad.",
-      "win": "Six! Multiply first. I knew it, honest."
+    "m13": {
+      "question": "The cat won't let Valera out",
+      "start": "Whiskers, move. I have to go to work!",
+      "found": "Oh, sausage. I'd eat it myself…",
+      "hint": "The cat will leave the door if you offer something more interesting than a door. Check the fridge.",
+      "wrong": "Hsss! He scratches!",
+      "win": "Deal. Sausage is the entry fee."
     },
-    "14": {
-      "question": "The egg is too hot",
-      "start": "Phew… I'm about to boil!",
-      "hint": "It's hot because of the one who shines. Ask it to hide.",
-      "wrong": "That didn't help! I'm nearly soft-boiled!",
-      "win": "The shade is lovely. Thanks, I almost became an omelette."
+    "m14": {
+      "question": "The lift is broken. How many floors will Valera walk down from the 9th to the 1st?",
+      "start": "On foot. From the ninth. Oh, come on.",
+      "hint": "From the ninth to the eighth is one floor. Count the trips, not the floors.",
+      "wrong": "I counted with my legs, and it doesn't add up.",
+      "win": "Eight! My legs ache, but it's exercise."
     },
-    "15": {
-      "question": "How many times does the letter O appear in this question?",
-      "letter": "O",
-      "hint": "Count the letters right in the question. The one standing alone counts too.",
-      "wrong": "Count again, and no poking!",
-      "win": "Correct! Funny, there is no letter O in the word egg."
+    "m15": {
+      "question": "It's raining and there is no umbrella",
+      "start": "It's pouring. And no umbrella.",
+      "hint": "You don't need an umbrella if there is no cloud. The screen isn't that big.",
+      "wrong": "Still dripping!",
+      "win": "Beautiful! No cloud, no umbrella needed."
     },
-    "16": {
-      "question": "Put the egg to bed",
-      "hint": "You go to bed when it's dark. Who is keeping it bright?",
-      "wrong": "Too bright, I can't sleep!",
-      "win": "The sun has set. Good night… zzz…"
+    "m16": {
+      "question": "Catch the bus",
+      "start": "Stop! Wait for me!",
+      "partial": "Running, running!",
+      "hint": "Only Valera can run here. Hurry him along: fast, and many times.",
+      "wrong": "Not that! The bus is leaving!",
+      "win": "Made it! Phew… The early bird… I forget the rest."
     },
-    "17": {
-      "question": "Help the egg cross the road",
-      "hint": "Watch the traffic light. Cross only on green.",
-      "wrong": "Yikes! Not on red! And no standing on the road!",
-      "win": "We made it! Not a single crack."
+    "m17": {
+      "question": "Pay the fare",
+      "start": "My wallet has zero. Absolutely zero.",
+      "hint": "Valera has no money. Do you? Look at what's on the screen besides the bus.",
+      "wrong": "I told you, it's empty!",
+      "win": "Thanks, you saved me! I'll pay you back on payday."
     },
-    "18": {
-      "question": "How many triangles are in this figure?",
-      "hint": "Count the small ones. Then look at the whole figure.",
-      "wrong": "Count carefully, they are hiding!",
-      "win": "Five! The big one counts too."
+    "m18": {
+      "question": "Don't sleep through the stop",
+      "stop": "STOP",
+      "start": "Zzz… wake me at the factory…",
+      "hint": "Don't press Stop right away. Press it when the place Valera is going to shows up in the window.",
+      "wrong": "Hey, that's not my stop!",
+      "win": "The factory! We're here. Easy does it."
     },
-    "19": {
-      "question": "Turn on the light",
-      "start": "It's dark! Are you there?",
-      "hint": "Move your finger over the dark, it shines. Look for the thing that turns lights on.",
-      "wrong": "I can't see what you are pressing!",
-      "win": "Let there be light! I wasn't scared. Almost."
+    "m19": {
+      "question": "The guard won't let Valera in without a pass",
+      "start": "My pass… I had a pass somewhere…",
+      "hint": "Valera has the pass on him. It's just hanging the wrong way round.",
+      "wrong": "No pass, no entry. I know!",
+      "win": "There it is! Around my neck the whole time."
     },
-    "20": {
-      "question": "DO NOT TAP THE EGG!",
-      "start": "Don't touch! Don't touch anything at all!",
-      "hint": "Sometimes the best move is no move. Hands off and wait.",
-      "wrong": "I asked you not to! Let's start over.",
-      "win": "Phew… Oh. I think I cracked a little. Is that normal?"
+    "m20": {
+      "question": "The boss is coming! Make it look like Valera has been working for hours",
+      "start": "Zzz… I'm not sleeping, I'm thinking…",
+      "helmetOn": "Hard hat on!",
+      "wrenchOn": "Tool in hand. Very serious.",
+      "pillowOff": "What pillow? There was no pillow.",
+      "hint": "A working man wears a hard hat and holds a tool. And there should be nothing soft nearby.",
+      "wrong": "No time for tea! The boss is coming!",
+      "win": "\"Valera, here already? Well done!\" Beautiful!"
     },
     "s1": {
       "question": "Who is the main character here?",
       "button": "This button",
       "questionOption": "The question",
-      "hint": "The main character is quiet and stands off to the side.",
-      "win": "It's me! I'm the main character! How nice!"
+      "hint": "The main character stands off to the side, modestly quiet.",
+      "wrong": "That hurts, you know.",
+      "win": "Me! Of course it's me! Thanks for noticing."
     },
     "s2": {
       "question": "Who is rustling in the bushes?",
-      "start": "Eek! Someone is there!",
+      "start": "Someone is there. I'm not scared. Almost.",
       "hint": "One bush is moving. You can rub a bush away with your finger.",
       "wrong": "The rustling is not there!",
-      "win": "It's my friend! And I was all ready to be scared."
+      "win": "Whiskers! How did you get here?"
     },
     "s3": {
-      "question": "The egg is having a nightmare. Rub it out",
-      "start": "I'm dreaming of something awful…",
-      "hint": "What does an egg fear most of all? Rub that with your finger.",
-      "wrong": "No, no, that was the nice part! Bring it back!",
-      "win": "The frying pan is gone! Now it's balloons all the way."
+      "question": "Valera is having a nightmare. Rub it out",
+      "start": "Zzz… no… not that…",
+      "hint": "What does Valera hate every single morning? Rub it with your finger.",
+      "wrong": "No, no, that's the nice part! Bring it back!",
+      "win": "The alarm clock is gone! Back to sleep. Beautiful."
     },
     "s4": {
       "question": "Scratch off the grey layer",
-      "start": "A lottery! What's in there?",
+      "start": "A lottery! I'm about to be rich.",
       "hint": "The grey layer rubs off like a scratch card. Rub it with your finger.",
-      "win": "The grand prize is… another egg! Well, not bad."
+      "win": "A sock?! Well, now I have six."
     }
-  },
-  "wardrobe": {
-    "info": "Rare hats take 3 ad views each",
-    "noCoins": "Not enough coins!",
-    "equip": "Wear",
-    "equipped": "Wearing",
-    "ad": "Ad {n}/{max}"
-  },
-  "hats": {
-    "cap": "Cap",
-    "bow": "Bow",
-    "beanie": "Bobble hat",
-    "tophat": "Top hat",
-    "wizard": "Wizard hat",
-    "crown": "Crown",
-    "chef": "Chef's hat",
-    "flower": "Flower"
   }
 }
