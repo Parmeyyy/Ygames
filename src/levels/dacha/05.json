@@ -1,0 +1,55 @@
+{
+  "id": "g5",
+  "type": "erase",
+  "objects": [
+    {
+      "id": "soil",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.55,
+      "w": 1,
+      "h": 0.82,
+      "color": "0xa9713a",
+      "inert": true
+    },
+    {
+      "id": "weeds",
+      "shape": "weeds",
+      "x": 0.5,
+      "y": 0.34,
+      "size": 440,
+      "erasable": true
+    },
+    {
+      "id": "c1",
+      "shape": "carrot",
+      "x": 0.2,
+      "y": 0.78,
+      "size": 120,
+      "erasable": true,
+      "wrong": true
+    },
+    {
+      "id": "c2",
+      "shape": "carrot",
+      "x": 0.5,
+      "y": 0.8,
+      "size": 120,
+      "erasable": true,
+      "wrong": true
+    },
+    {
+      "id": "c3",
+      "shape": "carrot",
+      "x": 0.8,
+      "y": 0.78,
+      "size": 120,
+      "erasable": true,
+      "wrong": true
+    }
+  ],
+  "erase": {
+    "target": "weeds",
+    "percent": 0.5
+  }
+}

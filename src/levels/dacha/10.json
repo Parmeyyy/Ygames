@@ -1,0 +1,83 @@
+{
+  "id": "g10",
+  "type": "combine",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "hot",
+      "shape": "faucetDry",
+      "x": 0.26,
+      "y": 0.26,
+      "size": 230,
+      "inert": true
+    },
+    {
+      "id": "hotMark",
+      "shape": "dot",
+      "at": [
+        "hot",
+        -0.3,
+        -0.7
+      ],
+      "size": 54,
+      "color": "0xd63d3d",
+      "inert": true
+    },
+    {
+      "id": "hotZone",
+      "shape": "zone",
+      "at": [
+        "hot",
+        0.36,
+        0.7
+      ],
+      "box": [
+        0.9,
+        0.7
+      ]
+    },
+    {
+      "id": "cold",
+      "shape": "faucetDry",
+      "x": 0.72,
+      "y": 0.26,
+      "size": 230,
+      "inert": true
+    },
+    {
+      "id": "coldMark",
+      "shape": "dot",
+      "at": [
+        "cold",
+        -0.3,
+        -0.7
+      ],
+      "size": 54,
+      "color": "0x4aa3df",
+      "inert": true
+    },
+    {
+      "id": "jar",
+      "shape": "jarClosed",
+      "x": 0.5,
+      "y": 0.82,
+      "size": 150
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "jar",
+      "onto": "hotZone",
+      "keep": [
+        0,
+        0.15
+      ],
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

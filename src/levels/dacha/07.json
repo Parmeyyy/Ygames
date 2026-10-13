@@ -1,0 +1,32 @@
+{
+  "id": "g7",
+  "type": "tap",
+  "objects": [
+    {
+      "id": "granny",
+      "shape": "granny",
+      "x": 0.5,
+      "y": 0.36,
+      "size": 160
+    },
+    {
+      "id": "bbq",
+      "shape": "button",
+      "labelKey": "bbq",
+      "x": 0.26,
+      "y": 0.88,
+      "w": 0.46,
+      "h": 0.16
+    },
+    {
+      "id": "weeding",
+      "shape": "button",
+      "labelKey": "weeding",
+      "x": 0.74,
+      "y": 0.88,
+      "w": 0.46,
+      "h": 0.16
+    }
+  ],
+  "answer": "granny"
+}

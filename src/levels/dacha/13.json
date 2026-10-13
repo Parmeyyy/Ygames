@@ -1,0 +1,36 @@
+{
+  "id": "g13",
+  "type": "flashlight",
+  "background": "night",
+  "objects": [
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.24,
+      "y": 0.76,
+      "size": 150
+    },
+    {
+      "id": "logs",
+      "shape": "logs",
+      "x": 0.7,
+      "y": 0.82,
+      "size": 240
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.3,
+      "y": 0.26,
+      "size": 190
+    },
+    {
+      "id": "switch",
+      "shape": "switch",
+      "x": 0.82,
+      "y": 0.24,
+      "size": 80
+    }
+  ],
+  "answer": "switch"
+}

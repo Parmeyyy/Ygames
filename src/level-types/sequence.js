@@ -290,6 +290,8 @@ export function buildSequence(scene, level, field, api) {
 
     const onDown = (pointer) => {
       if (state.done.includes(index) || scene.solved || api.isUiPress([]) || !near(pointer)) return;
+      // пока до вращения не дошла очередь, круговые движения не считаются (объект ещё могут тащить)
+      if (ordered && index !== pending()[0].index) return;
       last = angleTo(pointer);
     };
     const onMove = (pointer) => {

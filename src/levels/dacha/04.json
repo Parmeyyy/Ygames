@@ -1,0 +1,43 @@
+{
+  "id": "g4",
+  "type": "sequence",
+  "ordered": false,
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "hammock",
+      "shape": "hammock",
+      "x": 0.42,
+      "y": 0.72,
+      "size": 380
+    },
+    {
+      "id": "shovel",
+      "shape": "shovel",
+      "x": 0.68,
+      "y": 0.26,
+      "size": 260
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "shovel",
+      "onto": "hero:hand",
+      "then": {
+        "hero": {
+          "hand": "shovel",
+          "mood": "sly"
+        },
+        "say": "shovel"
+      }
+    },
+    {
+      "do": "offscreen",
+      "drag": "hammock",
+      "then": {
+        "say": "hammock"
+      }
+    }
+  ]
+}

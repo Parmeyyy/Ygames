@@ -1,0 +1,75 @@
+{
+  "id": "g9",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "jar",
+      "shape": "glassJar",
+      "x": 0.55,
+      "y": 0.66,
+      "size": 230,
+      "inert": true
+    },
+    {
+      "id": "cucumbers",
+      "shape": "cucumbers",
+      "x": 0.18,
+      "y": 0.24,
+      "size": 170
+    },
+    {
+      "id": "dill",
+      "shape": "dill",
+      "x": 0.5,
+      "y": 0.16,
+      "size": 130
+    },
+    {
+      "id": "lid",
+      "shape": "lid",
+      "x": 0.83,
+      "y": 0.24,
+      "size": 170
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "cucumbers",
+      "onto": "jar",
+      "then": {
+        "swap": {
+          "jar": "glassJarFull"
+        },
+        "say": "cucumbers"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "dill",
+      "onto": "jar",
+      "early": "earlyDill",
+      "then": {
+        "say": "dill"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "lid",
+      "onto": "jar",
+      "keep": [
+        0,
+        -0.56
+      ],
+      "early": "earlyLid",
+      "then": {
+        "say": "lid"
+      }
+    },
+    {
+      "do": "rotate",
+      "target": "lid",
+      "turns": 1
+    }
+  ]
+}

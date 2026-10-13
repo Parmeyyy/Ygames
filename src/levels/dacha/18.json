@@ -1,0 +1,108 @@
+{
+  "id": "g18",
+  "type": "tap",
+  "hideCoins": true,
+  "objects": [
+    {
+      "id": "tree",
+      "shape": "appleTree",
+      "x": 0.5,
+      "y": 0.32,
+      "size": 340
+    },
+    {
+      "id": "a1",
+      "shape": "apple",
+      "at": [
+        "tree",
+        -0.22,
+        -0.14
+      ],
+      "size": 60,
+      "inert": true
+    },
+    {
+      "id": "a2",
+      "shape": "apple",
+      "at": [
+        "tree",
+        0.2,
+        -0.2
+      ],
+      "size": 60,
+      "inert": true
+    },
+    {
+      "id": "a3",
+      "shape": "apple",
+      "at": [
+        "tree",
+        0.02,
+        0.0
+      ],
+      "size": 60,
+      "inert": true
+    },
+    {
+      "id": "a4",
+      "shape": "apple",
+      "at": [
+        "tree",
+        -0.62,
+        0.3
+      ],
+      "size": 60,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "a5",
+      "shape": "apple",
+      "at": [
+        "tree",
+        0.62,
+        0.36
+      ],
+      "size": 60,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "n3",
+      "label": "3",
+      "x": 0.14,
+      "y": 0.9,
+      "size": 110
+    },
+    {
+      "id": "n4",
+      "label": "4",
+      "x": 0.38,
+      "y": 0.9,
+      "size": 110
+    },
+    {
+      "id": "n5",
+      "label": "5",
+      "x": 0.62,
+      "y": 0.9,
+      "size": 110
+    },
+    {
+      "id": "n6",
+      "label": "6",
+      "x": 0.86,
+      "y": 0.9,
+      "size": 110
+    }
+  ],
+  "answer": "n5",
+  "reveal": {
+    "on": "tree",
+    "count": 3,
+    "show": [
+      "a4",
+      "a5"
+    ]
+  }
+}

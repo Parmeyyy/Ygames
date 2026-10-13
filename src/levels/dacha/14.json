@@ -1,0 +1,48 @@
+{
+  "id": "g14",
+  "type": "catch",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "path",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.66,
+      "w": 1,
+      "h": 0.14,
+      "color": "0xe0b070",
+      "inert": true
+    },
+    {
+      "id": "spot",
+      "shape": "zone",
+      "x": 0.72,
+      "y": 0.6,
+      "w": 0.22,
+      "h": 0.3
+    },
+    {
+      "id": "walker",
+      "shape": "boots",
+      "x": 0.1,
+      "y": 0.58,
+      "size": 130,
+      "inert": true
+    },
+    {
+      "id": "rake",
+      "shape": "rake",
+      "x": 0.72,
+      "y": 0.6,
+      "size": 210
+    }
+  ],
+  "catch": {
+    "fall": "walker",
+    "onto": "spot",
+    "with": "rake",
+    "avoid": true,
+    "ms": 3200,
+    "delay": 900
+  }
+}

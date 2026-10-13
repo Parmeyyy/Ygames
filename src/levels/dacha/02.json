@@ -1,0 +1,115 @@
+{
+  "id": "g2",
+  "type": "sequence",
+  "ordered": false,
+  "objects": [
+    {
+      "id": "soil",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.55,
+      "w": 1,
+      "h": 0.82,
+      "color": "0xa9713a",
+      "inert": true
+    },
+    {
+      "id": "st1",
+      "shape": "stone",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 110,
+      "wrong": true
+    },
+    {
+      "id": "st2",
+      "shape": "stone",
+      "x": 0.18,
+      "y": 0.86,
+      "size": 100,
+      "wrong": true
+    },
+    {
+      "id": "h1",
+      "shape": "hole",
+      "x": 0.22,
+      "y": 0.26,
+      "size": 120
+    },
+    {
+      "id": "h2",
+      "shape": "hole",
+      "x": 0.76,
+      "y": 0.24,
+      "size": 120
+    },
+    {
+      "id": "h3",
+      "shape": "hole",
+      "x": 0.24,
+      "y": 0.58,
+      "size": 120
+    },
+    {
+      "id": "h4",
+      "shape": "hole",
+      "x": 0.78,
+      "y": 0.6,
+      "size": 120
+    },
+    {
+      "id": "h5",
+      "shape": "hole",
+      "x": 0.56,
+      "y": 0.86,
+      "size": 120
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "h1",
+      "then": {
+        "swap": {
+          "h1": "sprout"
+        }
+      }
+    },
+    {
+      "do": "tap",
+      "target": "h2",
+      "then": {
+        "swap": {
+          "h2": "sprout"
+        }
+      }
+    },
+    {
+      "do": "tap",
+      "target": "h3",
+      "then": {
+        "swap": {
+          "h3": "sprout"
+        }
+      }
+    },
+    {
+      "do": "tap",
+      "target": "h4",
+      "then": {
+        "swap": {
+          "h4": "sprout"
+        }
+      }
+    },
+    {
+      "do": "tap",
+      "target": "h5",
+      "then": {
+        "swap": {
+          "h5": "sprout"
+        }
+      }
+    }
+  ]
+}

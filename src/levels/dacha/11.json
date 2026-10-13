@@ -1,0 +1,86 @@
+{
+  "id": "g11",
+  "type": "combine",
+  "heroHat": "none",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "berry1",
+      "shape": "strawberry",
+      "x": 0.2,
+      "y": 0.86,
+      "size": 90,
+      "inert": true
+    },
+    {
+      "id": "berry2",
+      "shape": "strawberry",
+      "x": 0.38,
+      "y": 0.9,
+      "size": 90,
+      "inert": true
+    },
+    {
+      "id": "scarecrow",
+      "shape": "scarecrow",
+      "x": 0.62,
+      "y": 0.42,
+      "size": 260,
+      "inert": true
+    },
+    {
+      "id": "head",
+      "shape": "zone",
+      "at": [
+        "scarecrow",
+        0,
+        -0.26
+      ],
+      "box": [
+        0.7,
+        0.3
+      ]
+    },
+    {
+      "id": "crow",
+      "shape": "crow",
+      "at": [
+        "scarecrow",
+        -0.75,
+        0.2
+      ],
+      "size": 120,
+      "inert": true
+    },
+    {
+      "id": "cap",
+      "shape": "item",
+      "item": "cap",
+      "at": [
+        "hero:head",
+        0,
+        -0.5
+      ],
+      "size": 130
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "cap",
+      "onto": "head",
+      "keep": [
+        0,
+        -0.3
+      ],
+      "then": {
+        "hide": [
+          "crow"
+        ],
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

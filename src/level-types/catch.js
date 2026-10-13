@@ -4,15 +4,19 @@ import { buildObjects, makeDraggable } from './objects.js';
 //   catch: { fall, onto, with, ms, delay }
 //     fall  — id падающего объекта, onto — id места, куда он упадёт,
 //     with  — id предмета, который нужно туда подложить,
-//     ms    — сколько длится падение, delay — пауза перед каждым падением
-// Если к концу падения предмет лежит на месте — уровень решён. Иначе ошибка, и всё повторяется.
+//     ms    — сколько длится падение, delay — пауза перед каждым падением,
+//     avoid — наоборот: предмет with уже лежит на месте, и его нужно успеть убрать
+// Если к концу движения предмет лежит на месте (или, при avoid, убран) — уровень решён.
+// Иначе ошибка, и всё повторяется.
 export function buildCatch(scene, level, field, api) {
   const objects = buildObjects(scene, level, field, api);
-  const { fall, onto, with: catcherId, ms, delay = 1000 } = level.catch;
+  const { fall, onto, with: catcherId, ms, delay = 1000, avoid = false } = level.catch;
   const falling = objects.get(fall);
   const spot = objects.get(onto);
   const catcher = objects.get(catcherId);
-  const top = falling.object.y;
+  const start = { x: falling.object.x, y: falling.object.y };
+  // куда прилетает объект: падающий ложится на место сверху, идущий доходит до него по земле
+  const end = { x: spot.object.x, y: avoid ? start.y : spot.object.y - falling.h * 0.3 };
   let timer = null;
   let tween = null;
 
@@ -26,16 +30,17 @@ export function buildCatch(scene, level, field, api) {
 
   const drop = () => {
     if (scene.solved) return;
-    falling.object.setPosition(falling.object.x, top).setAngle(0);
+    falling.object.setPosition(start.x, start.y).setAngle(0);
     timer = scene.time.delayedCall(delay, () => {
       tween = scene.tweens.add({
         targets: falling.object,
-        y: spot.object.y - falling.h * 0.3,
-        angle: 40,
+        x: end.x,
+        y: end.y,
+        angle: avoid ? 0 : 40,
         duration: ms,
-        ease: 'Quad.easeIn',
+        ease: avoid ? 'Linear' : 'Quad.easeIn',
         onComplete: () => {
-          if (placed()) {
+          if (placed() !== avoid) {
             api.correct();
           } else {
             api.wrong();
@@ -46,7 +51,7 @@ export function buildCatch(scene, level, field, api) {
     });
   };
 
-  if (scene.solved) falling.object.setPosition(falling.object.x, spot.object.y - falling.h * 0.3);
+  if (scene.solved) falling.object.setPosition(end.x, end.y);
   else drop();
 
   return {

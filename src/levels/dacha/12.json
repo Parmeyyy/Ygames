@@ -1,0 +1,50 @@
+{
+  "id": "g12",
+  "type": "sequence",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "shed",
+      "shape": "door",
+      "x": 0.28,
+      "y": 0.42,
+      "size": 150,
+      "wrong": true
+    },
+    {
+      "id": "mat",
+      "shape": "rug",
+      "x": 0.28,
+      "y": 0.9,
+      "size": 240,
+      "draggable": true
+    },
+    {
+      "id": "pot",
+      "shape": "flowerpot",
+      "x": 0.72,
+      "y": 0.82,
+      "size": 150,
+      "draggable": true
+    },
+    {
+      "id": "birdhouse",
+      "shape": "birdhouse",
+      "x": 0.74,
+      "y": 0.28,
+      "size": 190
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "birdhouse",
+      "then": {
+        "hero": {
+          "hand": "keys",
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

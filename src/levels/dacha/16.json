@@ -1,0 +1,54 @@
+{
+  "id": "g16",
+  "type": "tap",
+  "objects": [
+    {
+      "id": "granny",
+      "shape": "granny",
+      "x": 0.84,
+      "y": 0.28,
+      "size": 100,
+      "inert": true
+    },
+    {
+      "id": "bush",
+      "shape": "bush",
+      "x": 0.22,
+      "y": 0.26,
+      "size": 220
+    },
+    {
+      "id": "mat",
+      "shape": "rug",
+      "x": 0.24,
+      "y": 0.88,
+      "size": 220
+    },
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.82,
+      "y": 0.84,
+      "size": 140
+    },
+    {
+      "id": "jar",
+      "shape": "glassJarFull",
+      "x": 0.5,
+      "y": 0.58,
+      "size": 250,
+      "inert": true
+    },
+    {
+      "id": "glasses",
+      "shape": "glasses",
+      "at": [
+        "jar",
+        0,
+        0.16
+      ],
+      "size": 110
+    }
+  ],
+  "answer": "glasses"
+}

@@ -743,6 +743,159 @@
       "wrong": "There's no fish in the wallet.",
       "win": "\"Caught it myself!\" \"I believe you.\" Beautiful!"
     },
+    "g1": {
+      "question": "Water the garden bed",
+      "start": "The dacha. Mother-in-law said: water it.",
+      "hint": "The water is in the can. Carry it to the bed.",
+      "wrong": "Wrong place to pour!",
+      "win": "Watered! The carrots say thanks."
+    },
+    "g2": {
+      "question": "Plant 5 potatoes",
+      "start": "Five holes, five potatoes. Seems simple.",
+      "hint": "Potatoes go into holes. Leave the stones alone.",
+      "wrong": "You can't plant in a stone!",
+      "win": "Planted! A bucket by autumn. Or two."
+    },
+    "g3": {
+      "question": "Find the potato beetle",
+      "start": "He's here somewhere. Eating my potatoes!",
+      "hint": "Ladybirds are red with dots. The pest is striped.",
+      "wrong": "That's a ladybird. She's a good one!",
+      "win": "Got you, stripes!"
+    },
+    "g4": {
+      "question": "Mother-in-law is coming! Look busy",
+      "start": "Zzz… I only lay down for a minute…",
+      "shovel": "Shovel in hand. A worker already.",
+      "hammock": "What hammock? There was no hammock.",
+      "hint": "A worker holds a tool. And the resting place must vanish from sight.",
+      "wrong": "Not that! She's at the gate!",
+      "win": "\"Valera, well done!\" Beautiful."
+    },
+    "g5": {
+      "question": "Weed the garden bed",
+      "start": "The weeds are taller than the carrots. Not good.",
+      "hint": "Weeds rub out with a finger. Don't rub out the carrots.",
+      "wrong": "That's a carrot! She'll kill me!",
+      "win": "Clean! Not a single weed."
+    },
+    "g6": {
+      "question": "Get water from the well",
+      "start": "The bucket is down there. So is the water.",
+      "hint": "The bucket comes up with the crank. Turn the handle round.",
+      "wrong": "Wrong way: the bucket sank!",
+      "win": "Water! Cold enough to hurt your teeth."
+    },
+    "g7": {
+      "question": "Barbecue or weeding?",
+      "bbq": "Barbecue",
+      "weeding": "Weeding",
+      "start": "I'd pick the barbecue. But I'm not the one who picks.",
+      "hint": "At the dacha Valera doesn't decide. Ask the one who does.",
+      "wrong": "\"And who asked you?\"",
+      "win": "\"Weeding first, barbecue later.\" Fair enough."
+    },
+    "g8": {
+      "question": "How many beetles are on the potato plant and beyond?",
+      "start": "Counting pests. One went missing.",
+      "hint": "One beetle left the bush. Look where it landed.",
+      "wrong": "That doesn't add up. Did you count the one on me?",
+      "win": "Four! One is riding on my cap."
+    },
+    "g9": {
+      "question": "Pickle the cucumbers",
+      "start": "Mother-in-law's recipe. No turning back.",
+      "cucumbers": "Cucumbers in. Greens next.",
+      "dill": "Dill is in. Now the lid.",
+      "lid": "Lid on. Just twist it shut.",
+      "earlyDill": "Cucumbers first, then dill!",
+      "earlyLid": "Too early to close: the jar isn't full.",
+      "hint": "Cucumbers, dill, lid, and then twist it round.",
+      "wrong": "That's not the recipe!",
+      "win": "Pickled! I'll open it in winter and remember summer."
+    },
+    "g10": {
+      "question": "The jar won't open",
+      "start": "I sealed it properly. Now I can't open it myself.",
+      "hint": "A lid expands with heat. Which tap is the hot one?",
+      "wrong": "Cold only makes it worse!",
+      "win": "Pop! It opened. Physics!"
+    },
+    "g11": {
+      "question": "A crow is stealing the strawberries",
+      "start": "Shoo! She's not afraid of me.",
+      "hint": "A scarecrow without a hat doesn't scare a crow. And Valera has a hat.",
+      "wrong": "Not there!",
+      "win": "Gone! A scarecrow in a cap means business."
+    },
+    "g12": {
+      "question": "Find the shed key",
+      "start": "Mother-in-law hid the key. In plain sight, she said.",
+      "hint": "Nothing under the mat. Look higher, where birds live.",
+      "wrong": "Locked! We need the key.",
+      "win": "In the birdhouse! The starlings were guarding it."
+    },
+    "g13": {
+      "question": "Turn on the light in the bathhouse",
+      "start": "The bathhouse is pitch dark.",
+      "hint": "Move your finger over the dark, it shines. Look for a switch on the wall.",
+      "wrong": "Not that!",
+      "win": "Light! Now we can steam."
+    },
+    "g14": {
+      "question": "A rake in the way!",
+      "start": "Just walking, minding my own business…",
+      "hint": "Someone will step on the rake unless it's moved. Drag it off the path.",
+      "wrong": "Bam! Right in the forehead. Oh, come on!",
+      "win": "Passed! The rake didn't get me today."
+    },
+    "g15": {
+      "question": "Line up the garden gnomes by height",
+      "start": "Mother-in-law likes order. Even among gnomes.",
+      "hint": "The stands differ in height too. The small one gets the small stand.",
+      "wrong": "That's not by height!",
+      "win": "Like a parade! She's pleased."
+    },
+    "g16": {
+      "question": "Mother-in-law lost her glasses",
+      "start": "\"Valera, where are my glasses?\" Me again.",
+      "hint": "The glasses fell where they're hard to see: into the cucumber water.",
+      "wrong": "Not here.",
+      "win": "In the pickle jar! Salty glasses."
+    },
+    "g17": {
+      "question": "Mother-in-law: \"Bring what I asked for!\"",
+      "start": "What did she ask for? I wasn't listening.",
+      "hint": "Asking is scary. But the answer is drawn on her apron.",
+      "wrong": "\"Is that what I asked for?!\"",
+      "win": "The watering can! Good guess. I mean, I remembered."
+    },
+    "g18": {
+      "question": "How many apples are on the apple tree?",
+      "start": "Counting apples. The leaves are in the way.",
+      "hint": "Not every apple is visible. Shake the tree, several times.",
+      "wrong": "That doesn't add up. Try shaking it!",
+      "win": "Five! Two were hiding in the leaves."
+    },
+    "g19": {
+      "question": "Rain! Take the laundry in",
+      "start": "It's pouring! The laundry is getting wet!",
+      "hint": "All the laundry goes into the house. One sock fell behind the fence: a plank there comes loose.",
+      "wrong": "Not there! It's getting soaked!",
+      "win": "Made it! Almost dry."
+    },
+    "g20": {
+      "question": "Mother-in-law: \"Will you stay another week?\"",
+      "word": "week",
+      "yes1": "Yes",
+      "yes2": "Sure",
+      "yes3": "Of course",
+      "start": "Every answer here is \"yes\"…",
+      "hint": "If you can't say no, remove the scariest word from the question. Far away, past the edge of the screen.",
+      "wrong": "\"Lovely, stay then!\" Oh no, no…",
+      "win": "\"Will you stay another?\" \"Another cup of tea!\" Freedom!"
+    },
     "k1": {
       "question": "Valera wants dumplings at night. Find the fridge",
       "start": "It's dark. And I'm hungry.",

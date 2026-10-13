@@ -1,0 +1,57 @@
+{
+  "id": "g20",
+  "type": "wordDrag",
+  "word": "word",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "granny",
+      "shape": "granny",
+      "x": 0.5,
+      "y": 0.32,
+      "size": 170,
+      "inert": true
+    },
+    {
+      "id": "yes1",
+      "shape": "button",
+      "labelKey": "yes1",
+      "x": 0.18,
+      "y": 0.88,
+      "w": 0.3,
+      "h": 0.16,
+      "wrong": true
+    },
+    {
+      "id": "yes2",
+      "shape": "button",
+      "labelKey": "yes2",
+      "x": 0.5,
+      "y": 0.88,
+      "w": 0.3,
+      "h": 0.16,
+      "wrong": true
+    },
+    {
+      "id": "yes3",
+      "shape": "button",
+      "labelKey": "yes3",
+      "x": 0.82,
+      "y": 0.88,
+      "w": 0.3,
+      "h": 0.16,
+      "wrong": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "offscreen",
+      "drag": "word",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

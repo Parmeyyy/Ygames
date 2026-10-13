@@ -50,7 +50,8 @@ export class Hero extends Phaser.GameObjects.Container {
   //   socks: true         — вместо тапок носки
   //   glasses: "forehead" | "eyes"
   //   pass: "back" | "front" — пропуск на шнурке: перевёрнут или лицом
-  //   dirty: true         — пятна на шапке, sweat: true — капли пота, hook: true — крючок на кепке
+  //   dirty: true         — пятна на шапке, sweat: true — капли пота, hook: true — крючок на кепке,
+  //   beetle: true        — колорадский жук на кепке
   constructor(scene, x, y, height, mood = 'idle', options = {}) {
     const { item = progress.hat, top = progress.top, pants = progress.pants, hand = progress.hand, props = {} } = options;
     super(scene, x, y);
@@ -226,6 +227,7 @@ export class Hero extends Phaser.GameObjects.Container {
     const size = k * 0.46;
     const top = -k * 0.87;
     this.hatLayer.removeAll(true);
+    if (this.item === 'none') return; // уровень снял с Валеры кепку
     const kind = getItem(this.item)?.kind;
     const hat = !this.item || kind === 'badge' ? 'cap' : this.item;
     for (const id of kind === 'badge' ? [hat, this.item] : [hat]) {
@@ -265,6 +267,15 @@ export class Hero extends Phaser.GameObjects.Container {
         g.lineBetween(-k * 0.1, -k * 1.0, -k * 0.1, -k * 0.92);
         g.beginPath().arc(-k * 0.135, -k * 0.92, k * 0.035, 0, Math.PI).strokePath();
       }
+    }
+
+    if (this.props.beetle) {
+      const [x, y] = [-k * 0.09, -k * 0.94];
+      g.lineStyle(stroke, COLORS.outline, 1);
+      g.fillStyle(0xf2d16b, 1).fillEllipse(x, y, k * 0.07, k * 0.08);
+      g.strokeEllipse(x, y, k * 0.07, k * 0.08);
+      g.fillStyle(COLORS.outline, 1).fillCircle(x, y - k * 0.045, k * 0.018);
+      for (const dx of [-0.018, 0, 0.018]) g.fillRect(x + dx * k - k * 0.004, y - k * 0.03, k * 0.008, k * 0.06);
     }
 
     if (this.props.sweat) {

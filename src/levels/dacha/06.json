@@ -1,0 +1,31 @@
+{
+  "id": "g6",
+  "type": "rotate",
+  "objects": [
+    {
+      "id": "well",
+      "shape": "well",
+      "x": 0.45,
+      "y": 0.58,
+      "size": 340,
+      "inert": true
+    },
+    {
+      "id": "crank",
+      "shape": "crank",
+      "at": [
+        "well",
+        0.62,
+        -0.1
+      ],
+      "size": 150
+    }
+  ],
+  "steps": [
+    {
+      "do": "rotate",
+      "target": "crank",
+      "turns": 1.5
+    }
+  ]
+}

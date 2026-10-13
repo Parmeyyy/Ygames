@@ -514,8 +514,9 @@ function drawSpray(g, s) {
 
 // ——— свидание ———
 
-// Девушка: цвет платья и красная деталь — шарф, шляпка или сумка
-const lady = (dress, { scarf = false, hat = false, bag = false } = {}) => (g, s) => {
+// Девушка: цвет платья и красная деталь — шарф, шляпка или сумка.
+// hair — цвет волос, apron — фартук (тёща)
+const lady = (dress, { scarf = false, hat = false, bag = false, hair = 0x6b4423, apron = false } = {}) => (g, s) => {
   const red = 0xd63d3d;
   line(g, s);
   box(g, s, 0xf2c9a0, -0.16, 0.5, 0.1, 0.4, 0.04);
@@ -526,9 +527,13 @@ const lady = (dress, { scarf = false, hat = false, bag = false } = {}) => (g, s)
   g.fillStyle(dress, 1).fillPoints(skirt, true);
   g.strokePoints(skirt, true);
   // волосы за головой, потом лицо
-  g.fillStyle(0x6b4423, 1).fillEllipse(0, -s * 0.5, s * 0.58, s * 0.62);
+  g.fillStyle(hair, 1).fillEllipse(0, -s * 0.5, s * 0.58, s * 0.62);
   disc(g, s, 0xf2c9a0, 0, -0.56, 0.22);
-  g.fillStyle(0x6b4423, 1).slice(0, -s * 0.6, s * 0.22, Math.PI, 0).fillPath();
+  g.fillStyle(hair, 1).slice(0, -s * 0.6, s * 0.22, Math.PI, 0).fillPath();
+  if (apron) {
+    box(g, s, COLORS.white, -0.2, -0.16, 0.4, 0.6, 0.06);
+    disc(g, s, hair, 0, -0.84, 0.1);
+  }
   g.fillStyle(INK, 1).fillCircle(-s * 0.08, -s * 0.54, s * 0.022).fillCircle(s * 0.08, -s * 0.54, s * 0.022);
   g.beginPath().arc(0, -s * 0.48, s * 0.07, 0.15 * Math.PI, 0.85 * Math.PI).strokePath();
   if (scarf) {
@@ -971,6 +976,251 @@ function drawTag(g, s) {
   g.fillStyle(INK, 1).fillRect(-s * 0.3, -s * 0.12, s * 0.6, s * 0.07).fillRect(-s * 0.3, s * 0.06, s * 0.36, s * 0.06);
 }
 
+// ——— дача ———
+
+function drawWateringcan(g, s) {
+  line(g, s);
+  g.lineStyle(Math.max(5, s * 0.06), 0x3f8f5a, 1);
+  g.lineBetween(s * 0.2, -s * 0.02, s * 0.46, -s * 0.26);
+  g.beginPath().arc(-s * 0.3, 0, s * 0.18, 0.5 * Math.PI, 1.5 * Math.PI).strokePath();
+  line(g, s);
+  box(g, s, 0x5fad56, -0.26, -0.24, 0.5, 0.52, 0.06);
+  disc(g, s, 0x5fad56, 0.47, -0.28, 0.06);
+}
+
+// Грядка с ростками
+function drawGardenBed(g, s) {
+  line(g, s);
+  box(g, s, 0x8a5a2b, -0.5, -0.2, 1, 0.4, 0.06);
+  g.lineStyle(Math.max(3, s * 0.015), COLORS.success, 1);
+  for (const x of [-0.34, -0.12, 0.1, 0.32]) {
+    g.lineBetween(x * s, -s * 0.02, x * s, -s * 0.16);
+    g.lineBetween(x * s, -s * 0.1, (x + 0.05) * s, -s * 0.16);
+  }
+}
+
+function drawHole(g, s) {
+  line(g, s);
+  g.fillStyle(0x5a3a1e, 1).fillEllipse(0, 0, s * 0.9, s * 0.5);
+  g.strokeEllipse(0, 0, s * 0.9, s * 0.5);
+}
+
+function drawSprout(g, s) {
+  drawHole(g, s);
+  g.lineStyle(Math.max(4, s * 0.05), COLORS.success, 1).lineBetween(0, 0, 0, -s * 0.4);
+  g.fillStyle(COLORS.success, 1).fillEllipse(-s * 0.14, -s * 0.38, s * 0.26, s * 0.14).fillEllipse(s * 0.14, -s * 0.42, s * 0.26, s * 0.14);
+}
+
+// Жук: божья коровка или колорадский (полосатый)
+const bug = (colorado) => (g, s) => {
+  line(g, s);
+  disc(g, s, INK, 0, -0.3, 0.14);
+  g.fillStyle(colorado ? 0xf2d16b : 0xd63d3d, 1).fillEllipse(0, 0.04 * s, s * 0.62, s * 0.72);
+  g.strokeEllipse(0, 0.04 * s, s * 0.62, s * 0.72);
+  g.fillStyle(INK, 1);
+  if (colorado) {
+    for (const x of [-0.18, -0.06, 0.06, 0.18]) g.fillRect(x * s - s * 0.02, -s * 0.22, s * 0.04, s * 0.52);
+  } else {
+    g.lineBetween(0, -s * 0.3, 0, s * 0.38);
+    for (const [x, y] of [[-0.14, -0.08], [0.14, -0.08], [-0.12, 0.16], [0.12, 0.16]]) g.fillCircle(x * s, y * s, s * 0.055);
+  }
+};
+
+function drawShovel(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.46, -0.04, 0.6, 0.08, 0.03);
+  box(g, s, 0xa9713a, -0.5, -0.12, 0.08, 0.24, 0.03);
+  const blade = [[0.12, -0.16], [0.4, -0.16], [0.5, 0], [0.4, 0.16], [0.12, 0.16]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0x9aa5b1, 1).fillPoints(blade, true);
+  g.strokePoints(blade, true);
+}
+
+function drawHammock(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.5, -0.3, 0.05, 0.6, 0.02);
+  box(g, s, 0xa9713a, 0.45, -0.3, 0.05, 0.6, 0.02);
+  const cloth = [[-0.46, -0.22], [0.46, -0.22], [0.3, 0.1], [0, 0.18], [-0.3, 0.1]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0xff9ec4, 1).fillPoints(cloth, true);
+  g.strokePoints(cloth, true);
+  g.lineStyle(Math.max(2, s * 0.012), COLORS.white, 1);
+  for (const x of [-0.24, -0.08, 0.08, 0.24]) g.lineBetween(x * s, -s * 0.2, x * s * 0.9, s * 0.1);
+}
+
+function drawWeeds(g, s) {
+  g.lineStyle(Math.max(5, s * 0.022), 0x4c9644, 1);
+  for (let i = 0; i < 9; i += 1) {
+    const x = (-0.44 + i * 0.11) * s;
+    g.lineBetween(x, s * 0.22, x - s * 0.04, -s * 0.12);
+    g.lineBetween(x, s * 0.22, x + s * 0.05, -s * 0.2);
+    g.lineBetween(x, s * 0.22, x + s * 0.01, -s * 0.06);
+  }
+}
+
+function drawCarrot(g, s) {
+  line(g, s);
+  g.lineStyle(Math.max(4, s * 0.06), COLORS.success, 1);
+  g.lineBetween(0, -s * 0.2, -s * 0.16, -s * 0.48);
+  g.lineBetween(0, -s * 0.2, 0, -s * 0.5);
+  g.lineBetween(0, -s * 0.2, s * 0.16, -s * 0.48);
+  line(g, s);
+  g.fillStyle(COLORS.accent, 1).fillTriangle(-s * 0.2, -s * 0.2, s * 0.2, -s * 0.2, 0, s * 0.5);
+  g.strokeTriangle(-s * 0.2, -s * 0.2, s * 0.2, -s * 0.2, 0, s * 0.5);
+}
+
+function drawWell(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.36, -0.42, 0.06, 0.5, 0.01);
+  box(g, s, 0xa9713a, 0.3, -0.42, 0.06, 0.5, 0.01);
+  g.fillStyle(0xc0392b, 1).fillTriangle(-0.46 * s, -0.4 * s, 0.46 * s, -0.4 * s, 0, -0.6 * s);
+  g.strokeTriangle(-0.46 * s, -0.4 * s, 0.46 * s, -0.4 * s, 0, -0.6 * s);
+  box(g, s, 0x9aa5b1, -0.4, 0.06, 0.8, 0.36, 0.03);
+  g.lineBetween(-s * 0.4, s * 0.2, s * 0.4, s * 0.2);
+  box(g, s, 0x6e4520, -0.3, -0.14, 0.6, 0.06, 0.03);
+}
+
+// Ручка ворота: по изгибу видно, что она крутится
+function drawCrank(g, s) {
+  g.lineStyle(Math.max(7, s * 0.1), 0x6b6470, 1);
+  g.lineBetween(0, 0, s * 0.34, 0);
+  g.lineBetween(s * 0.34, 0, s * 0.34, -s * 0.34);
+  line(g, s);
+  disc(g, s, 0x9aa5b1, 0, 0, 0.12);
+  disc(g, s, 0xd63d3d, 0.34, -0.36, 0.1);
+}
+
+// Стеклянная банка: пустая, с огурцами, закрытая крышкой
+const glassJar = (full, closed) => (g, s) => {
+  line(g, s);
+  g.fillStyle(0xdff3f0, 0.9).fillRoundedRect(-s * 0.36, -s * 0.44, s * 0.72, s * 0.98, s * 0.12);
+  g.strokeRoundedRect(-s * 0.36, -s * 0.44, s * 0.72, s * 0.98, s * 0.12);
+  if (full) {
+    g.fillStyle(0x5fad56, 1);
+    for (const x of [-0.2, 0, 0.2]) g.fillRoundedRect(x * s - s * 0.08, -s * 0.2, s * 0.16, s * 0.64, s * 0.08);
+    g.fillStyle(0x4c9644, 1);
+    for (const [x, y] of [[-0.2, 0], [0, 0.2], [0.2, -0.04]]) g.fillCircle(x * s, y * s, s * 0.02);
+  }
+  box(g, s, 0xdff3f0, -0.3, -0.56, 0.6, 0.14, 0.04);
+  if (closed) box(g, s, COLORS.coin, -0.34, -0.62, 0.68, 0.16, 0.05);
+};
+
+function drawCucumbers(g, s) {
+  line(g, s);
+  for (const [x, y, w] of [[-0.44, -0.24, 0.8], [-0.36, -0.02, 0.84], [-0.46, 0.2, 0.78]]) box(g, s, 0x5fad56, x, y, w, 0.18, 0.09);
+}
+
+function drawDill(g, s) {
+  g.lineStyle(Math.max(4, s * 0.035), 0x4c9644, 1);
+  g.lineBetween(0, s * 0.46, 0, -s * 0.1);
+  for (const angle of [-0.9, -0.45, 0, 0.45, 0.9]) {
+    const x = Math.sin(angle) * s * 0.4;
+    const y = -s * 0.1 - Math.cos(angle) * s * 0.34;
+    g.lineBetween(0, -s * 0.1, x, y);
+    g.fillStyle(0x7fb069, 1).fillCircle(x, y, s * 0.06);
+  }
+}
+
+function drawLid(g, s) {
+  line(g, s);
+  g.fillStyle(COLORS.coin, 1).fillEllipse(0, 0, s * 0.94, s * 0.4);
+  g.strokeEllipse(0, 0, s * 0.94, s * 0.4);
+  g.lineStyle(Math.max(3, s * 0.03), 0xc98a00, 1).lineBetween(-s * 0.3, 0, s * 0.3, 0);
+}
+
+function drawScarecrow(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.03, -0.2, 0.06, 1.2, 0.02);
+  box(g, s, 0xa9713a, -0.46, -0.14, 0.92, 0.06, 0.02);
+  box(g, s, 0x4a6fa5, -0.24, -0.2, 0.48, 0.54, 0.05);
+  disc(g, s, 0xf2d16b, 0, -0.42, 0.22);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.08, -s * 0.46, s * 0.025).fillCircle(s * 0.08, -s * 0.46, s * 0.025);
+  g.beginPath().arc(0, -s * 0.38, s * 0.08, 0.15 * Math.PI, 0.85 * Math.PI).strokePath();
+}
+
+function drawCrow(g, s) {
+  line(g, s);
+  g.fillStyle(0x3a2e39, 1).fillEllipse(s * 0.04, s * 0.06, s * 0.7, s * 0.44);
+  g.fillCircle(-s * 0.26, -s * 0.14, s * 0.17);
+  g.fillTriangle(s * 0.3, 0, s * 0.5, -s * 0.12, s * 0.46, s * 0.12);
+  g.fillStyle(COLORS.accent, 1).fillTriangle(-s * 0.4, -s * 0.16, -s * 0.54, -s * 0.1, -s * 0.4, -s * 0.06);
+  g.fillStyle(COLORS.white, 1).fillCircle(-s * 0.3, -s * 0.18, s * 0.035);
+}
+
+function drawStrawberry(g, s) {
+  line(g, s);
+  const berry = [[-0.34, -0.2], [0.34, -0.2], [0.24, 0.2], [0, 0.46], [-0.24, 0.2]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0xe8527a, 1).fillPoints(berry, true);
+  g.strokePoints(berry, true);
+  g.fillStyle(COLORS.success, 1).fillTriangle(-s * 0.26, -s * 0.2, s * 0.26, -s * 0.2, 0, -s * 0.42);
+  g.fillStyle(COLORS.coin, 1);
+  for (const [x, y] of [[-0.12, 0], [0.12, 0], [0, 0.2]]) g.fillCircle(x * s, y * s, s * 0.03);
+}
+
+function drawBirdhouse(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.04, 0.3, 0.08, 0.4, 0.01);
+  box(g, s, 0xe0b070, -0.32, -0.26, 0.64, 0.6, 0.03);
+  g.fillStyle(0xc0392b, 1).fillTriangle(-0.44 * s, -0.24 * s, 0.44 * s, -0.24 * s, 0, -0.56 * s);
+  g.strokeTriangle(-0.44 * s, -0.24 * s, 0.44 * s, -0.24 * s, 0, -0.56 * s);
+  disc(g, s, INK, 0, -0.02, 0.11);
+}
+
+function drawFlowerpot(g, s) {
+  line(g, s);
+  disc(g, s, 0xe8527a, 0, -0.34, 0.16);
+  g.lineStyle(Math.max(4, s * 0.04), COLORS.success, 1).lineBetween(0, -s * 0.18, 0, s * 0.02);
+  line(g, s);
+  const pot = [[-0.34, 0], [0.34, 0], [0.24, 0.46], [-0.24, 0.46]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0xc0714a, 1).fillPoints(pot, true);
+  g.strokePoints(pot, true);
+}
+
+function drawSwitch(g, s) {
+  line(g, s);
+  box(g, s, COLORS.white, -0.4, -0.6, 0.8, 1.2, 0.12);
+  box(g, s, COLORS.secondary, -0.13, -0.3, 0.26, 0.6, 0.06);
+}
+
+function drawRake(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.5, -0.04, 0.72, 0.08, 0.03);
+  box(g, s, 0x9aa5b1, 0.2, -0.3, 0.07, 0.6, 0.02);
+  for (const y of [-0.28, -0.14, 0, 0.14, 0.26]) box(g, s, 0x9aa5b1, 0.26, y, 0.2, 0.04, 0.01);
+}
+
+function drawGnome(g, s) {
+  line(g, s);
+  box(g, s, 0x4a6fa5, -0.26, 0.1, 0.52, 0.5, 0.1);
+  disc(g, s, 0xf2c9a0, 0, -0.1, 0.2);
+  g.fillStyle(COLORS.white, 1).fillTriangle(-s * 0.2, -s * 0.04, s * 0.2, -s * 0.04, 0, s * 0.34);
+  g.strokeTriangle(-s * 0.2, -s * 0.04, s * 0.2, -s * 0.04, 0, s * 0.34);
+  g.fillStyle(0xd63d3d, 1).fillTriangle(-s * 0.24, -s * 0.2, s * 0.24, -s * 0.2, 0, -s * 0.74);
+  g.strokeTriangle(-s * 0.24, -s * 0.2, s * 0.24, -s * 0.2, 0, -s * 0.74);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.07, -s * 0.12, s * 0.025).fillCircle(s * 0.07, -s * 0.12, s * 0.025);
+}
+
+function drawAppleTree(g, s) {
+  line(g, s);
+  box(g, s, 0x8a5a2b, -0.07, 0.1, 0.14, 0.4, 0.02);
+  for (const [x, y, r] of [[-0.22, -0.1, 0.24], [0.22, -0.1, 0.24], [0, -0.28, 0.26]]) g.strokeCircle(x * s, y * s, r * s);
+  g.fillStyle(COLORS.success, 1);
+  for (const [x, y, r] of [[-0.22, -0.1, 0.24], [0.22, -0.1, 0.24], [0, -0.28, 0.26], [0, -0.06, 0.22]]) g.fillCircle(x * s, y * s, r * s);
+}
+
+function drawApple(g, s) {
+  line(g, s);
+  g.lineBetween(0, -s * 0.34, s * 0.06, -s * 0.5);
+  disc(g, s, 0xd63d3d, 0, 0, 0.36);
+  g.fillStyle(COLORS.white, 0.7).fillCircle(-s * 0.12, -s * 0.12, s * 0.07);
+}
+
+function drawPants(g, s) {
+  line(g, s);
+  box(g, s, 0x2e4a8f, -0.3, -0.5, 0.27, 1, 0.05);
+  box(g, s, 0x2e4a8f, 0.03, -0.5, 0.27, 1, 0.05);
+  box(g, s, 0x2e4a8f, -0.3, -0.5, 0.6, 0.24, 0.04);
+  g.fillStyle(COLORS.white, 1).fillRect(-s * 0.28, -s * 0.24, s * 0.03, s * 0.7).fillRect(s * 0.25, -s * 0.24, s * 0.03, s * 0.7);
+}
+
 // ——— вещи в руку ———
 
 function drawHammer(g, s) {
@@ -1055,6 +1305,7 @@ const SHAPES = {
   dad: { draw: person(0x7a6a58, null, false), aspect: 2 },
   waiter: { draw: person(0xf3efe4, null, true), aspect: 2 },
   dasha: { draw: lady(0x4a6fa5, { scarf: true }), aspect: 2 },
+  granny: { draw: lady(0x9b6bb3, { hair: 0xc5ccd4, apron: true }), aspect: 2 },
   ladyDress: { draw: lady(0xd63d3d), aspect: 2 },
   ladyHat: { draw: lady(0x3f8f5a, { hat: true }), aspect: 2 },
   ladyBag: { draw: lady(0x9b6bb3, { bag: true }), aspect: 2 },
@@ -1064,6 +1315,35 @@ const SHAPES = {
   workerCrumbs: { draw: person(0x3f6fa8, 0xf5b800, false, false, true), aspect: 2 },
   guard: { draw: person(0x4a4a55, 0x2a2a33, false), aspect: 2 },
   wrench: { draw: drawWrench, aspect: 0.3 },
+  wateringcan: { draw: drawWateringcan, aspect: 0.75 },
+  gardenBed: { draw: drawGardenBed, aspect: 0.45 },
+  hole: { draw: drawHole, aspect: 0.6 },
+  sprout: { draw: drawSprout, aspect: 0.6 },
+  ladybug: { draw: bug(false), aspect: 1 },
+  beetle: { draw: bug(true), aspect: 1 },
+  shovel: { draw: drawShovel, aspect: 0.4 },
+  hammock: { draw: drawHammock, aspect: 0.65 },
+  weeds: { draw: drawWeeds, aspect: 0.5 },
+  carrot: { draw: drawCarrot, aspect: 1.1 },
+  well: { draw: drawWell, aspect: 1.1 },
+  crank: { draw: drawCrank, aspect: 1 },
+  glassJar: { draw: glassJar(false, false), aspect: 1.25 },
+  glassJarFull: { draw: glassJar(true, false), aspect: 1.25 },
+  jarClosed: { draw: glassJar(true, true), aspect: 1.25 },
+  cucumbers: { draw: drawCucumbers, aspect: 0.7 },
+  dill: { draw: drawDill, aspect: 1 },
+  lid: { draw: drawLid, aspect: 0.45 },
+  scarecrow: { draw: drawScarecrow, aspect: 1.7 },
+  crow: { draw: drawCrow, aspect: 0.6 },
+  strawberry: { draw: drawStrawberry, aspect: 1 },
+  birdhouse: { draw: drawBirdhouse, aspect: 1.3 },
+  flowerpot: { draw: drawFlowerpot, aspect: 1 },
+  switch: { draw: drawSwitch, aspect: 1.2 },
+  rake: { draw: drawRake, aspect: 0.65 },
+  gnome: { draw: drawGnome, aspect: 1.4 },
+  appleTree: { draw: drawAppleTree, aspect: 1.05 },
+  apple: { draw: drawApple, aspect: 1 },
+  pants: { draw: drawPants, aspect: 1.1 },
   hammer: { draw: drawHammer, aspect: 1 },
   icecream: { draw: drawIcecream, aspect: 1 },
   umbrella: { draw: drawUmbrella, aspect: 1 },

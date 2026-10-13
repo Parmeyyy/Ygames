@@ -96,6 +96,7 @@ for (const section of readdirSync(path.join(root, 'src/levels'), { withFileTypes
     if (level.type === 'choice' && !level.compute && !level.options?.some((o) => o.id === level.answer)) fail('ответа нет среди вариантов');
     if (level.type === 'erase' && !ids.has(level.erase?.target)) fail(`нет объекта для стирания "${level.erase?.target}"`);
     if (level.goal) for (const ref of [level.goal.drag, level.goal.onto]) if (!exists(ref)) fail(`цель: нет объекта "${ref}"`);
+    if (level.reveal) for (const ref of [level.reveal.on, ...level.reveal.show]) if (!ids.has(ref)) fail(`reveal: нет объекта "${ref}"`);
     if (level.catch) for (const ref of [level.catch.fall, level.catch.onto, level.catch.with]) if (!ids.has(ref)) fail(`catch: нет объекта "${ref}"`);
     if (level.signal?.frames) for (const frame of level.signal.frames) if (!ids.has(frame.id)) fail(`сигнал: нет объекта "${frame.id}"`);
   }

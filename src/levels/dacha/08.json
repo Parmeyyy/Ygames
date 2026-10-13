@@ -1,0 +1,62 @@
+{
+  "id": "g8",
+  "type": "choice",
+  "hideCoins": true,
+  "heroHat": "cap",
+  "heroProps": {
+    "beetle": true
+  },
+  "objects": [
+    {
+      "id": "plant",
+      "shape": "bush",
+      "x": 0.5,
+      "y": 0.55,
+      "size": 380,
+      "inert": true
+    },
+    {
+      "id": "b1",
+      "shape": "beetle",
+      "x": 0.3,
+      "y": 0.5,
+      "size": 70,
+      "inert": true
+    },
+    {
+      "id": "b2",
+      "shape": "beetle",
+      "x": 0.52,
+      "y": 0.3,
+      "size": 70,
+      "inert": true
+    },
+    {
+      "id": "b3",
+      "shape": "beetle",
+      "x": 0.7,
+      "y": 0.58,
+      "size": 70,
+      "inert": true
+    }
+  ],
+  "options": [
+    {
+      "id": "3",
+      "label": "3"
+    },
+    {
+      "id": "4",
+      "label": "4"
+    },
+    {
+      "id": "5",
+      "label": "5"
+    },
+    {
+      "id": "6",
+      "label": "6"
+    }
+  ],
+  "answer": "4"
+}

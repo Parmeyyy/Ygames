@@ -1,0 +1,71 @@
+{
+  "id": "g17",
+  "type": "combine",
+  "objects": [
+    {
+      "id": "granny",
+      "shape": "granny",
+      "x": 0.5,
+      "y": 0.36,
+      "size": 170,
+      "inert": true
+    },
+    {
+      "id": "apron",
+      "shape": "wateringcan",
+      "at": [
+        "granny",
+        0,
+        0.08
+      ],
+      "size": 46,
+      "inert": true
+    },
+    {
+      "id": "shovel",
+      "shape": "shovel",
+      "x": 0.14,
+      "y": 0.84,
+      "size": 130,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.38,
+      "y": 0.88,
+      "size": 100,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "rake",
+      "shape": "rake",
+      "x": 0.62,
+      "y": 0.86,
+      "size": 120,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "can",
+      "shape": "wateringcan",
+      "x": 0.87,
+      "y": 0.86,
+      "size": 110
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "can",
+      "onto": "granny",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

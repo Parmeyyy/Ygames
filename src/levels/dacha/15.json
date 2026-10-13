@@ -1,0 +1,87 @@
+{
+  "id": "g15",
+  "type": "sequence",
+  "ordered": false,
+  "objects": [
+    {
+      "id": "s1",
+      "shape": "box",
+      "x": 0.2,
+      "y": 0.84,
+      "w": 0.24,
+      "h": 0.2,
+      "color": "0xdff3c8",
+      "inert": true
+    },
+    {
+      "id": "s2",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.79,
+      "w": 0.24,
+      "h": 0.3,
+      "color": "0xdff3c8",
+      "inert": true
+    },
+    {
+      "id": "s3",
+      "shape": "box",
+      "x": 0.8,
+      "y": 0.74,
+      "w": 0.24,
+      "h": 0.4,
+      "color": "0xdff3c8",
+      "inert": true
+    },
+    {
+      "id": "big",
+      "shape": "gnome",
+      "x": 0.2,
+      "y": 0.24,
+      "size": 150
+    },
+    {
+      "id": "small",
+      "shape": "gnome",
+      "x": 0.52,
+      "y": 0.3,
+      "size": 80
+    },
+    {
+      "id": "mid",
+      "shape": "gnome",
+      "x": 0.82,
+      "y": 0.26,
+      "size": 115
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "small",
+      "onto": "s1",
+      "keep": [
+        0,
+        0
+      ]
+    },
+    {
+      "do": "combine",
+      "drag": "mid",
+      "onto": "s2",
+      "keep": [
+        0,
+        0
+      ]
+    },
+    {
+      "do": "combine",
+      "drag": "big",
+      "onto": "s3",
+      "keep": [
+        0,
+        0
+      ]
+    }
+  ]
+}

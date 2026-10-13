@@ -1,0 +1,75 @@
+{
+  "id": "g19",
+  "type": "sequence",
+  "ordered": false,
+  "background": "rain",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "house",
+      "shape": "house",
+      "x": 0.8,
+      "y": 0.3,
+      "size": 250,
+      "inert": true
+    },
+    {
+      "id": "fence",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.84,
+      "w": 1,
+      "h": 0.24,
+      "color": "0xc48a4f",
+      "inert": true
+    },
+    {
+      "id": "shirt",
+      "shape": "shirt",
+      "x": 0.2,
+      "y": 0.3,
+      "size": 150
+    },
+    {
+      "id": "pants",
+      "shape": "pants",
+      "x": 0.48,
+      "y": 0.34,
+      "size": 120
+    },
+    {
+      "id": "sock",
+      "shape": "sock",
+      "x": 0.3,
+      "y": 0.84,
+      "size": 90
+    },
+    {
+      "id": "plank",
+      "shape": "box",
+      "x": 0.3,
+      "y": 0.84,
+      "w": 0.18,
+      "h": 0.3,
+      "color": "0xa9713a",
+      "draggable": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "shirt",
+      "onto": "house"
+    },
+    {
+      "do": "combine",
+      "drag": "pants",
+      "onto": "house"
+    },
+    {
+      "do": "combine",
+      "drag": "sock",
+      "onto": "house"
+    }
+  ]
+}
