@@ -1,0 +1,36 @@
+{
+  "id": "k1",
+  "type": "flashlight",
+  "background": "night",
+  "objects": [
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.25,
+      "y": 0.78,
+      "size": 220
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.3,
+      "y": 0.25,
+      "size": 200
+    },
+    {
+      "id": "nightstand",
+      "shape": "nightstand",
+      "x": 0.72,
+      "y": 0.78,
+      "size": 200
+    },
+    {
+      "id": "fridge",
+      "shape": "fridge",
+      "x": 0.78,
+      "y": 0.3,
+      "size": 130
+    }
+  ],
+  "answer": "fridge"
+}

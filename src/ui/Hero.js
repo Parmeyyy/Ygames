@@ -45,13 +45,14 @@ const ZONE_RADIUS = { head: 0.2, forehead: 0.09, mouth: 0.16, chest: 0.11, hand:
 
 export class Hero extends Phaser.GameObjects.Container {
   // (x, y) — центр фигуры, height — рост в пикселях (вместе с кепкой).
-  // options: item, top, pants — id надетых вещей (по умолчанию из прогресса), props — детали для уровня:
+  // options: item, top, pants, hand — id надетых вещей (по умолчанию из прогресса; hand: null — руки пустые),
+  // props — детали для уровня:
   //   socks: true         — вместо тапок носки
   //   glasses: "forehead" | "eyes"
   //   pass: "back" | "front" — пропуск на шнурке: перевёрнут или лицом
   //   dirty: true         — пятна на шапке, sweat: true — капли пота
   constructor(scene, x, y, height, mood = 'idle', options = {}) {
-    const { item = progress.hat, top = progress.top, pants = progress.pants, props = {} } = options;
+    const { item = progress.hat, top = progress.top, pants = progress.pants, hand = progress.hand, props = {} } = options;
     super(scene, x, y);
     this.homeX = x;
     this.homeY = y;
@@ -91,6 +92,7 @@ export class Hero extends Phaser.GameObjects.Container {
     this.drawHat();
     this.drawExtras();
     this.setMood(mood);
+    if (hand) this.hold(getItem(hand)?.shape ?? null);
 
     this.startBreathing();
     this.scheduleBlink();
@@ -385,7 +387,7 @@ export class Hero extends Phaser.GameObjects.Container {
   hold(shape) {
     this.held = shape;
     this.handLayer.removeAll(true);
-    if (shape) this.handLayer.add(addShape(this.scene, shape, this.heroH * 0.22).object);
+    if (shape) this.handLayer.add(addShape(this.scene, shape, this.heroH * 0.24).object);
     return this;
   }
 

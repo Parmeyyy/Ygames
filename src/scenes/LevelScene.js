@@ -82,7 +82,7 @@ export class LevelScene extends BaseScene {
       fill: COLORS.secondary,
       size: 28,
     }).isUi = true;
-    const titleKey = this.section.secret ? 'ui.secretLevel' : 'ui.level';
+    const titleKey = this.section.hidden ? 'ui.dailyLevel' : this.section.secret ? 'ui.secretLevel' : 'ui.level';
     const title = addText(this, W / 2, 60 * u, t(titleKey, { n: level.number }), 34, { fontStyle: 'bold' });
     const hint = addButton(this, W - 130 * u, 60 * u, 220 * u, 72 * u, t('ui.hint'), () => this.onHintTap(), { size: 28 });
     hint.isUi = true;
@@ -96,6 +96,7 @@ export class LevelScene extends BaseScene {
     // heroHat — шапка, которую уровень надевает на Валеру вместо его собственной
     this.hero = new Hero(this, layout.hero.x, layout.hero.y, layout.hero.h, level.heroMood, {
       props: level.heroProps,
+      hand: null, // на уровне руки свободны: в них кладут предметы по ходу загадки
       ...(level.heroHat ? { item: level.heroHat } : {}),
     }).enableTaps();
     if (this.solved) this.hero.setMood('happy');
@@ -221,6 +222,18 @@ export class LevelScene extends BaseScene {
       title: t('ui.hintTitle'),
       onClose: () => this.closeHintDialog(),
       buttons: [
+        // бесплатные подсказки (с колеса удачи и из сундуков) тратятся первыми
+        ...(progress.hints > 0
+          ? [
+              {
+                label: t('ui.hintFree', { n: progress.hints }),
+                fill: COLORS.special,
+                onTap: () => {
+                  if (progress.useHint()) this.unlockHint();
+                },
+              },
+            ]
+          : []),
         {
           label: t('ui.hintForCoins', { n: ECONOMY.hintPrice }),
           disabled: progress.coins < ECONOMY.hintPrice,
@@ -267,6 +280,7 @@ export class LevelScene extends BaseScene {
     progress.skip(this.level);
     const next = nextLevel(this.level);
     if (next) this.go('Level', { id: next.id });
+    else if (this.section.hidden) this.go('Menu');
     else this.go('LevelSelect', { section: this.level.section });
   }
 

@@ -44,7 +44,7 @@ export class WinScene extends BaseScene {
     const bubbleW = portrait ? Math.min(W - 80 * u, 600 * u) : 520 * u;
 
     // последний уровень раздела — свой заголовок
-    const title = addText(this, sideX, titleY, this.sectionDone ? t('ui.sectionDone') : t('ui.win'), this.sectionDone ? 56 : 72, {
+    const title = addText(this, sideX, titleY, this.section.hidden ? t('ui.dailyLevelWin') : this.sectionDone ? t('ui.sectionDone') : t('ui.win'), this.sectionDone ? 56 : 72, {
       fontStyle: 'bold',
     });
     const maxTitle = (portrait ? W : W * 0.6) - 60 * u;
@@ -85,7 +85,9 @@ export class WinScene extends BaseScene {
       place(t('ui.next'), () => this.goNext());
     } else {
       // раздел пройден: новый предмет в гардеробе или просто «продолжение следует»
-      const line = this.item ? t('ui.newItem', { name: t(`items.${this.item}`) }) : t('ui.allDone');
+      const line = this.item
+        ? t('ui.newItem', { name: t(`items.${this.item}`) })
+        : t(this.section.hidden ? 'ui.dailyLevelTomorrow' : 'ui.allDone');
       addText(this, sideX, y, line, 26, {
         color: this.item ? TEXT.dark : TEXT.muted,
         fontStyle: this.item ? 'bold' : 'normal',

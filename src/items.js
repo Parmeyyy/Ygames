@@ -2,10 +2,12 @@
 //   price   — купить за монеты
 //   ads     — посмотреть рекламу столько раз (редкие)
 //   section — награда за пройденный раздел
+//   source  — выдаётся в другом месте: "wheel" — колесо удачи, "calendar" — подарок седьмого дня
 // kind — куда надевается вещь:
 //   нет    — шапка (вместо родной кепки)
 //   badge  — значок (медаль, бабочка): занимает место шапки, но кепка при этом остаётся
 //   top    — верх вместо майки, pants — низ вместо треников
+//   hand   — вещь в руке; shape — её картинка из src/ui/shapes.js
 // Названия — в src/i18n/*.json (items.<id>); шапки и значки нарисованы в src/ui/hats.js,
 // одежда — в src/ui/clothes.js.
 export const ITEMS = [
@@ -33,9 +35,19 @@ export const ITEMS = [
   { id: 'tuxedo', ads: 3, kind: 'top' },
   { id: 'superhero', ads: 3, kind: 'top' },
   { id: 'pajama', ads: 3, kind: 'pants' },
+  { id: 'mug', price: 60, kind: 'hand', shape: 'cupFull' },
+  { id: 'hammer', price: 100, kind: 'hand', shape: 'hammer' },
+  { id: 'flowers', price: 140, kind: 'hand', shape: 'bouquet' },
+  { id: 'ballon', price: 180, kind: 'hand', shape: 'balloon' },
+  { id: 'icecream', source: 'wheel', kind: 'hand', shape: 'icecream' },
+  { id: 'umbrella', source: 'wheel', kind: 'hand', shape: 'umbrella' },
+  { id: 'trophy', source: 'calendar', kind: 'hand', shape: 'trophy' },
 ];
 
+// Слоты: в каждом одновременно надета одна вещь
+export const SLOTS = ['hat', 'top', 'pants', 'hand'];
+
 // Слот, который занимает вещь: шапки и значки делят один слот
-export const slotOf = (item) => (item.kind === 'top' || item.kind === 'pants' ? item.kind : 'hat');
+export const slotOf = (item) => (['top', 'pants', 'hand'].includes(item.kind) ? item.kind : 'hat');
 
 export const getItem = (id) => ITEMS.find((item) => item.id === id);

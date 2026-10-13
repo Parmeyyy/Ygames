@@ -26,15 +26,17 @@ export class SectionSelectScene extends BaseScene {
     });
     addText(this, W / 2, 60 * u, t('ui.sections'), 36, { fontStyle: 'bold' });
 
+    // раздел с задачами дня в списке не показывается
+    const shown = sections.filter((section) => !section.hidden);
     const cols = portrait ? 2 : 3;
-    const rows = Math.ceil(sections.length / cols);
+    const rows = Math.ceil(shown.length / cols);
     const gap = 24 * u;
     const top = 130 * u;
     const cardW = Math.min((W - 60 * u - gap * (cols - 1)) / cols, 380 * u);
     const cardH = Math.min((H - top - 30 * u - gap * (rows - 1)) / rows, 330 * u);
     const left = (W - (cols * cardW + (cols - 1) * gap)) / 2;
 
-    sections.forEach((section, index) => {
+    shown.forEach((section, index) => {
       const x = left + (index % cols) * (cardW + gap) + cardW / 2;
       const y = top + Math.floor(index / cols) * (cardH + gap) + cardH / 2;
       this.addCard(x, y, cardW, cardH, section);

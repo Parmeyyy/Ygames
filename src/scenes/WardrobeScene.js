@@ -6,6 +6,7 @@ import { progress } from '../services/progress.js';
 import { addClothIcon } from '../ui/clothes.js';
 import { addHat } from '../ui/hats.js';
 import { Hero } from '../ui/Hero.js';
+import { addShape } from '../ui/shapes.js';
 import { addButton, addCoinAmount, addCoinCounter, addText, drawLock, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
@@ -14,6 +15,7 @@ import { BaseScene } from './BaseScene.js';
 const TABS = [
   { id: 'hats', slots: ['hat'] },
   { id: 'clothes', slots: ['top', 'pants'] },
+  { id: 'hand', slots: ['hand'] },
 ];
 
 // Гардероб Валеры: шапки и одежда. Вещи — за монеты, редкие — за просмотры рекламы,
@@ -59,7 +61,7 @@ export class WardrobeScene extends BaseScene {
     addText(this, infoX, infoY, t(this.info), 24, { color: TEXT.muted, wordWrap: { width: infoW } });
 
     // вкладки
-    const tabW = 250 * u;
+    const tabW = 200 * u;
     TABS.forEach((tab, index) => {
       const x = gridX + (index - (TABS.length - 1) / 2) * (tabW + gap);
       const active = tab === this.tab;
@@ -92,10 +94,11 @@ export class WardrobeScene extends BaseScene {
     bg.lineStyle((equipped ? 6 : 3) * u, equipped ? COLORS.success : COLORS.outline, 1);
     bg.strokeRoundedRect(-w / 2, -h / 2, w, h, 20 * u);
 
-    const picture =
-      slotOf(item) === 'hat'
-        ? addHat(this, item.id, 0, -h * 0.14, w * 0.62, true)
-        : addClothIcon(this, item.id, 0, -h * 0.14, w * 0.62);
+    const slot = slotOf(item);
+    let picture;
+    if (slot === 'hat') picture = addHat(this, item.id, 0, -h * 0.14, w * 0.62, true);
+    else if (slot === 'hand') picture = addShape(this, item.shape, w * 0.5).object.setPosition(0, -h * 0.14);
+    else picture = addClothIcon(this, item.id, 0, -h * 0.14, w * 0.62);
 
     const labelY = h / 2 - 30 * u;
     const parts = [bg, picture];
@@ -109,6 +112,12 @@ export class WardrobeScene extends BaseScene {
     } else if (item.ads) {
       const views = { n: progress.hatAdViews(item.id), max: item.ads };
       parts.push(addText(this, 0, labelY, t('wardrobe.ad', views), 18, { color: '#7b5ea7', fontStyle: 'bold' }));
+    } else if (item.source) {
+      // вещь выдаётся на колесе удачи или в календаре подарков
+      picture.setAlpha(0.35);
+      const lock = this.add.graphics();
+      drawLock(lock, w / 2 - 24 * u, -h / 2 + 26 * u, 22 * u);
+      parts.push(lock, addText(this, 0, labelY, t(`wardrobe.from_${item.source}`), 16, { color: TEXT.muted, fontStyle: 'bold' }));
     } else {
       // награда за раздел: пока раздел не пройден, вещь под замком
       picture.setAlpha(0.35);
@@ -138,7 +147,7 @@ export class WardrobeScene extends BaseScene {
       if (!(await yandex.showRewarded())) return;
       progress.countHatAd(item);
     } else {
-      this.info = 'wardrobe.forSection';
+      this.info = item.source ? `wardrobe.info_${item.source}` : 'wardrobe.forSection';
       this.heroMood = 'sly';
     }
     if (!ownedBefore && progress.ownsHat(item.id)) audio.buy();

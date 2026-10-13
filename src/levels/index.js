@@ -11,6 +11,7 @@ import { COLORS } from '../config.js';
 //   theme  — фон раздела (src/ui/background.js), color — цвет карточки и кнопок раздела
 //   reward — предмет гардероба за прохождение раздела (src/items.js)
 //   secret — открывается просмотром рекламы, а не прохождением
+//   hidden — в списке разделов не показывается: это запас уровней для «Задачи дня»
 const SECTIONS = [
   { id: 'morning', theme: 'morning', color: 0xffb347, reward: 'medal' },
   { id: 'factory', theme: 'factory', color: 0x7f8fa6, reward: 'helmet' },
@@ -18,6 +19,7 @@ const SECTIONS = [
   { id: 'fishing', theme: 'lake', color: 0x5fa8d3, reward: 'panama' },
   { id: 'dacha', theme: 'garden', color: 0x7fb069, reward: 'straw' },
   { id: 'secret', theme: 'night', color: COLORS.special, secret: true },
+  { id: 'daily', theme: 'day', color: COLORS.accent, hidden: true },
 ];
 
 const modules = import.meta.glob('./*/*.json', { eager: true, import: 'default' });
@@ -37,5 +39,5 @@ export const getSection = (id) => sections.find((section) => section.id === id);
 
 export const getLevel = (id) => byId.get(id);
 
-// Следующий уровень того же раздела или undefined
-export const nextLevel = (level) => getSection(level.section).levels[level.number];
+// Следующий уровень того же раздела или undefined. У задачи дня следующего нет.
+export const nextLevel = (level) => (level.section === 'daily' ? undefined : getSection(level.section).levels[level.number]);

@@ -737,6 +737,39 @@ const faucet = (dripping) => (g, s) => {
   }
 };
 
+// ——— вещи в руку ———
+
+function drawHammer(g, s) {
+  line(g, s);
+  box(g, s, 0xa9713a, -0.05, -0.2, 0.1, 0.7, 0.03);
+  box(g, s, 0x9aa5b1, -0.3, -0.46, 0.6, 0.26, 0.05);
+}
+
+function drawIcecream(g, s) {
+  line(g, s);
+  g.fillStyle(0xe0b070, 1).fillTriangle(-s * 0.2, -s * 0.05, s * 0.2, -s * 0.05, 0, s * 0.5);
+  g.strokeTriangle(-s * 0.2, -s * 0.05, s * 0.2, -s * 0.05, 0, s * 0.5);
+  disc(g, s, 0xff9ec4, 0, -0.2, 0.24);
+  disc(g, s, 0xd63d3d, 0.06, -0.42, 0.06);
+}
+
+function drawUmbrella(g, s) {
+  line(g, s);
+  g.lineBetween(0, -s * 0.1, 0, s * 0.42);
+  g.beginPath().arc(s * 0.07, s * 0.42, s * 0.07, 0, Math.PI).strokePath();
+  g.fillStyle(0xd63d3d, 1).slice(0, -s * 0.08, s * 0.44, Math.PI, 0).fillPath().strokePath();
+  g.fillStyle(COLORS.white, 1).slice(0, -s * 0.08, s * 0.44, 1.33 * Math.PI, 1.67 * Math.PI).fillPath();
+}
+
+function drawTrophy(g, s) {
+  line(g, s);
+  g.beginPath().arc(-s * 0.26, -s * 0.2, s * 0.13, 0.5 * Math.PI, 1.5 * Math.PI).strokePath();
+  g.beginPath().arc(s * 0.26, -s * 0.2, s * 0.13, 1.5 * Math.PI, 0.5 * Math.PI).strokePath();
+  g.fillStyle(COLORS.coin, 1).slice(0, -s * 0.34, s * 0.28, 0, Math.PI).fillPath().strokePath();
+  box(g, s, COLORS.coin, -0.05, -0.08, 0.1, 0.26, 0.02);
+  box(g, s, 0xa9713a, -0.22, 0.18, 0.44, 0.14, 0.03);
+}
+
 // ——— значки разделов ———
 
 function drawHeart(g, s) {
@@ -805,6 +838,10 @@ const SHAPES = {
   workerCrumbs: { draw: person(0x3f6fa8, 0xf5b800, false, false, true), aspect: 2 },
   guard: { draw: person(0x4a4a55, 0x2a2a33, false), aspect: 2 },
   wrench: { draw: drawWrench, aspect: 0.3 },
+  hammer: { draw: drawHammer, aspect: 1 },
+  icecream: { draw: drawIcecream, aspect: 1 },
+  umbrella: { draw: drawUmbrella, aspect: 1 },
+  trophy: { draw: drawTrophy, aspect: 0.9 },
   face: { draw: drawFace, aspect: 1 },
   mess: { draw: drawMess, aspect: 0.7 },
   comb: { draw: drawComb, aspect: 0.6 },

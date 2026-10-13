@@ -2,12 +2,14 @@ import Phaser from 'phaser';
 import { audio } from './audio.js';
 import { COLORS } from './config.js';
 import { setLang } from './i18n/index.js';
+import { AchievementsScene } from './scenes/AchievementsScene.js';
 import { BootScene } from './scenes/BootScene.js';
 import { MenuScene } from './scenes/MenuScene.js';
 import { LevelSelectScene } from './scenes/LevelSelectScene.js';
 import { SectionSelectScene } from './scenes/SectionSelectScene.js';
 import { LevelScene } from './scenes/LevelScene.js';
 import { WardrobeScene } from './scenes/WardrobeScene.js';
+import { WheelScene } from './scenes/WheelScene.js';
 import { WinScene } from './scenes/WinScene.js';
 import { yandex } from './yandex.js';
 
@@ -44,7 +46,7 @@ const game = new Phaser.Game({
     height: initial.height,
     zoom: initial.zoom,
   },
-  scene: [BootScene, MenuScene, SectionSelectScene, LevelSelectScene, LevelScene, WinScene, WardrobeScene],
+  scene: [BootScene, MenuScene, SectionSelectScene, LevelSelectScene, LevelScene, WinScene, WardrobeScene, WheelScene, AchievementsScene],
 });
 
 // Паузой звука управляем сами (реклама, уход со вкладки), иначе Phaser
@@ -53,6 +55,8 @@ game.sound.pauseOnBlur = false;
 
 yandex.onPauseChange((paused) => {
   audio.setPaused(paused);
+  // на паузе игра не принимает нажатий: иначе они доходили бы до кнопок под рекламой
+  game.input.enabled = !paused;
   if (paused) {
     game.sound.pauseAll();
     game.pause();

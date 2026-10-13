@@ -1,0 +1,33 @@
+{
+  "id": "k5",
+  "type": "offscreen",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "fridge",
+      "shape": "fridge",
+      "x": 0.75,
+      "y": 0.4,
+      "size": 180,
+      "wrong": true
+    },
+    {
+      "id": "pelmeni",
+      "shape": "pelmeni",
+      "x": 0.3,
+      "y": 0.6,
+      "size": 220
+    }
+  ],
+  "steps": [
+    {
+      "do": "offscreen",
+      "drag": "pelmeni",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

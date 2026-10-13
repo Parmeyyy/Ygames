@@ -1,0 +1,26 @@
+{
+  "id": "k3",
+  "type": "wait",
+  "seconds": 5,
+  "heroMood": "sleep",
+  "objects": [
+    {
+      "id": "bus",
+      "shape": "bus",
+      "x": 0.5,
+      "y": 0.4,
+      "size": 420,
+      "inert": true
+    },
+    {
+      "id": "wake",
+      "shape": "button",
+      "labelKey": "wake",
+      "x": 0.5,
+      "y": 0.86,
+      "w": 0.6,
+      "h": 0.18,
+      "inert": true
+    }
+  ]
+}

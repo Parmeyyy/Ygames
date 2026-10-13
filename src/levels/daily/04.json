@@ -1,0 +1,46 @@
+{
+  "id": "k4",
+  "type": "tap",
+  "objects": [
+    {
+      "id": "tv",
+      "shape": "tv",
+      "x": 0.7,
+      "y": 0.25,
+      "size": 260,
+      "inert": true
+    },
+    {
+      "id": "remote",
+      "shape": "remote",
+      "x": 0.3,
+      "y": 0.35,
+      "size": 70
+    },
+    {
+      "id": "pillow",
+      "shape": "pillow",
+      "x": 0.3,
+      "y": 0.35,
+      "size": 260,
+      "draggable": true
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.65,
+      "y": 0.75,
+      "size": 280,
+      "draggable": true
+    },
+    {
+      "id": "rug",
+      "shape": "rug",
+      "x": 0.25,
+      "y": 0.85,
+      "size": 260,
+      "draggable": true
+    }
+  ],
+  "answer": "remote"
+}

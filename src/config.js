@@ -17,7 +17,6 @@ export const ECONOMY = {
   levelReward: 10, // монет за первое прохождение уровня
   hintPrice: 30, // цена подсказки в монетах
   mistakesToSkip: 3, // после скольких ошибок появляется «Пропустить»
-  dailyBonus: 20, // монет в ежедневном подарке
 };
 
 export const TEXT = {

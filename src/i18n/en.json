@@ -20,8 +20,7 @@
     "cancel": "Cancel",
     "skipAd": "Skip (ad)",
     "doubleAd": "x2 coins (ad)",
-    "dailyTitle": "Daily gift: +{n} coins",
-    "dailyTake": "Collect",
+    "dailyTake": "Collect +{n}",
     "dailyDouble": "Collect x2 (ad)",
     "sections": "Sections",
     "sectionDone": "Section complete!",
@@ -29,7 +28,31 @@
     "soon": "Coming soon",
     "sectionLocked": "Finish the previous section\nor watch an ad to open",
     "secretAd": "Watch an ad to open",
-    "nextSection": "Next section"
+    "nextSection": "Next section",
+    "dailyLevel": "Daily puzzle",
+    "dailyLevelDone": "Daily puzzle solved ✓",
+    "dailyLevelWin": "Daily puzzle solved!",
+    "dailyLevelTomorrow": "A new puzzle tomorrow!",
+    "calendarTitle": "Login gifts",
+    "calendarHint": "Come back every day, the gifts grow",
+    "dailyTakeItem": "Collect: {name}",
+    "wheel": "Wheel of fortune",
+    "wheelInfo": "One spin a day is free",
+    "wheelSpin": "Spin!",
+    "wheelSpinAd": "Spin again (ad) {n}/{max}",
+    "wheelTomorrow": "Come back tomorrow",
+    "wheelItem": "Item",
+    "wheelHint": "Hint",
+    "wheelWonCoins": "You won +{n} coins!",
+    "wheelWonHint": "You won a free hint!",
+    "wheelWonItem": "You won an item: {name}!",
+    "chestReady": "Star chest: +{coins} coins and a hint",
+    "chestWait": "{n} ★ to the next chest (one for every {total})",
+    "chestOpen": "Open",
+    "ok": "Got it",
+    "achievements": "Achievements",
+    "achievementDone": "Collected",
+    "hintFree": "Free (you have {n})"
   },
   "game": {
     "title": "Help Valera"
@@ -79,7 +102,14 @@
     "camo": "Camo trousers",
     "tuxedo": "Tuxedo",
     "superhero": "Hero T-shirt",
-    "pajama": "Pyjama trousers"
+    "pajama": "Pyjama trousers",
+    "mug": "Mug of tea",
+    "hammer": "Hammer",
+    "flowers": "Bouquet",
+    "ballon": "Balloon",
+    "icecream": "Ice cream",
+    "umbrella": "Umbrella",
+    "trophy": "Trophy"
   },
   "wardrobe": {
     "info": "Rare items take 3 ad views each",
@@ -89,7 +119,12 @@
     "equipped": "Wearing",
     "ad": "Ad {n}/{max}",
     "hats": "Hats",
-    "clothes": "Clothes"
+    "clothes": "Clothes",
+    "hand": "In hand",
+    "from_wheel": "Wheel of fortune",
+    "from_calendar": "Day 7",
+    "info_wheel": "This item can be won on the wheel of fortune",
+    "info_calendar": "This item is the gift for the seventh day in a row"
   },
   "levels": {
     "m1": {
@@ -548,6 +583,57 @@
       "wrong": "Not that.",
       "win": "\"For me?\" \"For you.\" Beautiful!"
     },
+    "k1": {
+      "question": "Valera wants dumplings at night. Find the fridge",
+      "start": "It's dark. And I'm hungry.",
+      "hint": "Move your finger over the dark, it shines. Look for the tallest white thing.",
+      "wrong": "Not that!",
+      "win": "There it is! The dumplings are waiting."
+    },
+    "k2": {
+      "question": "There are 4 dumplings on the table. The cat ate one. How many dumplings did Valera eat?",
+      "start": "A trick question. I can feel it.",
+      "hint": "Read it again: who ate what? There's not a word about Valera.",
+      "wrong": "I haven't even eaten yet!",
+      "win": "Zero! I only just sat down, and Whiskers was faster."
+    },
+    "k3": {
+      "question": "Valera fell asleep on the bus. Don't wake him!",
+      "wake": "Wake up",
+      "start": "Zzz… to the last stop…",
+      "hint": "The hardest thing is doing nothing. Hands off and wait.",
+      "wrong": "Huh?! What? Are we there? …Zzz.",
+      "win": "What a nap! Though I ended up at the depot."
+    },
+    "k4": {
+      "question": "Find the TV remote",
+      "start": "Football starts in a minute! Where's the remote?",
+      "hint": "The remote is always somewhere soft. Move things around.",
+      "wrong": "That's not the remote!",
+      "win": "Under the pillow! As always."
+    },
+    "k5": {
+      "question": "Valera is on a diet. Get the dumplings out of sight",
+      "start": "I'm on a diet. But they are looking at me.",
+      "hint": "He'd find them in the fridge. You need a place he can't reach: beyond the edge of the screen.",
+      "wrong": "The fridge is the first place I'd look!",
+      "win": "Out of sight, out of mind. Almost."
+    },
+    "k6": {
+      "question": "Valera ate half the dumplings, then half of what was left. 5 remain. How many were there?",
+      "start": "I was counting, but lost track at the third one.",
+      "hint": "Work backwards: before the second helping there were twice as many as now.",
+      "wrong": "That doesn't add up. Count from the end.",
+      "win": "Twenty! That was a good pack."
+    },
+    "k7": {
+      "question": "Take a photo of Whiskers",
+      "shot": "PHOTO",
+      "start": "He's hiding in the bushes. Catch the moment!",
+      "hint": "Don't press right away. Wait until the cat shows up from the bushes.",
+      "wrong": "That's a bush. A pretty one, but not a cat.",
+      "win": "Great shot! Whiskers is not amused."
+    },
     "s1": {
       "question": "Who is the main character here?",
       "button": "This button",
@@ -576,5 +662,17 @@
       "hint": "The grey layer rubs off like a scratch card. Rub it with your finger.",
       "win": "A sock?! Well, now I have six."
     }
+  },
+  "achievements": {
+    "firstLevel": "First step: finish a level",
+    "levels20": "Finish 20 levels",
+    "levels50": "Finish 50 levels",
+    "stars30": "Collect 30 stars",
+    "stars100": "Collect 100 stars",
+    "perfect10": "10 levels with three stars",
+    "wardrobe5": "Collect 5 items",
+    "streak7": "Log in 7 days in a row",
+    "spins5": "Spin the wheel 5 times",
+    "secret": "Open the secret section"
   }
 }

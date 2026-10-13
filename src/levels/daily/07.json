@@ -1,0 +1,74 @@
+{
+  "id": "k7",
+  "type": "timed",
+  "objects": [
+    {
+      "id": "view",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.38,
+      "w": 0.86,
+      "h": 0.58,
+      "color": "0xbfe6a8",
+      "inert": true
+    },
+    {
+      "id": "bush",
+      "shape": "bush",
+      "x": 0.5,
+      "y": 0.42,
+      "size": 220,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "tree",
+      "shape": "tree",
+      "x": 0.5,
+      "y": 0.4,
+      "size": 220,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.5,
+      "y": 0.44,
+      "size": 260,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "shot",
+      "shape": "button",
+      "labelKey": "shot",
+      "x": 0.5,
+      "y": 0.87,
+      "w": 0.6,
+      "h": 0.2
+    }
+  ],
+  "answer": "shot",
+  "signal": {
+    "frames": [
+      {
+        "id": "bush",
+        "ms": 900
+      },
+      {
+        "id": "tree",
+        "ms": 900
+      },
+      {
+        "id": "cat",
+        "ms": 800
+      },
+      {
+        "id": "bush",
+        "ms": 700
+      }
+    ],
+    "good": "cat"
+  }
+}
