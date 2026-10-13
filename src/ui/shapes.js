@@ -1,9 +1,10 @@
 import { COLORS } from '../config.js';
+import { shapeTexture } from './images.js';
 
 // Картинки-заглушки для объектов уровней, нарисованные фигурами. У каждой своя функция draw<Имя>(g, s):
 //   g — Graphics, начало координат — центр картинки
 //   s — ширина картинки в пикселях; высота = s × aspect
-// Чтобы заменить картинку на PNG, достаточно в addShape вернуть для неё scene.add.image(...).
+// Если в src/assets/shapes/ лежит PNG с таким же именем, вместо фигуры показывается он (см. src/ui/images.js).
 
 const INK = COLORS.outline;
 const line = (g, s) => g.lineStyle(Math.max(2, s * 0.025), INK, 1);
@@ -1143,6 +1144,13 @@ export const hasShape = (name) => name in SHAPES;
 
 // Создаёт картинку шириной size с центром в (0, 0). Возвращает { object, w, h }.
 export function addShape(scene, name, size) {
+  const texture = shapeTexture(scene, name);
+  if (texture) {
+    const image = scene.add.image(0, 0, texture);
+    const h = (size * image.height) / image.width;
+    image.setDisplaySize(size, h);
+    return { object: image, w: size, h };
+  }
   const shape = SHAPES[name];
   const g = scene.add.graphics();
   shape.draw(g, size);
@@ -1151,5 +1159,14 @@ export function addShape(scene, name, size) {
 
 // Перерисовывает уже созданную картинку другой (кружка стала полной и т. п.)
 export function redrawShape(g, name, size) {
+  if (g.type === 'Image') {
+    // готовая картинка меняется на другую готовую; если её нет, остаётся прежняя
+    const texture = shapeTexture(g.scene, name);
+    if (texture) {
+      g.setTexture(texture);
+      g.setDisplaySize(size, (size * g.height) / g.width);
+    }
+    return;
+  }
   SHAPES[name].draw(g.clear(), size);
 }

@@ -4,7 +4,7 @@ import { hasText, levelText, pick, t } from '../i18n/index.js';
 import { getLevel, getSection, nextLevel } from '../levels/index.js';
 import { LEVEL_TYPES } from '../level-types/index.js';
 import { progress } from '../services/progress.js';
-import { addBackground } from '../ui/background.js';
+import { addBackground, hasBackground } from '../ui/background.js';
 import { flashError } from '../ui/effects.js';
 import { Hero } from '../ui/Hero.js';
 import { addBubble, addButton, addCoinCounter, addModal, addText, addWordFlow, makeTappable } from '../ui/widgets.js';
@@ -38,7 +38,9 @@ export class LevelScene extends BaseScene {
   // Плывущих облаков нет там, где облака — часть загадки.
   backgroundTheme() {
     const { level } = this;
-    const theme = (this.solved && level.backgroundSolved) || level.background || this.section.theme;
+    const wanted = (this.solved && level.backgroundSolved) || level.background;
+    // если у уровня свой фон, но картинки для него ещё нет, остаётся фон раздела
+    const theme = wanted && hasBackground(this, wanted) ? wanted : this.section.theme;
     const clouds = !level.objects?.some((object) => object.shape === 'cloud' || object.shape === 'raincloud');
     return [theme, { clouds }];
   }

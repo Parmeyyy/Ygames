@@ -4,6 +4,7 @@ import { dev } from '../dev.js';
 import { setLang, t } from '../i18n/index.js';
 import { getLevel } from '../levels/index.js';
 import { progress } from '../services/progress.js';
+import { preloadImages } from '../ui/images.js';
 import { addText } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
@@ -24,7 +25,7 @@ export class BootScene extends BaseScene {
   }
 
   preload() {
-    // this.load.image('valera', 'assets/valera.png');
+    preloadImages(this);
   }
 
   create() {

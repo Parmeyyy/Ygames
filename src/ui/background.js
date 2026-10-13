@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { backgroundTexture } from './images.js';
 
 // Фон сцены: мягкий вертикальный градиент и медленно плывущие облака (ночью — звёзды).
 // Градиент рисуется один раз в маленькую текстуру и растягивается на весь экран — это дёшево.
@@ -33,9 +34,20 @@ function gradientTexture(scene, name) {
   return key;
 }
 
-// theme — имя из THEMES; clouds: false убирает облака (например, на уровнях, где облака — часть загадки)
+// Есть ли фон с таким именем: тема-градиент или готовая картинка
+export const hasBackground = (scene, name) => Boolean(THEMES[name] || backgroundTexture(scene, name));
+
+// theme — имя из THEMES или готовой картинки из src/assets/backgrounds/;
+// clouds: false убирает облака (например, на уровнях, где облака — часть загадки)
 export function addBackground(scene, theme = 'day', { clouds = true } = {}) {
   const { W, H, u } = scene;
+  const texture = backgroundTexture(scene, theme);
+  if (texture) {
+    // картинка заполняет экран целиком, лишнее обрезается по краям
+    const image = scene.add.image(W / 2, H / 2, texture);
+    image.setScale(Math.max(W / image.width, H / image.height));
+    return scene.add.container(0, 0, [image]);
+  }
   const name = THEMES[theme] ? theme : 'day';
   const layer = scene.add.container(0, 0);
   layer.add(scene.add.image(0, 0, gradientTexture(scene, name)).setOrigin(0).setDisplaySize(W, H));
