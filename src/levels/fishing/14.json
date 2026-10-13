@@ -1,0 +1,37 @@
+{
+  "id": "h14",
+  "type": "wait",
+  "seconds": 5,
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "duck",
+      "shape": "duck",
+      "x": 0.45,
+      "y": 0.42,
+      "size": 300,
+      "inert": true
+    },
+    {
+      "id": "can",
+      "shape": "can",
+      "at": [
+        "duck",
+        0.5,
+        0.25
+      ],
+      "size": 110,
+      "inert": true
+    },
+    {
+      "id": "grab",
+      "shape": "button",
+      "labelKey": "grab",
+      "x": 0.5,
+      "y": 0.88,
+      "w": 0.6,
+      "h": 0.17,
+      "inert": true
+    }
+  ]
+}

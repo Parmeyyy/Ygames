@@ -84,7 +84,7 @@ for (const section of readdirSync(path.join(root, 'src/levels'), { withFileTypes
       for (const key of ['drag', 'onto', 'target', 'from']) {
         if (step[key] && !exists(step[key])) fail(`шаг ${index + 1}: нет объекта "${step[key]}"`);
       }
-      for (const id of [...(step.then?.hide ?? []), ...(step.then?.show ?? []), ...Object.keys(step.then?.swap ?? {})]) {
+      for (const id of [...(step.then?.hide ?? []), ...(step.then?.show ?? []), ...Object.keys(step.then?.swap ?? {}), ...Object.keys(step.then?.scale ?? {})]) {
         if (!ids.has(id)) fail(`шаг ${index + 1}: нет объекта "${id}"`);
       }
       for (const shape of Object.values(step.then?.swap ?? {})) if (!shapes.has(shape)) fail(`шаг ${index + 1}: неизвестная картинка "${shape}"`);

@@ -1,0 +1,80 @@
+{
+  "id": "h10",
+  "type": "sequence",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "boat",
+      "shape": "boatLeak",
+      "x": 0.5,
+      "y": 0.68,
+      "size": 520,
+      "inert": true
+    },
+    {
+      "id": "hole",
+      "shape": "zone",
+      "at": [
+        "boat",
+        0.1,
+        0.0
+      ],
+      "box": [
+        0.3,
+        1.3
+      ]
+    },
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.8,
+      "y": 0.22,
+      "size": 150,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "thermos",
+      "shape": "thermos",
+      "x": 0.22,
+      "y": 0.26,
+      "size": 90
+    },
+    {
+      "id": "cork",
+      "shape": "cork",
+      "at": [
+        "thermos",
+        0.9,
+        -0.3
+      ],
+      "size": 60,
+      "hidden": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "thermos",
+      "then": {
+        "show": [
+          "cork"
+        ],
+        "say": "found"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "cork",
+      "onto": "hole",
+      "then": {
+        "swap": {
+          "boat": "boat"
+        },
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

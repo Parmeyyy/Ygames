@@ -20,6 +20,7 @@ import { addText } from '../ui/widgets.js';
 //   inert           — объект не реагирует на нажатия
 //   wrong           — нажать (или стереть, или перетащить) этот объект — ошибка
 //   erasable        — объект можно стереть (для типа erase)
+//   fly             — объект кружит на месте (комары, бабочки)
 // Виды: chip, word, button, figure, box (цветной прямоугольник), dot (цветной кружок),
 // ring (кольцо-отметка), zone (невидимая зона),
 // card (защитный слой), clock (часы со стрелкой), item (предмет гардероба)
@@ -132,6 +133,12 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
 
     const object = scene.add.container(x, y, parts).setSize(w, h);
     if (def.hidden) object.setVisible(false);
+    if (def.fly) {
+      // у каждого свой темп, чтобы не летали строем
+      const pace = 700 + (entries.size % 5) * 130;
+      scene.tweens.add({ targets: object, x: x + 34 * u, duration: pace, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 });
+      scene.tweens.add({ targets: object, y: y - 26 * u, duration: pace * 0.7, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 });
+    }
     entries.set(def.id, { def, object, w, h, picture: parts[0], size });
     api.mark(def.id, object);
   }

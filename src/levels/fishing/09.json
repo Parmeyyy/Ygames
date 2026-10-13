@@ -1,0 +1,86 @@
+{
+  "id": "h9",
+  "type": "choice",
+  "hideCoins": true,
+  "objects": [
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.28,
+      "y": 0.6,
+      "size": 200,
+      "inert": true
+    },
+    {
+      "id": "f1",
+      "shape": "fish",
+      "at": [
+        "bucket",
+        -0.22,
+        -0.52
+      ],
+      "size": 80,
+      "inert": true
+    },
+    {
+      "id": "f2",
+      "shape": "fish",
+      "at": [
+        "bucket",
+        0.02,
+        -0.66
+      ],
+      "size": 80,
+      "inert": true
+    },
+    {
+      "id": "f3",
+      "shape": "fish",
+      "at": [
+        "bucket",
+        0.26,
+        -0.52
+      ],
+      "size": 80,
+      "inert": true
+    },
+    {
+      "id": "cat",
+      "shape": "cat",
+      "x": 0.74,
+      "y": 0.6,
+      "size": 220,
+      "inert": true
+    },
+    {
+      "id": "f4",
+      "shape": "fish",
+      "at": [
+        "cat",
+        -0.46,
+        0.12
+      ],
+      "size": 70,
+      "inert": true
+    }
+  ],
+  "options": [
+    {
+      "id": "2",
+      "label": "2"
+    },
+    {
+      "id": "3",
+      "label": "3"
+    },
+    {
+      "id": "4",
+      "label": "4"
+    },
+    {
+      "id": "5",
+      "label": "5"
+    }
+  ],
+  "answer": "4"
+}

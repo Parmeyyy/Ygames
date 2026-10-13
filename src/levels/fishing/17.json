@@ -1,0 +1,49 @@
+{
+  "id": "h17",
+  "type": "combine",
+  "objects": [
+    {
+      "id": "camera",
+      "shape": "camera",
+      "x": 0.5,
+      "y": 0.84,
+      "size": 230,
+      "inert": true
+    },
+    {
+      "id": "boot",
+      "shape": "boot",
+      "x": 0.18,
+      "y": 0.42,
+      "size": 170,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "fish",
+      "shape": "fish",
+      "x": 0.6,
+      "y": 0.14,
+      "size": 70
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "fish",
+      "onto": "camera",
+      "keep": [
+        0,
+        -1.1
+      ],
+      "then": {
+        "scale": {
+          "fish": 4
+        },
+        "hero": {
+          "mood": "sly"
+        }
+      }
+    }
+  ]
+}

@@ -583,6 +583,166 @@
       "wrong": "Not that.",
       "win": "\"For me?\" \"For you.\" Beautiful!"
     },
+    "h1": {
+      "question": "Bait the hook",
+      "start": "Fishing! A day off at last.",
+      "hint": "The worm won't climb on by itself. Carry it to the hook.",
+      "wrong": "Not there!",
+      "win": "Done! Sorry, worm, nothing personal."
+    },
+    "h2": {
+      "question": "Cast the line",
+      "start": "Watch me cast!",
+      "hint": "A float should float. Where's the water?",
+      "wrong": "That's not water!",
+      "win": "Beautiful! Now we wait."
+    },
+    "h3": {
+      "question": "No bites. Why?",
+      "start": "An hour here. Not a nibble.",
+      "hint": "Fish live in water. And where is the float right now?",
+      "wrong": "That's not the reason.",
+      "win": "It was lying on the bank! Oh, come on."
+    },
+    "h4": {
+      "question": "Out of worms",
+      "start": "The can is empty. And the fish are waiting.",
+      "found": "Oh, sausage. What a pity…",
+      "hint": "There's bait in Valera's lunch. Look inside the sandwich.",
+      "wrong": "Empty! I told you, we're out.",
+      "win": "The fish will love it. I would."
+    },
+    "h5": {
+      "question": "Mosquitoes!",
+      "start": "They're eating me alive! Help!",
+      "hint": "There are five mosquitoes. Catch each one. The butterfly did nothing wrong.",
+      "wrong": "What did the butterfly do?!",
+      "win": "All five! Now life can go on."
+    },
+    "h6": {
+      "question": "Which fish is the biggest?",
+      "whale": "whale",
+      "start": "A tricky one.",
+      "hint": "The biggest one here isn't necessarily a fish. Read the question again.",
+      "wrong": "Not that one.",
+      "win": "Right! And a whale isn't a fish at all."
+    },
+    "h7": {
+      "question": "The fish says: \"Let me go\"",
+      "fry": "Fry it",
+      "aquarium": "Into a tank",
+      "release": "Let it go",
+      "photo": "Photo first",
+      "start": "It talks! And it's golden!",
+      "hint": "Remember the fairy tale. What does the one who frees the golden fish get?",
+      "wrong": "\"Then no wish for you.\"",
+      "win": "I let it go, and my wish came true: the fish are biting!"
+    },
+    "h8": {
+      "question": "Strike!",
+      "pull": "PULL",
+      "start": "Watch the float. Don't blink.",
+      "hint": "Don't pull right away. Pull when the float dives.",
+      "wrong": "Too early! Scared it off.",
+      "win": "Got one! This big! Well, almost."
+    },
+    "h9": {
+      "question": "How many fish did Valera catch?",
+      "start": "I lost count. You do it.",
+      "hint": "The catch isn't only in the bucket. Look who's sitting nearby, chewing.",
+      "wrong": "That doesn't add up. Did you check Whiskers?",
+      "win": "Four! Whiskers has already claimed one."
+    },
+    "h10": {
+      "question": "The boat is leaking",
+      "start": "We're sinking! Help!",
+      "found": "Oh, the cork from the thermos!",
+      "hint": "The hole needs plugging. There's a suitable plug on the thermos.",
+      "wrong": "We'd be bailing till morning!",
+      "win": "Plugged! On we sail. The tea will go cold, though."
+    },
+    "h11": {
+      "question": "Night. Find the fishing rod",
+      "start": "It's dark. The rod was somewhere here.",
+      "hint": "Move your finger over the dark, it shines. The rod is long and thin.",
+      "wrong": "Not that!",
+      "win": "There it is! I nearly sat on it."
+    },
+    "h12": {
+      "question": "Fish patrol! Show the licence",
+      "start": "My licence… I had one! Somewhere in the box.",
+      "hint": "The licence is in the tackle box. Only something is lying on top of it.",
+      "wrong": "That's not the licence!",
+      "win": "There! A bit wormy, but genuine."
+    },
+    "h13": {
+      "question": "Cook fish soup",
+      "start": "Soup doesn't cook itself.",
+      "water": "Water's in. What next?",
+      "fishIn": "In goes the fish!",
+      "potatoIn": "Potato. One small thing left.",
+      "earlyFish": "No water? That's a fry-up, not soup.",
+      "earlyPotato": "Fish first, that's why it's fish soup.",
+      "earlySalt": "Salting an empty pot? Too early.",
+      "hint": "Like by a campfire: water first, then fish, then potato, salt last.",
+      "wrong": "That's not how you cook soup!",
+      "win": "Beautiful! The whole lake can smell it."
+    },
+    "h14": {
+      "question": "A duck stole the worms",
+      "grab": "Grab them",
+      "start": "Hey! Those are my worms!",
+      "hint": "Chasing a duck is useless. Pretend you don't care.",
+      "wrong": "Quack! She only swam further away.",
+      "win": "She brought them back herself. Ducks are proud."
+    },
+    "h15": {
+      "question": "How many hooks does Valera have?",
+      "start": "Counting hooks. Pricking fingers.",
+      "hint": "Not all hooks are lying around. Valera wears one: look at his cap.",
+      "wrong": "That doesn't add up. Did you count the one on me?",
+      "win": "Four! One on my cap, for luck."
+    },
+    "h16": {
+      "question": "Light the fire: the matches are damp",
+      "start": "The matches are wet. But the sun is blazing.",
+      "hint": "The sun can light a fire if you help it with a bit of glass. Valera has two.",
+      "wrong": "Wet! They won't strike.",
+      "win": "It's smoking! Sixth-grade physics."
+    },
+    "h17": {
+      "question": "Show off the catch",
+      "start": "The fish is… modest. But I need a photo.",
+      "hint": "In a photo, whatever is closer to the camera looks bigger.",
+      "wrong": "A boot is not a catch!",
+      "win": "What a monster! A metre at least, in the photo."
+    },
+    "h18": {
+      "question": "The fish is jumping! Catch it",
+      "start": "It's jumping! Right past the bucket!",
+      "hint": "You can't catch a fish by hand. Put the bucket where it lands.",
+      "wrong": "Splat! Missed the bucket.",
+      "win": "It jumped in by itself! Now that's fishing."
+    },
+    "h19": {
+      "question": "Cross to the other bank",
+      "step": "STEP",
+      "start": "The stone is there, then it isn't.",
+      "hint": "Step only when the stone is above the water.",
+      "wrong": "Splash! Wet to the waist.",
+      "win": "Made it across! Almost dry."
+    },
+    "h20": {
+      "question": "Valera's wife expects a catch, and he has nothing",
+      "start": "Not one. And they're waiting at home for soup.",
+      "found": "From the shop. With a price tag…",
+      "tagOff": "No price tag means I caught it myself.",
+      "earlyTag": "Get the fish out first.",
+      "earlyFish": "With the price tag on?! She'll see through it at once!",
+      "hint": "Fish isn't found only in the lake. But you can't leave evidence on it.",
+      "wrong": "There's no fish in the wallet.",
+      "win": "\"Caught it myself!\" \"I believe you.\" Beautiful!"
+    },
     "k1": {
       "question": "Valera wants dumplings at night. Find the fridge",
       "start": "It's dark. And I'm hungry.",

@@ -31,7 +31,7 @@ import { buildObjects, makeDraggable } from './objects.js';
 //   (см. level.word); "ui:coin" — монета из счётчика монет.
 //
 // then — что происходит после шага:
-//   hide: [id], show: [id], swap: { id: вид }, say: ключ реплики,
+//   hide: [id], show: [id], swap: { id: вид }, scale: { id: во сколько раз увеличить }, say: ключ реплики,
 //   hero: { mood, hat, top, hand, props } — настроение, шапка, верх одежды, предмет в руке, детали Валеры
 // early — ключ реплики, если шаг сделали раньше времени; partial — реплика на неполное число нажатий.
 //
@@ -120,6 +120,7 @@ export function buildSequence(scene, level, field, api) {
       const entry = objects.get(id);
       if (entry) redrawShape(entry.picture, shape, entry.size);
     }
+    for (const [id, factor] of Object.entries(effects.scale ?? {})) objects.get(id)?.object.setScale(factor);
     if (effects.hero) {
       const { mood, hat, top, hand, props } = effects.hero;
       if (hat !== undefined) hero.setHat(hat);

@@ -1,0 +1,55 @@
+{
+  "id": "h18",
+  "type": "catch",
+  "objects": [
+    {
+      "id": "water",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.06,
+      "w": 1,
+      "h": 0.12,
+      "color": "0x8ecbff",
+      "inert": true
+    },
+    {
+      "id": "mark",
+      "shape": "ring",
+      "x": 0.66,
+      "y": 0.88,
+      "size": 150,
+      "color": "0x8d7b68",
+      "inert": true
+    },
+    {
+      "id": "spot",
+      "shape": "zone",
+      "x": 0.66,
+      "y": 0.88,
+      "w": 0.3,
+      "h": 0.16
+    },
+    {
+      "id": "fish",
+      "shape": "fish",
+      "x": 0.66,
+      "y": 0.08,
+      "size": 120,
+      "inert": true
+    },
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.22,
+      "y": 0.55,
+      "size": 190
+    }
+  ],
+  "catch": {
+    "fall": "fish",
+    "onto": "spot",
+    "with": "bucket",
+    "ms": 2000,
+    "delay": 1200
+  }
+}

@@ -737,6 +737,239 @@ const faucet = (dripping) => (g, s) => {
   }
 };
 
+// ——— рыбалка ———
+
+// Рыба заданного цвета (значок раздела — синяя)
+const fish = (color) => (g, s) => {
+  line(g, s);
+  g.fillStyle(color, 1).fillTriangle(s * 0.2, 0, s * 0.48, -s * 0.2, s * 0.48, s * 0.2);
+  g.strokeTriangle(s * 0.2, 0, s * 0.48, -s * 0.2, s * 0.48, s * 0.2);
+  g.fillEllipse(-s * 0.08, 0, s * 0.7, s * 0.4);
+  g.strokeEllipse(-s * 0.08, 0, s * 0.7, s * 0.4);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.26, -s * 0.04, s * 0.03);
+};
+
+function drawWhale(g, s) {
+  line(g, s);
+  g.fillStyle(0x5c7fa8, 1).fillTriangle(s * 0.26, 0, s * 0.5, -s * 0.22, s * 0.5, s * 0.16);
+  g.fillEllipse(-s * 0.06, 0, s * 0.8, s * 0.5);
+  g.strokeEllipse(-s * 0.06, 0, s * 0.8, s * 0.5);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.3, -s * 0.02, s * 0.03);
+  g.lineStyle(Math.max(2, s * 0.03), 0x4aa3df, 1).lineBetween(-s * 0.1, -s * 0.26, -s * 0.1, -s * 0.42);
+}
+
+function drawWorm(g, s) {
+  g.lineStyle(Math.max(6, s * 0.14), 0xe88a8a, 1);
+  g.strokePoints([[-0.4, 0.1], [-0.2, -0.12], [0, 0.1], [0.2, -0.12], [0.4, 0.1]].map(([x, y]) => ({ x: x * s, y: y * s })));
+  g.fillStyle(INK, 1).fillCircle(s * 0.4, s * 0.06, s * 0.025);
+}
+
+function drawWorms(g, s) {
+  g.fillStyle(0x6e4520, 1).fillEllipse(0, s * 0.04, s * 0.96, s * 0.56);
+  g.lineStyle(Math.max(5, s * 0.05), 0xe88a8a, 1);
+  for (const [x, y] of [[-0.28, -0.08], [0.06, -0.14], [-0.12, 0.1], [0.22, 0.08]]) {
+    g.strokePoints([0, 0.08, 0.16, 0.24].map((dx, i) => ({ x: (x + dx) * s, y: (y + (i % 2 ? 0.06 : 0)) * s })));
+  }
+}
+
+function drawHook(g, s) {
+  g.lineStyle(Math.max(2, s * 0.02), 0x6b6470, 1).lineBetween(0, -s * 0.5, 0, -s * 0.1);
+  g.lineStyle(Math.max(5, s * 0.07), 0x9aa5b1, 1);
+  g.lineBetween(0, -s * 0.1, 0, s * 0.26);
+  g.beginPath().arc(-s * 0.14, s * 0.26, s * 0.14, 0, Math.PI).strokePath();
+  g.lineBetween(-s * 0.28, s * 0.26, -s * 0.2, s * 0.14);
+}
+
+// Поплавок: на воде или нырнул (клюёт)
+const float = (down) => (g, s) => {
+  if (down) {
+    g.lineStyle(Math.max(3, s * 0.04), COLORS.white, 1);
+    g.strokeEllipse(0, s * 0.2, s * 0.9, s * 0.22);
+    g.strokeEllipse(0, s * 0.2, s * 0.5, s * 0.12);
+    line(g, s);
+    g.fillStyle(0xd63d3d, 1).slice(0, s * 0.2, s * 0.14, Math.PI, 0).fillPath().strokePath();
+    return;
+  }
+  line(g, s);
+  g.lineBetween(0, -s * 0.5, 0, -s * 0.26);
+  g.fillStyle(COLORS.white, 1).fillEllipse(0, 0, s * 0.36, s * 0.56);
+  g.strokeEllipse(0, 0, s * 0.36, s * 0.56);
+  g.fillStyle(0xd63d3d, 1).slice(0, 0, s * 0.18, Math.PI, 0).fillPath();
+  g.strokeEllipse(0, 0, s * 0.36, s * 0.56);
+};
+
+function drawRod(g, s) {
+  g.lineStyle(Math.max(5, s * 0.035), 0xa9713a, 1).lineBetween(-s * 0.45, s * 0.3, s * 0.4, -s * 0.3);
+  g.lineStyle(Math.max(2, s * 0.012), 0x6b6470, 1).lineBetween(s * 0.4, -s * 0.3, s * 0.4, s * 0.2);
+  line(g, s);
+  disc(g, s, 0x9aa5b1, -0.26, 0.2, 0.06);
+  disc(g, s, 0xd63d3d, 0.4, 0.22, 0.045);
+}
+
+function drawMosquito(g, s) {
+  line(g, s);
+  g.fillStyle(COLORS.white, 0.8).fillEllipse(-s * 0.16, -s * 0.2, s * 0.34, s * 0.2).fillEllipse(s * 0.16, -s * 0.2, s * 0.34, s * 0.2);
+  g.strokeEllipse(-s * 0.16, -s * 0.2, s * 0.34, s * 0.2).strokeEllipse(s * 0.16, -s * 0.2, s * 0.34, s * 0.2);
+  g.fillStyle(0x3a2e39, 1).fillEllipse(0, s * 0.04, s * 0.2, s * 0.44);
+  g.lineBetween(0, s * 0.26, 0, s * 0.46);
+}
+
+function drawButterfly(g, s) {
+  line(g, s);
+  for (const side of [-1, 1]) {
+    g.fillStyle(0xff9ec4, 1).fillEllipse(side * s * 0.22, -s * 0.12, s * 0.4, s * 0.44);
+    g.strokeEllipse(side * s * 0.22, -s * 0.12, s * 0.4, s * 0.44);
+    g.fillStyle(COLORS.coin, 1).fillEllipse(side * s * 0.18, s * 0.2, s * 0.3, s * 0.3);
+    g.strokeEllipse(side * s * 0.18, s * 0.2, s * 0.3, s * 0.3);
+  }
+  g.fillStyle(INK, 1).fillEllipse(0, 0, s * 0.08, s * 0.6);
+}
+
+function drawSandwich(g, s) {
+  line(g, s);
+  box(g, s, 0xe0b070, -0.46, 0.06, 0.92, 0.22, 0.08);
+  box(g, s, 0xe88a8a, -0.4, -0.08, 0.8, 0.14, 0.04);
+  box(g, s, 0xe0b070, -0.46, -0.3, 0.92, 0.22, 0.08);
+}
+
+function drawCan(g, s) {
+  line(g, s);
+  box(g, s, 0x9aa5b1, -0.34, -0.3, 0.68, 0.7, 0.04);
+  g.fillStyle(0x6e4520, 1).fillEllipse(0, -s * 0.3, s * 0.68, s * 0.2);
+  g.strokeEllipse(0, -s * 0.3, s * 0.68, s * 0.2);
+}
+
+function drawBucket(g, s) {
+  line(g, s);
+  g.beginPath().arc(0, -s * 0.24, s * 0.4, Math.PI, 0).strokePath();
+  const body = [[-0.42, -0.24], [0.42, -0.24], [0.3, 0.42], [-0.3, 0.42]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0x9aa5b1, 1).fillPoints(body, true);
+  g.strokePoints(body, true);
+  g.fillStyle(0x8ecbff, 1).fillEllipse(0, -s * 0.24, s * 0.84, s * 0.16);
+  g.strokeEllipse(0, -s * 0.24, s * 0.84, s * 0.16);
+}
+
+// Лодка: целая или с течью
+const boat = (leak) => (g, s) => {
+  line(g, s);
+  const hull = [[-0.5, -0.1], [0.5, -0.1], [0.36, 0.2], [-0.36, 0.2]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0xa9713a, 1).fillPoints(hull, true);
+  g.strokePoints(hull, true);
+  g.lineBetween(-s * 0.42, 0.04 * s, s * 0.42, 0.04 * s);
+  if (leak) {
+    g.fillStyle(INK, 1).fillCircle(s * 0.1, s * 0.1, s * 0.03);
+    g.lineStyle(Math.max(3, s * 0.012), 0x4aa3df, 1);
+    for (const [dx, dy] of [[-0.06, -0.12], [0, -0.16], [0.06, -0.12]]) g.lineBetween(s * 0.1, s * 0.08, (0.1 + dx) * s, (0.08 + dy) * s);
+  }
+};
+
+function drawCork(g, s) {
+  line(g, s);
+  const body = [[-0.36, -0.4], [0.36, -0.4], [0.26, 0.4], [-0.26, 0.4]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0xc48a4f, 1).fillPoints(body, true);
+  g.strokePoints(body, true);
+}
+
+function drawTicket(g, s) {
+  line(g, s);
+  box(g, s, 0xfff2a8, -0.48, -0.3, 0.96, 0.6, 0.04);
+  g.fillStyle(INK, 1).fillRect(-s * 0.36, -s * 0.16, s * 0.5, s * 0.05).fillRect(-s * 0.36, 0, s * 0.72, s * 0.04).fillRect(-s * 0.36, s * 0.12, s * 0.6, s * 0.04);
+  disc(g, s, 0x4aa3df, 0.3, -0.12, 0.09);
+}
+
+function drawPotato(g, s) {
+  line(g, s);
+  g.fillStyle(0xc9a26b, 1).fillEllipse(0, 0, s * 0.9, s * 0.62);
+  g.strokeEllipse(0, 0, s * 0.9, s * 0.62);
+  g.fillStyle(0x8a6a3a, 1).fillCircle(-s * 0.2, -s * 0.06, s * 0.03).fillCircle(s * 0.12, s * 0.1, s * 0.03).fillCircle(s * 0.24, -s * 0.1, s * 0.025);
+}
+
+function drawSalt(g, s) {
+  line(g, s);
+  box(g, s, COLORS.white, -0.3, -0.3, 0.6, 0.8, 0.08);
+  box(g, s, 0x9aa5b1, -0.34, -0.5, 0.68, 0.22, 0.06);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.12, -s * 0.4, s * 0.025).fillCircle(0, -s * 0.4, s * 0.025).fillCircle(s * 0.12, -s * 0.4, s * 0.025);
+}
+
+function drawDuck(g, s) {
+  line(g, s);
+  g.fillStyle(COLORS.white, 1).fillEllipse(s * 0.06, s * 0.1, s * 0.76, s * 0.44);
+  g.strokeEllipse(s * 0.06, s * 0.1, s * 0.76, s * 0.44);
+  disc(g, s, COLORS.white, -0.24, -0.16, 0.17);
+  g.fillStyle(COLORS.accent, 1).fillTriangle(-s * 0.4, -s * 0.18, -s * 0.54, -s * 0.12, -s * 0.4, -s * 0.06);
+  g.strokeTriangle(-s * 0.4, -s * 0.18, -s * 0.54, -s * 0.12, -s * 0.4, -s * 0.06);
+  g.fillStyle(INK, 1).fillCircle(-s * 0.28, -s * 0.2, s * 0.025);
+}
+
+function drawGlasses(g, s) {
+  line(g, s);
+  for (const side of [-1, 1]) {
+    g.fillStyle(0xbfe3ff, 0.7).fillCircle(side * s * 0.25, 0, s * 0.2);
+    g.strokeCircle(side * s * 0.25, 0, s * 0.2);
+  }
+  g.lineBetween(-s * 0.06, 0, s * 0.06, 0);
+}
+
+function drawLogs(g, s) {
+  line(g, s);
+  box(g, s, 0x8a5a2b, -0.5, 0.06, 1, 0.2, 0.08);
+  box(g, s, 0xa9713a, -0.4, -0.16, 0.8, 0.2, 0.08);
+  disc(g, s, 0xe0b070, -0.4, 0.16, 0.08);
+  disc(g, s, 0xe0b070, 0.3, -0.06, 0.08);
+}
+
+function drawMatches(g, s) {
+  line(g, s);
+  box(g, s, 0x4aa3df, -0.44, -0.3, 0.88, 0.6, 0.04);
+  box(g, s, 0x6e4520, -0.44, 0.16, 0.88, 0.14, 0.02);
+  g.fillStyle(0x4aa3df, 1).fillCircle(s * 0.3, -s * 0.42, s * 0.03).fillCircle(-s * 0.2, -s * 0.44, s * 0.03);
+}
+
+function drawCamera(g, s) {
+  line(g, s);
+  box(g, s, 0x3a2e39, -0.2, -0.4, 0.3, 0.14, 0.03);
+  box(g, s, 0x55505c, -0.48, -0.3, 0.96, 0.62, 0.06);
+  disc(g, s, 0x9aa5b1, 0, 0.02, 0.22);
+  disc(g, s, 0xbfe3ff, 0, 0.02, 0.13);
+  disc(g, s, 0xd63d3d, 0.36, -0.2, 0.04);
+}
+
+function drawBoot(g, s) {
+  line(g, s);
+  box(g, s, 0x6b7a45, -0.22, -0.48, 0.34, 0.66, 0.05);
+  box(g, s, 0x6b7a45, -0.22, 0.12, 0.66, 0.3, 0.1);
+  g.fillStyle(0x4a5630, 1).fillRect(-s * 0.22, s * 0.36, s * 0.66, s * 0.06);
+}
+
+// Камень в реке: над водой или ушёл под воду
+const stone = (up) => (g, s) => {
+  if (up) {
+    line(g, s);
+    g.fillStyle(0x9aa5b1, 1).slice(0, s * 0.1, s * 0.42, Math.PI, 0).fillPath().strokePath();
+    g.fillStyle(0xc5ccd4, 1).fillEllipse(-s * 0.12, -s * 0.12, s * 0.2, s * 0.1);
+  } else {
+    g.lineStyle(Math.max(3, s * 0.03), COLORS.white, 0.9);
+    g.strokeEllipse(0, s * 0.1, s * 0.8, s * 0.16);
+    g.strokeEllipse(0, s * 0.1, s * 0.4, s * 0.08);
+  }
+};
+
+function drawBag(g, s) {
+  line(g, s);
+  g.beginPath().arc(0, -s * 0.3, s * 0.2, Math.PI, 0).strokePath();
+  const body = [[-0.36, -0.3], [0.36, -0.3], [0.44, 0.46], [-0.44, 0.46]].map(([x, y]) => ({ x: x * s, y: y * s }));
+  g.fillStyle(0xfff2a8, 1).fillPoints(body, true);
+  g.strokePoints(body, true);
+  g.fillStyle(0xd63d3d, 1).fillCircle(0, s * 0.08, s * 0.14);
+}
+
+// Ценник
+function drawTag(g, s) {
+  line(g, s);
+  box(g, s, COLORS.coin, -0.46, -0.3, 0.92, 0.6, 0.06);
+  g.fillStyle(INK, 1).fillRect(-s * 0.3, -s * 0.12, s * 0.6, s * 0.07).fillRect(-s * 0.3, s * 0.06, s * 0.36, s * 0.06);
+}
+
 // ——— вещи в руку ———
 
 function drawHammer(g, s) {
@@ -779,15 +1012,6 @@ function drawHeart(g, s) {
   g.fillTriangle(-s * 0.35, -s * 0.02, s * 0.35, -s * 0.02, 0, s * 0.4);
 }
 
-function drawFish(g, s) {
-  line(g, s);
-  g.fillStyle(0x4aa3df, 1).fillTriangle(s * 0.2, 0, s * 0.48, -s * 0.2, s * 0.48, s * 0.2);
-  g.strokeTriangle(s * 0.2, 0, s * 0.48, -s * 0.2, s * 0.48, s * 0.2);
-  g.fillEllipse(-s * 0.08, 0, s * 0.7, s * 0.4);
-  g.strokeEllipse(-s * 0.08, 0, s * 0.7, s * 0.4);
-  g.fillStyle(INK, 1).fillCircle(-s * 0.26, -s * 0.04, s * 0.03);
-}
-
 const SHAPES = {
   sun: { draw: drawSun, aspect: 1 },
   cloud: { draw: drawCloud, aspect: 0.7 },
@@ -826,6 +1050,7 @@ const SHAPES = {
   house: { draw: drawHouse, aspect: 0.9 },
   factory: { draw: drawFactory, aspect: 1 },
   conductor: { draw: person(0x3f6fa8, 0x2e4a8f, false), aspect: 2 },
+  inspector: { draw: person(0x3f8f5a, 0x2f6b42, false), aspect: 2 },
   dad: { draw: person(0x7a6a58, null, false), aspect: 2 },
   waiter: { draw: person(0xf3efe4, null, true), aspect: 2 },
   dasha: { draw: lady(0x4a6fa5, { scarf: true }), aspect: 2 },
@@ -882,7 +1107,36 @@ const SHAPES = {
   oilcan: { draw: drawOilcan, aspect: 0.7 },
   spray: { draw: drawSpray, aspect: 1.8 },
   heart: { draw: drawHeart, aspect: 0.8 },
-  fish: { draw: drawFish, aspect: 0.5 },
+  fish: { draw: fish(0x4aa3df), aspect: 0.5 },
+  goldfish: { draw: fish(COLORS.coin), aspect: 0.5 },
+  whale: { draw: drawWhale, aspect: 0.6 },
+  worm: { draw: drawWorm, aspect: 0.4 },
+  worms: { draw: drawWorms, aspect: 0.6 },
+  hook: { draw: drawHook, aspect: 1 },
+  float: { draw: float(false), aspect: 1 },
+  floatDown: { draw: float(true), aspect: 1 },
+  rod: { draw: drawRod, aspect: 0.7 },
+  mosquito: { draw: drawMosquito, aspect: 1 },
+  butterfly: { draw: drawButterfly, aspect: 0.9 },
+  sandwich: { draw: drawSandwich, aspect: 0.65 },
+  can: { draw: drawCan, aspect: 0.9 },
+  bucket: { draw: drawBucket, aspect: 1 },
+  boat: { draw: boat(false), aspect: 0.4 },
+  boatLeak: { draw: boat(true), aspect: 0.4 },
+  cork: { draw: drawCork, aspect: 0.9 },
+  ticket: { draw: drawTicket, aspect: 0.62 },
+  potato: { draw: drawPotato, aspect: 0.65 },
+  salt: { draw: drawSalt, aspect: 1.1 },
+  duck: { draw: drawDuck, aspect: 0.75 },
+  glasses: { draw: drawGlasses, aspect: 0.45 },
+  logs: { draw: drawLogs, aspect: 0.45 },
+  matches: { draw: drawMatches, aspect: 0.75 },
+  camera: { draw: drawCamera, aspect: 0.75 },
+  boot: { draw: drawBoot, aspect: 1 },
+  stone: { draw: stone(true), aspect: 0.6 },
+  stoneDown: { draw: stone(false), aspect: 0.6 },
+  bag: { draw: drawBag, aspect: 1 },
+  tag: { draw: drawTag, aspect: 0.62 },
 };
 
 export const hasShape = (name) => name in SHAPES;

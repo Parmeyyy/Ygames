@@ -1,0 +1,72 @@
+{
+  "id": "h16",
+  "type": "combine",
+  "objects": [
+    {
+      "id": "sun",
+      "shape": "sun",
+      "x": 0.74,
+      "y": 0.14,
+      "size": 180,
+      "inert": true
+    },
+    {
+      "id": "logs",
+      "shape": "logs",
+      "x": 0.55,
+      "y": 0.78,
+      "size": 300,
+      "inert": true
+    },
+    {
+      "id": "fire",
+      "shape": "flame",
+      "at": [
+        "logs",
+        0,
+        -0.9
+      ],
+      "size": 150,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "matches",
+      "shape": "matches",
+      "x": 0.18,
+      "y": 0.3,
+      "size": 120,
+      "draggable": true,
+      "wrong": true
+    },
+    {
+      "id": "glasses",
+      "shape": "glasses",
+      "at": [
+        "hero:forehead",
+        0,
+        0.75
+      ],
+      "size": 84
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "glasses",
+      "onto": "logs",
+      "keep": [
+        0,
+        -1.6
+      ],
+      "then": {
+        "show": [
+          "fire"
+        ],
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

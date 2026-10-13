@@ -1,0 +1,33 @@
+{
+  "id": "h7",
+  "type": "choice",
+  "objects": [
+    {
+      "id": "gold",
+      "shape": "goldfish",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 260,
+      "inert": true
+    }
+  ],
+  "options": [
+    {
+      "id": "fry",
+      "labelKey": "fry"
+    },
+    {
+      "id": "aquarium",
+      "labelKey": "aquarium"
+    },
+    {
+      "id": "release",
+      "labelKey": "release"
+    },
+    {
+      "id": "photo",
+      "labelKey": "photo"
+    }
+  ],
+  "answer": "release"
+}

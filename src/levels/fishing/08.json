@@ -1,0 +1,65 @@
+{
+  "id": "h8",
+  "type": "timed",
+  "objects": [
+    {
+      "id": "water",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.42,
+      "w": 0.92,
+      "h": 0.62,
+      "color": "0x8ecbff",
+      "inert": true
+    },
+    {
+      "id": "floatUp",
+      "shape": "float",
+      "x": 0.5,
+      "y": 0.36,
+      "size": 130,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "floatDown",
+      "shape": "floatDown",
+      "x": 0.5,
+      "y": 0.42,
+      "size": 150,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "pull",
+      "shape": "button",
+      "labelKey": "pull",
+      "x": 0.5,
+      "y": 0.89,
+      "w": 0.6,
+      "h": 0.17
+    }
+  ],
+  "answer": "pull",
+  "signal": {
+    "frames": [
+      {
+        "id": "floatUp",
+        "ms": 1300
+      },
+      {
+        "id": "floatDown",
+        "ms": 700
+      },
+      {
+        "id": "floatUp",
+        "ms": 900
+      },
+      {
+        "id": "floatDown",
+        "ms": 650
+      }
+    ],
+    "good": "floatDown"
+  }
+}

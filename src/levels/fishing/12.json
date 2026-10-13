@@ -1,0 +1,69 @@
+{
+  "id": "h12",
+  "type": "tap",
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "box",
+      "shape": "box",
+      "x": 0.42,
+      "y": 0.62,
+      "w": 0.76,
+      "h": 0.56,
+      "color": "0xc48a4f",
+      "inert": true
+    },
+    {
+      "id": "inspector",
+      "shape": "inspector",
+      "x": 0.86,
+      "y": 0.26,
+      "size": 110,
+      "inert": true
+    },
+    {
+      "id": "float",
+      "shape": "float",
+      "at": [
+        "box",
+        -0.3,
+        -0.2
+      ],
+      "size": 80,
+      "inert": true
+    },
+    {
+      "id": "hook",
+      "shape": "hook",
+      "at": [
+        "box",
+        0.34,
+        -0.14
+      ],
+      "size": 90,
+      "inert": true
+    },
+    {
+      "id": "ticket",
+      "shape": "ticket",
+      "at": [
+        "box",
+        0.02,
+        0.16
+      ],
+      "size": 150
+    },
+    {
+      "id": "worms",
+      "shape": "worms",
+      "at": [
+        "box",
+        0.02,
+        0.16
+      ],
+      "size": 270,
+      "draggable": true
+    }
+  ],
+  "answer": "ticket"
+}

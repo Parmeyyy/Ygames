@@ -50,7 +50,7 @@ export class Hero extends Phaser.GameObjects.Container {
   //   socks: true         — вместо тапок носки
   //   glasses: "forehead" | "eyes"
   //   pass: "back" | "front" — пропуск на шнурке: перевёрнут или лицом
-  //   dirty: true         — пятна на шапке, sweat: true — капли пота
+  //   dirty: true         — пятна на шапке, sweat: true — капли пота, hook: true — крючок на кепке
   constructor(scene, x, y, height, mood = 'idle', options = {}) {
     const { item = progress.hat, top = progress.top, pants = progress.pants, hand = progress.hand, props = {} } = options;
     super(scene, x, y);
@@ -255,6 +255,15 @@ export class Hero extends Phaser.GameObjects.Container {
       g.fillStyle(0x3a2a1a, 0.85);
       for (const [x, y, r] of [[-0.06, -0.93, 0.02], [0.05, -0.9, 0.026], [0.0, -0.955, 0.016], [0.09, -0.94, 0.014]]) {
         g.fillCircle(x * k, y * k, r * k);
+      }
+    }
+
+    if (this.props.hook) {
+      // крючок воткнут в кепку сбоку: тёмная обводка, чтобы его было видно на любой шапке
+      for (const [width, color] of [[k * 0.03, COLORS.outline], [k * 0.014, 0xd9dee4]]) {
+        g.lineStyle(Math.max(2, width), color, 1);
+        g.lineBetween(-k * 0.1, -k * 1.0, -k * 0.1, -k * 0.92);
+        g.beginPath().arc(-k * 0.135, -k * 0.92, k * 0.035, 0, Math.PI).strokePath();
       }
     }
 

@@ -1,0 +1,54 @@
+{
+  "id": "h15",
+  "type": "choice",
+  "hideCoins": true,
+  "heroHat": "cap",
+  "heroProps": {
+    "hook": true
+  },
+  "objects": [
+    {
+      "id": "k1",
+      "shape": "hook",
+      "x": 0.22,
+      "y": 0.5,
+      "size": 110,
+      "inert": true
+    },
+    {
+      "id": "k2",
+      "shape": "hook",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 110,
+      "inert": true
+    },
+    {
+      "id": "k3",
+      "shape": "hook",
+      "x": 0.78,
+      "y": 0.5,
+      "size": 110,
+      "inert": true
+    }
+  ],
+  "options": [
+    {
+      "id": "3",
+      "label": "3"
+    },
+    {
+      "id": "4",
+      "label": "4"
+    },
+    {
+      "id": "5",
+      "label": "5"
+    },
+    {
+      "id": "6",
+      "label": "6"
+    }
+  ],
+  "answer": "4"
+}

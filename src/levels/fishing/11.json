@@ -1,0 +1,36 @@
+{
+  "id": "h11",
+  "type": "flashlight",
+  "background": "night",
+  "objects": [
+    {
+      "id": "boat",
+      "shape": "boat",
+      "x": 0.3,
+      "y": 0.28,
+      "size": 280
+    },
+    {
+      "id": "bush",
+      "shape": "bush",
+      "x": 0.26,
+      "y": 0.78,
+      "size": 220
+    },
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.74,
+      "y": 0.78,
+      "size": 150
+    },
+    {
+      "id": "rod",
+      "shape": "rod",
+      "x": 0.76,
+      "y": 0.3,
+      "size": 230
+    }
+  ],
+  "answer": "rod"
+}

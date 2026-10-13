@@ -1,0 +1,67 @@
+{
+  "id": "h4",
+  "type": "combine",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "hook",
+      "shape": "hook",
+      "x": 0.7,
+      "y": 0.35,
+      "size": 220,
+      "inert": true
+    },
+    {
+      "id": "can",
+      "shape": "can",
+      "x": 0.78,
+      "y": 0.84,
+      "size": 120,
+      "wrong": true
+    },
+    {
+      "id": "sandwich",
+      "shape": "sandwich",
+      "x": 0.28,
+      "y": 0.6,
+      "size": 230
+    },
+    {
+      "id": "sausage",
+      "shape": "sausage",
+      "at": [
+        "sandwich",
+        0,
+        -0.9
+      ],
+      "size": 150,
+      "hidden": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "sandwich",
+      "then": {
+        "show": [
+          "sausage"
+        ],
+        "say": "found"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "sausage",
+      "onto": "hook",
+      "keep": [
+        -0.1,
+        0.3
+      ],
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

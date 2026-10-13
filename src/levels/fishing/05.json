@@ -1,0 +1,104 @@
+{
+  "id": "h5",
+  "type": "sequence",
+  "ordered": false,
+  "heroMood": "scared",
+  "objects": [
+    {
+      "id": "butterfly",
+      "shape": "butterfly",
+      "x": 0.5,
+      "y": 0.5,
+      "size": 120,
+      "fly": true,
+      "wrong": true
+    },
+    {
+      "id": "m1",
+      "shape": "mosquito",
+      "x": 0.2,
+      "y": 0.2,
+      "size": 90,
+      "fly": true
+    },
+    {
+      "id": "m2",
+      "shape": "mosquito",
+      "x": 0.78,
+      "y": 0.25,
+      "size": 90,
+      "fly": true
+    },
+    {
+      "id": "m3",
+      "shape": "mosquito",
+      "x": 0.25,
+      "y": 0.62,
+      "size": 90,
+      "fly": true
+    },
+    {
+      "id": "m4",
+      "shape": "mosquito",
+      "x": 0.8,
+      "y": 0.68,
+      "size": 90,
+      "fly": true
+    },
+    {
+      "id": "m5",
+      "shape": "mosquito",
+      "x": 0.5,
+      "y": 0.88,
+      "size": 90,
+      "fly": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "m1",
+      "then": {
+        "hide": [
+          "m1"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "m2",
+      "then": {
+        "hide": [
+          "m2"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "m3",
+      "then": {
+        "hide": [
+          "m3"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "m4",
+      "then": {
+        "hide": [
+          "m4"
+        ]
+      }
+    },
+    {
+      "do": "tap",
+      "target": "m5",
+      "then": {
+        "hide": [
+          "m5"
+        ]
+      }
+    }
+  ]
+}

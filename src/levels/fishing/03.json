@@ -1,0 +1,66 @@
+{
+  "id": "h3",
+  "type": "combine",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "bank",
+      "shape": "box",
+      "x": 0.25,
+      "y": 0.55,
+      "w": 0.5,
+      "h": 0.9,
+      "color": "0xbfe6a8",
+      "inert": true
+    },
+    {
+      "id": "water",
+      "shape": "box",
+      "x": 0.75,
+      "y": 0.55,
+      "w": 0.5,
+      "h": 0.9,
+      "color": "0x8ecbff",
+      "inert": true
+    },
+    {
+      "id": "fish",
+      "shape": "fish",
+      "x": 0.76,
+      "y": 0.75,
+      "size": 150,
+      "wrong": true
+    },
+    {
+      "id": "can",
+      "shape": "can",
+      "x": 0.2,
+      "y": 0.85,
+      "size": 110,
+      "wrong": true
+    },
+    {
+      "id": "float",
+      "shape": "float",
+      "x": 0.26,
+      "y": 0.4,
+      "size": 110
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "float",
+      "onto": "water",
+      "keep": [
+        0,
+        -0.3
+      ],
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

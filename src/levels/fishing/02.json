@@ -1,0 +1,34 @@
+{
+  "id": "h2",
+  "type": "combine",
+  "objects": [
+    {
+      "id": "water",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.75,
+      "w": 1,
+      "h": 0.5,
+      "color": "0x8ecbff",
+      "inert": true
+    },
+    {
+      "id": "float",
+      "shape": "float",
+      "x": 0.3,
+      "y": 0.2,
+      "size": 110
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "float",
+      "onto": "water",
+      "keep": [
+        0,
+        -0.35
+      ]
+    }
+  ]
+}

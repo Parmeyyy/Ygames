@@ -1,0 +1,65 @@
+{
+  "id": "h19",
+  "type": "timed",
+  "objects": [
+    {
+      "id": "water",
+      "shape": "box",
+      "x": 0.5,
+      "y": 0.42,
+      "w": 0.92,
+      "h": 0.56,
+      "color": "0x8ecbff",
+      "inert": true
+    },
+    {
+      "id": "stone",
+      "shape": "stone",
+      "x": 0.5,
+      "y": 0.42,
+      "size": 260,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "stoneDown",
+      "shape": "stoneDown",
+      "x": 0.5,
+      "y": 0.42,
+      "size": 260,
+      "inert": true,
+      "hidden": true
+    },
+    {
+      "id": "step",
+      "shape": "button",
+      "labelKey": "step",
+      "x": 0.5,
+      "y": 0.89,
+      "w": 0.6,
+      "h": 0.17
+    }
+  ],
+  "answer": "step",
+  "signal": {
+    "frames": [
+      {
+        "id": "stoneDown",
+        "ms": 1200
+      },
+      {
+        "id": "stone",
+        "ms": 800
+      },
+      {
+        "id": "stoneDown",
+        "ms": 900
+      },
+      {
+        "id": "stone",
+        "ms": 650
+      }
+    ],
+    "good": "stone"
+  }
+}

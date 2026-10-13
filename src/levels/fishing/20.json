@@ -1,0 +1,92 @@
+{
+  "id": "h20",
+  "type": "sequence",
+  "heroMood": "sad",
+  "objects": [
+    {
+      "id": "bucket",
+      "shape": "bucket",
+      "x": 0.74,
+      "y": 0.74,
+      "size": 230,
+      "inert": true
+    },
+    {
+      "id": "wallet",
+      "shape": "wallet",
+      "x": 0.82,
+      "y": 0.18,
+      "size": 140,
+      "wrong": true
+    },
+    {
+      "id": "bag",
+      "shape": "bag",
+      "x": 0.26,
+      "y": 0.22,
+      "size": 220
+    },
+    {
+      "id": "storeFish",
+      "shape": "fish",
+      "at": [
+        "bag",
+        0.1,
+        1.2
+      ],
+      "size": 220,
+      "hidden": true
+    },
+    {
+      "id": "tag",
+      "shape": "tag",
+      "at": [
+        "storeFish",
+        0.12,
+        0.1
+      ],
+      "size": 100,
+      "hidden": true
+    }
+  ],
+  "steps": [
+    {
+      "do": "tap",
+      "target": "bag",
+      "then": {
+        "show": [
+          "storeFish",
+          "tag"
+        ],
+        "say": "found"
+      }
+    },
+    {
+      "do": "uncover",
+      "drag": "tag",
+      "from": "storeFish",
+      "early": "earlyTag",
+      "then": {
+        "hide": [
+          "tag"
+        ],
+        "say": "tagOff"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "storeFish",
+      "onto": "bucket",
+      "keep": [
+        0,
+        -0.55
+      ],
+      "early": "earlyFish",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "id": "h13",
+  "type": "sequence",
+  "objects": [
+    {
+      "id": "fire",
+      "shape": "flame",
+      "x": 0.6,
+      "y": 0.86,
+      "size": 120,
+      "inert": true
+    },
+    {
+      "id": "pot",
+      "shape": "pot",
+      "x": 0.6,
+      "y": 0.62,
+      "size": 260,
+      "inert": true
+    },
+    {
+      "id": "water",
+      "shape": "bucket",
+      "x": 0.16,
+      "y": 0.2,
+      "size": 130
+    },
+    {
+      "id": "fish",
+      "shape": "fish",
+      "x": 0.5,
+      "y": 0.14,
+      "size": 150
+    },
+    {
+      "id": "potato",
+      "shape": "potato",
+      "x": 0.84,
+      "y": 0.2,
+      "size": 110
+    },
+    {
+      "id": "salt",
+      "shape": "salt",
+      "x": 0.16,
+      "y": 0.72,
+      "size": 80
+    }
+  ],
+  "steps": [
+    {
+      "do": "combine",
+      "drag": "water",
+      "onto": "pot",
+      "back": true,
+      "then": {
+        "say": "water"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "fish",
+      "onto": "pot",
+      "early": "earlyFish",
+      "then": {
+        "say": "fishIn"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "potato",
+      "onto": "pot",
+      "early": "earlyPotato",
+      "then": {
+        "say": "potatoIn"
+      }
+    },
+    {
+      "do": "combine",
+      "drag": "salt",
+      "onto": "pot",
+      "back": true,
+      "early": "earlySalt",
+      "then": {
+        "hero": {
+          "mood": "happy"
+        }
+      }
+    }
+  ]
+}
