@@ -100,7 +100,11 @@ export class WinScene extends BaseScene {
         place(t('ui.nextSection'), () => this.go('LevelSelect', { section: following.id }));
       }
     }
-    place(t('ui.menu'), () => this.go('Menu'), { fill: COLORS.secondary });
+    // последняя строка — две кнопки рядом: пройти уровень ещё раз и выйти в меню
+    const half = (w - 16 * u) / 2;
+    const side = (half + 16 * u) / 2;
+    addButton(this, sideX - side, y, half, h, t('ui.replay'), () => this.go('Level', { id: this.level.id }), { size: 28, fill: COLORS.secondary });
+    addButton(this, sideX + side, y, half, h, t('ui.menu'), () => this.go('Menu'), { size: 28, fill: COLORS.secondary });
 
     if (!this.celebrated) {
       this.celebrated = true;
