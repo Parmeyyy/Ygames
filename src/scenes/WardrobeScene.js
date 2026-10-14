@@ -1,5 +1,5 @@
 import { audio } from '../audio.js';
-import { COLORS, TEXT } from '../config.js';
+import { COLORS, ECONOMY, TEXT } from '../config.js';
 import { ITEMS, slotOf } from '../items.js';
 import { t } from '../i18n/index.js';
 import { progress } from '../services/progress.js';
@@ -7,6 +7,7 @@ import { addClothIcon } from '../ui/clothes.js';
 import { addHat } from '../ui/hats.js';
 import { Hero } from '../ui/Hero.js';
 import { addShape } from '../ui/shapes.js';
+import { flyCoins } from '../ui/effects.js';
 import { addButton, addCoinAmount, addCoinCounter, addText, drawLock, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
@@ -19,7 +20,7 @@ const TABS = [
 ];
 
 // Гардероб Валеры: шапки и одежда. Вещи — за монеты, редкие — за просмотры рекламы,
-// наградные — за пройденные разделы.
+// наградные — за пройденные разделы. Монеты можно добыть просмотром рекламы.
 export class WardrobeScene extends BaseScene {
   constructor() {
     super('Wardrobe');
@@ -29,6 +30,7 @@ export class WardrobeScene extends BaseScene {
     this.info = 'wardrobe.info';
     this.heroMood = 'happy';
     this.tab = TABS[0];
+    this.flying = 0; // монеты за рекламу, которые ещё летят к счётчику
   }
 
   build() {
@@ -39,7 +41,23 @@ export class WardrobeScene extends BaseScene {
       size: 28,
     });
     addText(this, W / 2, 60 * u, t('ui.wardrobe'), 36, { fontStyle: 'bold' });
-    addCoinCounter(this, W - 20 * u, 60 * u, progress.coins, 'right');
+    const counter = addCoinCounter(this, W - 20 * u, 60 * u, progress.coins, 'right', progress.coins - this.flying);
+
+    // монеты за рекламу: портрет — внизу под вещами, альбом — под Валерой
+    const adW = (portrait ? 420 : 250) * u;
+    const adX = portrait ? W / 2 : W * 0.2;
+    const adY = H - 60 * u;
+    addButton(this, adX, adY, adW, 64 * u, t('wardrobe.coinsAd', { n: ECONOMY.adCoins }), () => this.coinsForAd(), {
+      fill: COLORS.success,
+      size: 26,
+    });
+    if (this.flying > 0) {
+      this.flying = 0;
+      flyCoins(this, { x: adX, y: adY }, counter.coinPoint, 5, () => {
+        audio.coin();
+        counter.bump();
+      }, () => counter.tickTo(progress.coins));
+    }
 
     const cols = 5;
     const cardW = 124 * u;
@@ -54,7 +72,7 @@ export class WardrobeScene extends BaseScene {
     const tabsY = portrait ? 590 * u : 130 * u;
     const gridTop = tabsY + 50 * u;
     const infoX = portrait ? W / 2 : heroX;
-    const infoY = portrait ? 525 * u : H * 0.5 + 215 * u;
+    const infoY = portrait ? 525 * u : H * 0.5 + 200 * u;
     const infoW = portrait ? gridW : W * 0.34;
 
     this.hero = new Hero(this, heroX, heroY, (portrait ? 320 : 340) * u, this.heroMood).enableTaps();
@@ -128,6 +146,15 @@ export class WardrobeScene extends BaseScene {
 
     const card = this.add.container(x, y, parts).setSize(w, h);
     makeTappable(card, () => this.onItem(item));
+  }
+
+  async coinsForAd() {
+    if (!(await yandex.showRewarded())) return;
+    progress.addCoins(ECONOMY.adCoins);
+    this.flying = ECONOMY.adCoins;
+    this.info = 'wardrobe.info';
+    this.heroMood = 'happy';
+    this.rebuild();
   }
 
   async onItem(item) {

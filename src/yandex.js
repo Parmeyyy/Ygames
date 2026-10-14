@@ -85,7 +85,7 @@ export const yandex = {
     document.addEventListener('visibilitychange', () => setPause('hidden', document.hidden));
 
     if (typeof YaGames === 'undefined') {
-      console.info('YaGames не найден — включена заглушка SDK');
+      console.info('YaGames не найден - включена заглушка SDK');
       return;
     }
     try {

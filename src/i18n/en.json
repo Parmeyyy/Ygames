@@ -119,7 +119,7 @@
   },
   "wardrobe": {
     "info": "Rare items take 3 ad views each",
-    "noCoins": "Not enough coins!",
+    "noCoins": "Not enough coins! Get more with an ad",
     "forSection": "This item is a reward for finishing a section",
     "equip": "Wear",
     "equipped": "Wearing",
@@ -130,7 +130,8 @@
     "from_wheel": "Wheel of fortune",
     "from_calendar": "Day 7",
     "info_wheel": "This item can be won on the wheel of fortune",
-    "info_calendar": "This item is the gift for the seventh day in a row"
+    "info_calendar": "This item is the gift for the seventh day in a row",
+    "coinsAd": "+{n} coins (ad)"
   },
   "levels": {
     "m1": {
