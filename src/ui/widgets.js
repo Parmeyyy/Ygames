@@ -225,6 +225,7 @@ export function addModal(scene, { title, buttons, onClose }) {
     addButton(scene, W / 2, top + 130 * u + index * step + buttonH / 2, w - 80 * u, buttonH, button.label, button.onTap, {
       fill: button.fill,
       disabled: button.disabled,
+      textColor: button.textColor,
       size: 30,
     }),
   );

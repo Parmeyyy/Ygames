@@ -27,7 +27,7 @@
     "sectionDone": "Section complete!",
     "newItem": "New wardrobe item: {name}",
     "soon": "Coming soon",
-    "sectionLocked": "Finish the previous section\nor watch an ad to open",
+    "sectionLocked": "How to open? Tap",
     "secretAd": "Watch an ad to open",
     "nextSection": "Next section",
     "dailyLevel": "Daily puzzle",
@@ -53,7 +53,12 @@
     "ok": "Got it",
     "achievements": "Achievements",
     "achievementDone": "Collected",
-    "hintFree": "Free (you have {n})"
+    "hintFree": "Free (you have {n})",
+    "unlockTitle": "How to open \"{name}\"?",
+    "unlockLevels": "Finish \"{name}\": {n} of {total}",
+    "unlockCoins": "Open for {n} coins",
+    "unlockNoCoins": "{n} coins (you have {have})",
+    "unlockAd": "Open with ads ({n}/{total})"
   },
   "game": {
     "title": "Help Valera"

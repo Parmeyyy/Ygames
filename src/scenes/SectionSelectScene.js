@@ -1,9 +1,10 @@
-import { COLORS, TEXT } from '../config.js';
+import { audio } from '../audio.js';
+import { COLORS, ECONOMY, TEXT } from '../config.js';
 import { t } from '../i18n/index.js';
 import { sections } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { addShape } from '../ui/shapes.js';
-import { addButton, addText, drawLock, makeTappable } from '../ui/widgets.js';
+import { addButton, addCoinCounter, addModal, addText, drawLock, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -11,10 +12,15 @@ import { BaseScene } from './BaseScene.js';
 const ICONS = { morning: 'alarm', factory: 'factory', date: 'heart', fishing: 'fish', dacha: 'house' };
 
 // Выбор раздела: Утро, Завод, Ухажёр, Рыбалка, Дача и секретный раздел.
-// Закрытый раздел, в котором уже есть уровни, можно открыть просмотром рекламы.
+// Закрытый раздел открывается тремя способами: пройти предыдущий, заплатить монетами
+// или посмотреть рекламу несколько раз. Секретный — одной рекламой.
 export class SectionSelectScene extends BaseScene {
   constructor() {
     super('SectionSelect');
+  }
+
+  init() {
+    this.unlocking = null; // id раздела, для которого открыто окно «Как открыть»
   }
 
   build() {
@@ -25,6 +31,7 @@ export class SectionSelectScene extends BaseScene {
       size: 28,
     });
     addText(this, W / 2, 60 * u, t('ui.sections'), 36, { fontStyle: 'bold' });
+    this.coins = addCoinCounter(this, W - 20 * u, 60 * u, progress.coins, 'right');
 
     // раздел с задачами дня в списке не показывается
     const shown = sections.filter((section) => !section.hidden);
@@ -41,6 +48,10 @@ export class SectionSelectScene extends BaseScene {
       const y = top + Math.floor(index / cols) * (cardH + gap) + cardH / 2;
       this.addCard(x, y, cardW, cardH, section);
     });
+
+    // окно «Как открыть» — поверх карточек
+    const unlocking = shown.find((section) => section.id === this.unlocking);
+    if (unlocking && !progress.isSectionOpen(unlocking)) this.addUnlockWindow(unlocking);
   }
 
   addCard(x, y, w, h, section) {
@@ -85,14 +96,74 @@ export class SectionSelectScene extends BaseScene {
     }
 
     if (playable) makeTappable(card, () => this.go('LevelSelect', { section: section.id }));
-    else if (adUnlock) makeTappable(card, () => this.openForAd(section));
+    else if (adUnlock && section.secret) makeTappable(card, () => this.openSecretForAd());
+    else if (adUnlock) makeTappable(card, () => this.showUnlock(section));
+
   }
 
-  // Раздел открывается одним просмотром рекламы — навсегда
-  async openForAd(section) {
+  showUnlock(section) {
+    this.unlocking = section.id;
+    this.rebuild();
+  }
+
+  // Окно «Как открыть раздел»: три способа, у каждого виден прогресс
+  addUnlockWindow(section) {
+    const close = () => {
+      this.unlocking = null;
+      this.rebuild();
+    };
+    const previous = sections[sections.indexOf(section) - 1];
+    const views = progress.sectionAdViews(section);
+    const price = ECONOMY.sectionPrice;
+    const enough = progress.coins >= price;
+    addModal(this, {
+      title: t('ui.unlockTitle', { name: t(`sections.${section.id}`) }),
+      onClose: close,
+      buttons: [
+        {
+          label: t('ui.unlockLevels', {
+            name: t(`sections.${previous.id}`),
+            n: progress.completedIn(previous),
+            total: previous.levels.length,
+          }),
+          disabled: !progress.isSectionOpen(previous),
+          onTap: () => this.go('LevelSelect', { section: previous.id }),
+        },
+        {
+          label: enough ? t('ui.unlockCoins', { n: price }) : t('ui.unlockNoCoins', { n: price, have: progress.coins }),
+          fill: COLORS.coin,
+          textColor: TEXT.dark,
+          disabled: !enough,
+          onTap: () => {
+            if (!progress.buySection(section)) return;
+            audio.buy();
+            close();
+          },
+        },
+        {
+          label: t('ui.unlockAd', { n: views, total: ECONOMY.sectionAds }),
+          fill: COLORS.success,
+          onTap: () => this.watchForSection(section),
+        },
+      ],
+    });
+  }
+
+  // Каждый просмотр засчитывается; после последнего раздел открывается навсегда
+  async watchForSection(section) {
     if (!(await yandex.showRewarded())) return;
-    if (section.secret) progress.openSecret();
-    else progress.openSection(section);
+    progress.countSectionAd(section);
+    if (progress.isSectionOpen(section)) {
+      audio.buy();
+      this.unlocking = null;
+    }
+    this.rebuild();
+  }
+
+  // Секретный раздел открывается одним просмотром рекламы — навсегда
+  async openSecretForAd() {
+    if (!(await yandex.showRewarded())) return;
+    progress.openSecret();
     this.rebuild();
   }
 }

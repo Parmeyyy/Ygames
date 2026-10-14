@@ -20,7 +20,8 @@ import { yandex } from '../yandex.js';
 const state = {
   opened: {}, // id раздела → до какого номера открыты его уровни (по умолчанию 1)
   secretOpen: false, // секретный раздел открыт (навсегда)
-  adSections: [], // id разделов, открытых просмотром рекламы (навсегда)
+  adSections: [], // id разделов, открытых досрочно — за монеты или рекламу (навсегда)
+  sectionAds: {}, // id закрытого раздела → сколько раз ради него посмотрели рекламу
   completed: [], // id пройденных уровней
   stars: {}, // id уровня → лучшая оценка, от 1 до 3 звёзд
   coins: 0,
@@ -60,7 +61,7 @@ export const progress = {
     for (const key of ['secretOpen', 'sound']) {
       if (typeof data[key] === 'boolean') state[key] = data[key];
     }
-    for (const key of ['opened', 'stars', 'hatAds']) {
+    for (const key of ['opened', 'stars', 'hatAds', 'sectionAds']) {
       if (isObject(data[key])) state[key] = data[key];
     }
     for (const key of ['completed', 'adSections', 'achieved']) {
@@ -177,10 +178,29 @@ export const progress = {
     save();
   },
 
-  // Раздел открыт просмотром рекламы, не дожидаясь прохождения предыдущего
+  // Раздел открыт досрочно, не дожидаясь прохождения предыдущего
   openSection(section) {
     if (!state.adSections.includes(section.id)) state.adSections.push(section.id);
     save();
+  },
+
+  sectionAdViews(section) {
+    return state.sectionAds[section.id] ?? 0;
+  },
+
+  // Засчитывает просмотр рекламы ради раздела; когда просмотров хватает, раздел открывается
+  countSectionAd(section) {
+    state.sectionAds[section.id] = this.sectionAdViews(section) + 1;
+    if (state.sectionAds[section.id] >= ECONOMY.sectionAds) this.openSection(section);
+    else save();
+  },
+
+  // Покупка раздела за монеты. Возвращает, получилось ли.
+  buySection(section) {
+    if (state.coins < ECONOMY.sectionPrice) return false;
+    state.coins -= ECONOMY.sectionPrice;
+    this.openSection(section);
+    return true;
   },
 
   // ——— время ———

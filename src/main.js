@@ -40,6 +40,7 @@ const game = new Phaser.Game({
   parent: 'game',
   backgroundColor: COLORS.bg,
   disableContextMenu: true,
+  banner: false, // без рекламы Phaser в консоли
   scale: {
     mode: Phaser.Scale.NONE,
     width: initial.width,
@@ -48,6 +49,9 @@ const game = new Phaser.Game({
   },
   scene: [BootScene, MenuScene, SectionSelectScene, LevelSelectScene, LevelScene, WinScene, WardrobeScene, WheelScene, AchievementsScene],
 });
+
+// автотестам в режиме разработки нужен доступ к сценам
+if (import.meta.env.DEV) window.__game = game;
 
 // Паузой звука управляем сами (реклама, уход со вкладки), иначе Phaser
 // включит его обратно при возврате фокуса, даже если реклама ещё открыта.

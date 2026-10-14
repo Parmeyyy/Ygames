@@ -27,7 +27,7 @@
     "sectionDone": "Раздел пройден!",
     "newItem": "Новый предмет в гардеробе: {name}",
     "soon": "Скоро",
-    "sectionLocked": "Пройди предыдущий раздел\nили открой за рекламу",
+    "sectionLocked": "Как открыть? Нажми",
     "secretAd": "Открыть за рекламу",
     "nextSection": "Следующий раздел",
     "dailyLevel": "Задача дня",
@@ -53,7 +53,12 @@
     "ok": "Понятно",
     "achievements": "Достижения",
     "achievementDone": "Получено",
-    "hintFree": "Бесплатная (осталось {n})"
+    "hintFree": "Бесплатная (осталось {n})",
+    "unlockTitle": "Как открыть «{name}»?",
+    "unlockLevels": "Пройти «{name}»: {n} из {total}",
+    "unlockCoins": "Открыть за {n} монет",
+    "unlockNoCoins": "{n} монет (у тебя {have})",
+    "unlockAd": "Открыть за рекламу ({n}/{total})"
   },
   "game": {
     "title": "Помоги Валере"
