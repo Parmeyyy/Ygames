@@ -4,11 +4,16 @@ import { getItem } from '../items.js';
 import { progress } from '../services/progress.js';
 import { PANTS, TOPS } from './clothes.js';
 import { addHat } from './hats.js';
+import { heroTexture } from './images.js';
 import { addShape } from './shapes.js';
 
-// Валера — герой игры: мужик в трениках, майке и кепке, с пузиком и усами. Нарисован фигурами,
-// позже заменится на спрайты из public/assets.
+// Валера — герой игры: мужик в трениках, майке и кепке, с пузиком и усами.
 // Живой: дышит, моргает, следит глазами за пальцем или мышью, сплющивается от нажатия.
+//
+// Два способа нарисовать:
+//   картинки из Canva (src/assets/hero/): ноги, торс с руками и голова на каждую эмоцию складываются
+//     друг на друга, шапка сверху. Так Валера рисуется, когда есть картинки для всего, что на нём надето;
+//   фигуры кодом — во всех остальных случаях (например, для одежды, у которой ещё нет картинки).
 //
 // Настроения (меняют глаза, брови, рот и румянец):
 //   idle, happy (радость), scared (испуг), surprised (удивление), sly (хитрость),
@@ -40,6 +45,19 @@ const ANCHORS = {
   pocket: [0.13, -0.3],
   body: [0, -0.45],
 };
+// Как части из Canva складываются друг с другом (в долях размеров самих картинок)
+const ART = {
+  height: 0.88, // рост без шапки в долях height
+  neck: 0.33, // голова заходит на торс на эту долю своей высоты
+  waist: 0.75, // ноги начинаются на этой высоте торса
+  face: { y: 0.47, radius: 0.38 }, // середина лица и его радиус (в долях ширины головы)
+  forehead: 0.28,
+  mouth: 0.72,
+  chest: 0.35,
+  hand: { x: 0.4, y: 0.9 },
+  pocket: { x: 0.2, y: 0.12 },
+};
+
 // Радиусы зон вокруг этих точек (в долях роста): куда можно попасть предметом или пальцем
 const ZONE_RADIUS = { head: 0.2, forehead: 0.09, mouth: 0.16, chest: 0.11, hand: 0.17, pocket: 0.1, body: 0.25 };
 
@@ -83,6 +101,12 @@ export class Hero extends Phaser.GameObjects.Container {
     this.extras = scene.add.graphics();
     this.hatLayer = scene.add.container(0, 0);
     this.handLayer = scene.add.container(k * ANCHORS.hand[0], k * ANCHORS.hand[1]);
+    // части-картинки: ноги, торс и голова (используются, если для наряда есть картинки)
+    this.legsImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
+    this.torsoImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
+    this.headImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
+    this.anchors = ANCHORS;
+    this.figure.add([this.legsImage, this.torsoImage, this.headImage]);
     this.figure.add([this.torso, this.blush, this.face, this.eyes, this.hatLayer, this.extras, this.handLayer]);
 
     this.add([this.shadow, this.figure]);
@@ -104,7 +128,80 @@ export class Hero extends Phaser.GameObjects.Container {
     });
   }
 
+  // Картинки для того, что сейчас надето; null — каких-то нет, и Валера рисуется кодом
+  artParts() {
+    const scene = this.scene;
+    const head = heroTexture(scene, 'head-idle');
+    const torso = heroTexture(scene, `torso-${this.top ?? 'tank'}`);
+    const legs = heroTexture(scene, `legs-${this.pants ?? 'track'}${this.props.socks ? '-socks' : ''}`);
+    return head && torso && legs ? { head, torso, legs } : null;
+  }
+
+  // Складывает Валеру из картинок и запоминает, где у него голова, рот, руки и прочее
+  drawArt(parts) {
+    const k = this.heroH;
+    const { legsImage: legs, torsoImage: torso, headImage: head } = this;
+    legs.setTexture(parts.legs).setOrigin(0.5, 1);
+    torso.setTexture(parts.torso).setOrigin(0.5, 0);
+    head.setTexture(parts.head).setOrigin(0.5, 0);
+    // общий масштаб: части нарисованы одним листом в одном размере
+    const px = legs.height + torso.height * ART.waist + head.height * (1 - ART.neck);
+    const scale = (k * ART.height) / px;
+    for (const image of [legs, torso, head]) image.setScale(scale).setVisible(true);
+    const legsH = legs.height * scale;
+    const torsoH = torso.height * scale;
+    const torsoW = torso.width * scale;
+    const headH = head.height * scale;
+    const headW = head.width * scale;
+    legs.setPosition(0, 0);
+    const torsoTop = -legsH - torsoH * ART.waist;
+    torso.setPosition(0, torsoTop);
+    const headTop = torsoTop - headH * (1 - ART.neck);
+    head.setPosition(0, headTop);
+
+    // точки на теле в долях роста — как ANCHORS у нарисованного кодом
+    const at = (x, y) => [x / k, y / k];
+    this.anchors = {
+      head: at(0, headTop + headH * ART.face.y),
+      forehead: at(0, headTop + headH * ART.forehead),
+      mouth: at(0, headTop + headH * ART.mouth),
+      chest: at(0, torsoTop + torsoH * ART.chest),
+      hand: at(torsoW * ART.hand.x, torsoTop + torsoH * ART.hand.y),
+      pocket: at(legs.width * scale * ART.pocket.x, -legsH * (1 - ART.pocket.y)),
+      body: at(0, torsoTop + torsoH * 0.5),
+    };
+    // голова для шапки и деталей уровня: макушка, середина лица, радиус
+    this.headArt = { top: headTop, y: headTop + headH * ART.face.y, radius: headW * ART.face.radius };
+  }
+
   drawBody() {
+    const parts = this.artParts();
+    this.art = Boolean(parts);
+    for (const image of [this.legsImage, this.torsoImage, this.headImage]) image.setVisible(false);
+    for (const layer of [this.blush, this.face, this.eyes]) layer.setVisible(!this.art);
+    this.anchors = ANCHORS;
+    if (this.art) {
+      this.torso.clear();
+      this.drawArt(parts);
+    }
+    const [handX, handY] = this.anchors.hand;
+    this.handLayer.setPosition(handX * this.heroH, handY * this.heroH);
+    // детали уровня (очки, пот, крючок…) нарисованы для головы-фигуры: переносим их на голову-картинку
+    if (this.art) {
+      const k = this.heroH;
+      const f = this.headArt.radius / (k * 0.14);
+      this.extras.setScale(f).setPosition(0, this.headArt.y + k * 0.73 * f);
+    } else {
+      this.extras.setScale(1).setPosition(0, 0);
+    }
+    if (this.art) {
+      if (this.mood) this.setMood(this.mood);
+      return;
+    }
+    this.drawCodeBody();
+  }
+
+  drawCodeBody() {
     const k = this.heroH;
     const g = this.torso.clear();
     const stroke = Math.max(2, k * 0.012);
@@ -224,8 +321,9 @@ export class Hero extends Phaser.GameObjects.Container {
   // Головной убор: предмет из гардероба или родная кепка. Значки (медаль, бабочка) носятся вместе с кепкой.
   drawHat() {
     const k = this.heroH;
-    const size = k * 0.46;
-    const top = -k * 0.87;
+    // у Валеры из картинок шапка ложится на голову-картинку: размер — от ширины лица
+    const size = this.art ? this.headArt.radius * 3.3 : k * 0.46;
+    const top = this.art ? this.headArt.top + this.headArt.radius * 0.18 : -k * 0.87;
     this.hatLayer.removeAll(true);
     if (this.item === 'none') return; // уровень снял с Валеры кепку
     const kind = getItem(this.item)?.kind;
@@ -305,6 +403,12 @@ export class Hero extends Phaser.GameObjects.Container {
     const k = this.heroH;
     const spec = MOODS[mood] ?? MOODS.idle;
     this.mood = mood;
+    if (this.art) {
+      // у Валеры из картинок эмоция — это своя голова
+      this.headImage.setTexture(heroTexture(this.scene, `head-${mood}`) ?? heroTexture(this.scene, 'head-idle'));
+      this.eyesOpen = !spec.eyes.startsWith('arc');
+      return this;
+    }
     const eyeX = k * 0.055;
     const stroke = Math.max(2, k * 0.011);
 
@@ -400,6 +504,7 @@ export class Hero extends Phaser.GameObjects.Container {
   setTop(id) {
     this.top = id;
     this.drawBody();
+    this.drawHat();
     return this;
   }
 
@@ -407,20 +512,21 @@ export class Hero extends Phaser.GameObjects.Container {
   hold(shape) {
     this.held = shape;
     this.handLayer.removeAll(true);
-    if (shape) this.handLayer.add(addShape(this.scene, shape, this.heroH * 0.24).object);
+    if (shape) this.handLayer.add(addShape(this.scene, shape, this.heroH * (this.art ? 0.19 : 0.24)).object);
     return this;
   }
 
   setProps(props) {
     Object.assign(this.props, props);
     this.drawBody();
+    this.drawHat();
     this.drawExtras();
     return this;
   }
 
   // Точка на теле в координатах сцены и радиус зоны вокруг неё. part: head, forehead, mouth, chest, hand, body
   zone(part) {
-    const [x, y] = ANCHORS[part] ?? ANCHORS.body;
+    const [x, y] = this.anchors[part] ?? this.anchors.body;
     const k = this.heroH;
     return { x: this.homeX + x * k, y: this.homeY + k / 2 + y * k, radius: (ZONE_RADIUS[part] ?? 0.2) * k };
   }
@@ -444,7 +550,15 @@ export class Hero extends Phaser.GameObjects.Container {
   scheduleBlink() {
     this.blinkTimer = this.scene.time.delayedCall(Phaser.Math.Between(2000, 5000), () => {
       if (!this.scene) return;
-      if (this.eyesOpen) {
+      const blink = this.art && heroTexture(this.scene, 'head-blink');
+      if (this.eyesOpen && blink) {
+        // у Валеры из картинок моргание — голова с закрытыми глазами на миг
+        const mood = this.mood;
+        this.headImage.setTexture(blink);
+        this.scene.time.delayedCall(120, () => {
+          if (this.scene && this.art && this.mood === mood) this.setMood(mood);
+        });
+      } else if (this.eyesOpen && !this.art) {
         this.scene.tweens.add({ targets: this.eyes, scaleY: 0.1, duration: 70, yoyo: true });
       }
       this.scheduleBlink();
@@ -453,7 +567,7 @@ export class Hero extends Phaser.GameObjects.Container {
 
   // Зрачки смотрят в сторону указателя
   lookAt(pointer) {
-    if (!this.eyesOpen || this.mood === 'sly') return;
+    if (this.art || !this.eyesOpen || this.mood === 'sly') return;
     const matrix = this.getWorldTransformMatrix();
     const dx = pointer.x - matrix.tx;
     const dy = pointer.y - (matrix.ty - this.heroH * 0.25);

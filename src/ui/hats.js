@@ -1,4 +1,5 @@
 import { COLORS } from '../config.js';
+import { heroTexture } from './images.js';
 
 // Предметы гардероба, нарисованные фигурами. У каждого своя функция draw<Имя>(g, s):
 //   g — Graphics, начало координат — макушка Валеры (ось y направлена вниз)
@@ -150,6 +151,10 @@ function drawBowtie(g, s) {
   g.fillStyle(0x9c2b2b, 1).fillCircle(0, y, s * 0.045);
 }
 
+// Картинки шапок: ширина в долях s и где проходит их нижний край (в долях s от макушки)
+const HAT_WIDTH = 0.78;
+const HAT_BRIM = 0.2;
+
 // center — где у рисунка середина по вертикали (в долях s): нужно, чтобы ровно показать предмет в карточке
 const DRAWERS = {
   cap: { draw: cap(0x6f8fb3, 0x54708f), center: 0 },
@@ -171,6 +176,13 @@ const DRAWERS = {
 // Создаёт предмет: (x, y) — макушка Валеры, size — условная ширина. Для неизвестного id вернёт null.
 // centered: true — (x, y) это середина самого рисунка (для карточек и предметов на поле).
 export function addHat(scene, id, x, y, size, centered = false) {
+  // нарисованная шапка из Canva (src/assets/hero/hat-<id>.png): низ шапки ложится на лоб
+  const texture = heroTexture(scene, `hat-${id}`);
+  if (texture) {
+    const image = scene.add.image(x, y, texture);
+    image.setScale((size * HAT_WIDTH) / image.width);
+    return centered ? image : image.setOrigin(0.5, 1).setY(y + size * HAT_BRIM);
+  }
   const drawer = DRAWERS[id];
   if (!drawer) return null;
   const g = scene.add.graphics({ x, y: centered ? y - drawer.center * size : y });
