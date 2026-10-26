@@ -10,6 +10,7 @@
       "w": 1,
       "h": 0.5,
       "color": "0x8ecbff",
+      "texture": "water",
       "inert": true
     },
     {

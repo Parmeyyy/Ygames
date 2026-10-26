@@ -1,6 +1,7 @@
 import { COLORS, TEXT } from '../config.js';
 import { labelOf } from '../i18n/index.js';
 import { addHat } from '../ui/hats.js';
+import { fillTexture, shapeTexture } from '../ui/images.js';
 import { addShape, hasShape } from '../ui/shapes.js';
 import { addText } from '../ui/widgets.js';
 
@@ -14,6 +15,8 @@ import { addText } from '../ui/widgets.js';
 //   w, h            — размер в долях поля (для button, box, zone, card)
 //   box             — вместо w, h: [w, h] в долях размера объекта из at
 //   color           — цвет для box, textColor — цвет текста для word
+//   texture         — для box: залить текстурой из src/assets/textures/ (water, soil, grass, belt, metal, planks, sand)
+//   image           — для box: вместо прямоугольника картинка из src/assets/shapes/, растянутая на w × h (забор, полка)
 //   item            — id предмета гардероба для вида "item"
 //   hidden          — объект появится позже (его покажет шаг уровня)
 //   draggable       — объект можно таскать
@@ -81,10 +84,16 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
     } else if (shape === 'box') {
       w = rectW;
       h = rectH;
-      const g = scene.add.graphics();
-      g.fillStyle(Number(def.color ?? COLORS.locked), 1).fillRoundedRect(-w / 2, -h / 2, w, h, 12 * u);
-      g.lineStyle(4 * u, COLORS.outline, 1).strokeRoundedRect(-w / 2, -h / 2, w, h, 12 * u);
-      parts = [g];
+      const picture = def.image && shapeTexture(scene, def.image);
+      if (picture) {
+        parts = [scene.add.image(0, 0, picture).setDisplaySize(w, h)];
+      } else {
+        const g = scene.add.graphics();
+        const fill = def.texture && fillTexture(scene, def.texture);
+        if (!fill) g.fillStyle(Number(def.color ?? COLORS.locked), 1).fillRoundedRect(-w / 2, -h / 2, w, h, 12 * u);
+        g.lineStyle(4 * u, COLORS.outline, 1).strokeRoundedRect(-w / 2, -h / 2, w, h, 12 * u);
+        parts = fill ? [texturedBox(scene, fill, w, h, 12 * u), g] : [g];
+      }
     } else if (shape === 'dot' || shape === 'ring') {
       const g = scene.add.graphics();
       if (shape === 'dot') {
@@ -155,22 +164,48 @@ function drawFigure(scene, figure, size) {
   return g;
 }
 
+// Прямоугольник со скруглёнными углами, залитый повторяющейся текстурой. Рисуется один раз
+// в свою холст-текстуру: её можно и показывать, и стирать (тип erase перерисовывает объект).
+let filled = 0;
+function texturedBox(scene, fill, w, h, radius) {
+  const key = `box-fill-${(filled += 1)}`;
+  const canvas = scene.textures.createCanvas(key, Math.ceil(w), Math.ceil(h));
+  const ctx = canvas.getContext();
+  // клетка текстуры — 160 дизайн-единиц, чтобы узор был одного масштаба на любом поле
+  const source = scene.textures.get(fill).getSourceImage();
+  const tile = 160 * scene.u;
+  const pattern = ctx.createPattern(source, 'repeat');
+  pattern.setTransform(new DOMMatrix().scale(tile / source.width));
+  ctx.beginPath();
+  ctx.roundRect(0, 0, w, h, radius);
+  ctx.fillStyle = pattern;
+  ctx.fill();
+  canvas.refresh();
+  const image = scene.add.image(0, 0, key);
+  image.once('destroy', () => scene.textures.exists(key) && scene.textures.remove(key));
+  return image;
+}
+
 // Настенные часы. У результата есть setTurn(радианы) — повернуть минутную стрелку.
 function drawClock(scene, size) {
   const face = scene.add.graphics();
-  face.fillStyle(COLORS.white, 1).fillCircle(0, 0, size * 0.48);
-  face.lineStyle(Math.max(4, size * 0.04), COLORS.outline, 1).strokeCircle(0, 0, size * 0.48);
-  face.fillStyle(COLORS.outline, 1);
-  for (let i = 0; i < 12; i += 1) {
-    const angle = (Math.PI * 2 * i) / 12;
-    face.fillCircle(Math.sin(angle) * size * 0.4, -Math.cos(angle) * size * 0.4, size * (i % 3 ? 0.012 : 0.022));
+  const picture = shapeTexture(scene, 'clockFace');
+  if (!picture) {
+    face.fillStyle(COLORS.white, 1).fillCircle(0, 0, size * 0.48);
+    face.lineStyle(Math.max(4, size * 0.04), COLORS.outline, 1).strokeCircle(0, 0, size * 0.48);
+    face.fillStyle(COLORS.outline, 1);
+    for (let i = 0; i < 12; i += 1) {
+      const angle = (Math.PI * 2 * i) / 12;
+      face.fillCircle(Math.sin(angle) * size * 0.4, -Math.cos(angle) * size * 0.4, size * (i % 3 ? 0.012 : 0.022));
+    }
   }
   // часовая стрелка стоит, минутная крутится
   face.lineStyle(Math.max(5, size * 0.035), COLORS.outline, 1).lineBetween(0, 0, size * 0.2, -size * 0.1);
   const hand = scene.add.graphics();
-  hand.lineStyle(Math.max(4, size * 0.025), 0xd63d3d, 1).lineBetween(0, 0, 0, -size * 0.38);
+  hand.lineStyle(Math.max(4, size * 0.025), 0xd63d3d, 1).lineBetween(0, 0, 0, -size * 0.32);
   hand.fillStyle(COLORS.outline, 1).fillCircle(0, 0, size * 0.03);
-  const clock = scene.add.container(0, 0, [face, hand]);
+  const parts = picture ? [scene.add.image(0, 0, picture).setDisplaySize(size, size), face, hand] : [face, hand];
+  const clock = scene.add.container(0, 0, parts);
   clock.setTurn = (angle) => hand.setRotation(angle);
   return clock;
 }

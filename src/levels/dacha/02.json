@@ -11,6 +11,7 @@
       "w": 1,
       "h": 0.82,
       "color": "0xa9713a",
+      "texture": "soil",
       "inert": true
     },
     {

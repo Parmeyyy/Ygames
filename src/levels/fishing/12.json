@@ -11,6 +11,7 @@
       "w": 0.76,
       "h": 0.56,
       "color": "0xc48a4f",
+      "texture": "planks",
       "inert": true
     },
     {

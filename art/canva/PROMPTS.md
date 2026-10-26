@@ -70,3 +70,20 @@ Game item sheet in the exact art style of the reference image: same thick dark o
 ```
 Character sheet in the exact art style of the reference image: same thick dark outline, same flat cartoon colors, same 2D mobile game style, same proportions as the reference character. Draw 14 different full-body people, standing, front view, all the same height, in a neat grid of 7 columns and 2 rows with big empty white space between them, nothing touching. In order, row by row: 1 bus conductor woman in a blue uniform with a ticket bag, 2 fish inspector man in a green uniform and cap, 3 strict middle-aged dad with grey hair in a brown cardigan, arms crossed, 4 waiter in a white shirt with a black bow tie holding a towel on his arm, 5 young woman Dasha with brown hair in a blue dress and red scarf, 6 kind old granny with grey hair in a purple dress and an apron, 7 woman in a red dress, 8 woman in a green dress and a wide hat, 9 woman in a purple dress with a handbag, 10 stern boss in a grey suit and tie, 11 the SAME boss seen from the back, 12 factory worker in blue overalls and a yellow hard hat, 13 the SAME worker with bread crumbs on his face and overalls, 14 security guard in a black uniform and cap. Plain solid pure white background, no text, no numbers, no shadows.
 ```
+
+## items-7.png - плита, часы, светофор и детали (формат 4:3)
+
+Сетка 4 × 3: 1 stove, 2 clockFace, 3 lightRed, 4 lightGreen, 5 smoke, 6 stain, 7 crumbs, 8 hole,
+9 bench, 10 shelf, 11 balcony, 12 fence
+
+```
+Game item sheet in the exact art style of the reference image: same thick dark outline, same flat cartoon colors, same 2D mobile game style. Draw ONLY these 12 separate objects, no people, no hands, each object alone and complete, in a neat grid of 4 columns and 3 rows with big empty white space between them, nothing touching. In order, row by row: 1 small white kitchen stove with four burners on top and an oven door, front view, 2 round wall clock face with hour marks and NO clock hands, front view, 3 traffic light with the RED light on and green off, 4 the SAME traffic light with the GREEN light on and red off, 5 a puff of grey smoke, 6 a red juice splash stain, flat, 7 a small scatter of bread crumbs, 8 a dark hole dug in brown soil, top view, 9 wooden park bench, side view, wide, 10 one long thin wooden wall shelf, very wide and flat, 11 balcony railing made of grey metal bars, very wide, 12 wooden garden fence section, very wide. Plain solid pure white background, no text, no numbers, no shadows.
+```
+
+## textures.png - текстуры для полей (формат 2:1)
+
+Сетка 4 × 2: 1 water, 2 soil, 3 grass, 4 belt, 5 metal, 6 planks, 7 sand, 8 -
+
+```
+Texture sheet for a 2D cartoon mobile game in the exact flat art style of the reference image: flat cartoon colors, simple shapes. Draw 7 square seamless tileable texture tiles in a neat grid of 4 columns and 2 rows, all squares exactly the same size, with white space between them, nothing touching. Each tile fills its square completely edge to edge, with no border and no outline around the square, and the pattern continues seamlessly across the edges. In order, row by row: 1 calm blue lake water with small light wave lines, 2 brown garden soil with small clods, 3 green lawn grass, 4 dark grey rubber conveyor belt with horizontal ribs, 5 light grey metal panel with a few rivets, 6 light brown wooden planks running horizontally, 7 yellow sand path with small pebbles, 8 leave this square completely empty. Plain solid pure white background between the tiles, no text, no numbers, no shadows.
+```

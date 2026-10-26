@@ -21,6 +21,7 @@
       "w": 1,
       "h": 0.24,
       "color": "0xc48a4f",
+      "image": "fence",
       "inert": true
     },
     {
@@ -52,6 +53,7 @@
       "w": 0.18,
       "h": 0.3,
       "color": "0xa9713a",
+      "texture": "planks",
       "draggable": true
     }
   ],

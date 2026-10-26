@@ -11,6 +11,7 @@
       "w": 1,
       "h": 0.86,
       "color": "0xbfe6a8",
+      "texture": "grass",
       "inert": true
     },
     {

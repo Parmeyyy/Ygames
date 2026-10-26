@@ -1426,6 +1426,8 @@ export const hasShape = (name) => name in SHAPES;
 // fit: true — готовая картинка не выше нарисованной кодом больше чем на треть (уменьшается целиком),
 // чтобы не наехать на соседей на поле уровня: уровни расставлены под размеры фигур.
 export function addShape(scene, name, size, { fit = false } = {}) {
+  const light = name === 'light' && addLightImage(scene, size);
+  if (light) return light;
   const texture = shapeTexture(scene, name);
   if (texture) {
     const image = scene.add.image(0, 0, texture);
@@ -1437,6 +1439,18 @@ export function addShape(scene, name, size, { fit = false } = {}) {
   const g = scene.add.graphics();
   shape.draw(g, size);
   return { object: g, w: size, h: size * shape.aspect };
+}
+
+// Светофор из картинок lightRed и lightGreen: у картинки, как у нарисованного, есть setLight(зелёный?)
+function addLightImage(scene, size) {
+  const red = shapeTexture(scene, 'lightRed');
+  const green = shapeTexture(scene, 'lightGreen');
+  if (!red || !green) return null;
+  const image = scene.add.image(0, 0, red);
+  const [w, h] = imageSize(image, 'light', size, true);
+  image.setDisplaySize(w, h);
+  image.setLight = (on) => image.setTexture(on ? green : red).setDisplaySize(w, h);
+  return { object: image, w, h };
 }
 
 function imageSize(image, name, size, fit) {
