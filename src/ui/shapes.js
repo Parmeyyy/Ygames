@@ -1423,18 +1423,26 @@ const SHAPES = {
 export const hasShape = (name) => name in SHAPES;
 
 // Создаёт картинку шириной size с центром в (0, 0). Возвращает { object, w, h }.
-export function addShape(scene, name, size) {
+// fit: true — готовая картинка не выше нарисованной кодом больше чем на треть (уменьшается целиком),
+// чтобы не наехать на соседей на поле уровня: уровни расставлены под размеры фигур.
+export function addShape(scene, name, size, { fit = false } = {}) {
   const texture = shapeTexture(scene, name);
   if (texture) {
     const image = scene.add.image(0, 0, texture);
-    const h = (size * image.height) / image.width;
-    image.setDisplaySize(size, h);
-    return { object: image, w: size, h };
+    const [w, h] = imageSize(image, name, size, fit);
+    image.setDisplaySize(w, h);
+    return { object: image, w, h };
   }
   const shape = SHAPES[name];
   const g = scene.add.graphics();
   shape.draw(g, size);
   return { object: g, w: size, h: size * shape.aspect };
+}
+
+function imageSize(image, name, size, fit) {
+  const limit = fit && SHAPES[name] ? size * SHAPES[name].aspect * 1.3 : Infinity;
+  const w = Math.min(size, (limit * image.width) / image.height);
+  return [w, (w * image.height) / image.width];
 }
 
 // Перерисовывает уже созданную картинку другой (кружка стала полной и т. п.)
@@ -1444,7 +1452,7 @@ export function redrawShape(g, name, size) {
     const texture = shapeTexture(g.scene, name);
     if (texture) {
       g.setTexture(texture);
-      g.setDisplaySize(size, (size * g.height) / g.width);
+      g.setDisplaySize(...imageSize(g, name, size, true));
     }
     return;
   }

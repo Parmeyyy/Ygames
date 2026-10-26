@@ -112,7 +112,7 @@ export function buildObjects(scene, level, field, api, maxSize = Infinity) {
       parts = [addHat(scene, def.item, 0, 0, size, true)];
       h = size * 0.6;
     } else if (hasShape(shape)) {
-      const picture = addShape(scene, shape, size);
+      const picture = addShape(scene, shape, size, { fit: true });
       parts = [picture.object];
       w = picture.w;
       h = picture.h;

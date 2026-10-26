@@ -5,7 +5,7 @@
   "objects": [
     {
       "id": "tree",
-      "shape": "appleTree",
+      "shape": "tree",
       "x": 0.5,
       "y": 0.32,
       "size": 340
