@@ -154,6 +154,9 @@ function drawBowtie(g, s) {
 // Картинки шапок: ширина в долях s и где проходит их нижний край (в долях s от макушки)
 const HAT_WIDTH = 0.78;
 const HAT_BRIM = 0.2;
+// Значки-картинки (медаль, бабочка) не на голове: ширина в долях s и середина в долях s от макушки,
+// как у нарисованных кодом. Валера из картинок сам переносит их на грудь и шею (src/ui/Hero.js).
+const BADGES = { medal: { width: 0.36, center: 0.85 }, bowtie: { width: 0.3, center: 0.62 } };
 
 // center — где у рисунка середина по вертикали (в долях s): нужно, чтобы ровно показать предмет в карточке
 const DRAWERS = {
@@ -180,8 +183,12 @@ export function addHat(scene, id, x, y, size, centered = false) {
   const texture = heroTexture(scene, `hat-${id}`);
   if (texture) {
     const image = scene.add.image(x, y, texture);
-    image.setScale((size * HAT_WIDTH) / image.width);
-    return centered ? image : image.setOrigin(0.5, 1).setY(y + size * HAT_BRIM);
+    const badge = BADGES[id];
+    // в карточке значок крупнее, чем на груди
+    image.setScale((size * (badge ? (centered ? 0.55 : badge.width) : HAT_WIDTH)) / image.width);
+    if (centered) return image;
+    if (badge) return image.setY(y + size * badge.center);
+    return image.setOrigin(0.5, 1).setY(y + size * HAT_BRIM);
   }
   const drawer = DRAWERS[id];
   if (!drawer) return null;

@@ -1,4 +1,5 @@
 import { COLORS } from '../config.js';
+import { heroTexture } from './images.js';
 
 // Одежда Валеры: как выглядит верх и низ. Используется и на самом Валере (src/ui/Hero.js),
 // и в карточках гардероба. Список вещей с ценами — в src/items.js.
@@ -36,6 +37,12 @@ const INK = COLORS.outline;
 
 // Значок вещи для карточки гардероба: (x, y) — центр, size — ширина
 export function addClothIcon(scene, id, x, y, size) {
+  // картинка из Canva — та же, что на Валере (src/assets/hero/torso-<id>.png, legs-<id>.png)
+  const texture = heroTexture(scene, `torso-${id}`) ?? heroTexture(scene, `legs-${id}`);
+  if (texture) {
+    const image = scene.add.image(x, y, texture);
+    return image.setScale(Math.min(size / image.width, (size * 1.1) / image.height));
+  }
   const s = size;
   const g = scene.add.graphics({ x, y });
   g.lineStyle(Math.max(2, s * 0.03), INK, 1);

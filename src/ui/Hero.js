@@ -53,6 +53,7 @@ const ART = {
   face: { y: 0.47, radius: 0.38 }, // середина лица и его радиус (в долях ширины головы)
   forehead: 0.28,
   mouth: 0.72,
+  chin: 0.93,
   chest: 0.35,
   hand: { x: 0.4, y: 0.9 },
   pocket: { x: 0.2, y: 0.12 },
@@ -172,6 +173,8 @@ export class Hero extends Phaser.GameObjects.Container {
     };
     // голова для шапки и деталей уровня: макушка, середина лица, радиус
     this.headArt = { top: headTop, y: headTop + headH * ART.face.y, radius: headW * ART.face.radius };
+    // значки: бабочка под подбородком, медаль на груди
+    this.badgeArt = { bowtie: headTop + headH * ART.chin, medal: torsoTop + torsoH * ART.chest, width: torsoW };
   }
 
   drawBody() {
@@ -329,9 +332,20 @@ export class Hero extends Phaser.GameObjects.Container {
     const kind = getItem(this.item)?.kind;
     const hat = !this.item || kind === 'badge' ? 'cap' : this.item;
     for (const id of kind === 'badge' ? [hat, this.item] : [hat]) {
-      const object = addHat(this.scene, id, 0, top, size);
+      const badge = id === this.item && kind === 'badge' && this.art;
+      // значок-картинка на Валере из картинок: по месту на теле, ширина в долях ширины торса
+      const object = badge
+        ? addHat(this.scene, id, 0, this.badgeArt[id], 1, true)?.setDisplaySize(...this.badgeSize(id))
+        : addHat(this.scene, id, 0, top, size);
       if (object) this.hatLayer.add(object);
     }
+  }
+
+  // Размер значка-картинки на груди: медаль — 0.27 ширины торса, бабочка — 0.22
+  badgeSize(id) {
+    const texture = this.scene.textures.get(heroTexture(this.scene, `hat-${id}`)).getSourceImage();
+    const w = this.badgeArt.width * (id === 'medal' ? 0.27 : 0.22);
+    return [w, (w * texture.height) / texture.width];
   }
 
   // Детали, которые нужны отдельным уровням
