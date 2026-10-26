@@ -27,6 +27,9 @@ export const PANTS = {
   jeans: { color: 0x4a6fa5, seam: 0xf2d16b },
   camo: { color: 0x6b7a45, spots: 0x4a5630 },
   pajama: { color: 0xbfe3ff, vstripes: 0x4aa3df },
+  // брюки к смокингу и трико к футболке героя
+  trousers: { color: 0x1f1f29, stripe: 0x4a4a5c },
+  tights: { color: 0x2f6fde },
 };
 
 const INK = COLORS.outline;

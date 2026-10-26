@@ -35,6 +35,8 @@ export const ITEMS = [
   { id: 'tuxedo', ads: 3, kind: 'top' },
   { id: 'superhero', ads: 3, kind: 'top' },
   { id: 'pajama', ads: 3, kind: 'pants' },
+  { id: 'trousers', ads: 3, kind: 'pants' },
+  { id: 'tights', ads: 3, kind: 'pants' },
   { id: 'mug', price: 60, kind: 'hand', shape: 'cupFull' },
   { id: 'hammer', price: 100, kind: 'hand', shape: 'hammer' },
   { id: 'flowers', price: 140, kind: 'hand', shape: 'bouquet' },
