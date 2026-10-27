@@ -3,8 +3,8 @@ import { COLORS } from '../config.js';
 import { getItem } from '../items.js';
 import { progress } from '../services/progress.js';
 import { PANTS, TOPS } from './clothes.js';
-import { addHat } from './hats.js';
-import { heroTexture } from './images.js';
+import { addHat, addHatOnHead } from './hats.js';
+import { heroTexture, shapeTexture } from './images.js';
 import { addShape } from './shapes.js';
 
 // Валера — герой игры: мужик в трениках, майке и кепке, с пузиком и усами.
@@ -55,9 +55,30 @@ const ART = {
   mouth: 0.72,
   chin: 0.93,
   chest: 0.35,
-  hand: { x: 0.4, y: 0.9 },
+  hand: { x: 0.4, y: 0.92 }, // середина кисти правой руки
   pocket: { x: 0.2, y: 0.12 },
 };
+
+// Как Валера из картинок держит предмет в правой руке. Предмет рисуется поверх руки,
+// а поверх предмета — пальцы (hand-<верх>.png, режет scripts/hands.py), так что рукоятку он сжимает.
+//   h     — высота картинки предмета в долях роста
+//   grip  — за какую точку картинки он держит (доли её ширины и высоты)
+//   angle — поворот в градусах по часовой; flip — отразить (кружка ручкой к руке; grip — уже у отражённой)
+const GRIPS = {
+  cupFull: { h: 0.13, grip: [0.15, 0.5], flip: true },
+  hammer: { h: 0.22, grip: [0.13, 0.88] },
+  bouquet: { h: 0.26, grip: [0.5, 0.86], angle: 15 },
+  balloon: { h: 0.45, grip: [0.36, 0.98], angle: 8 },
+  icecream: { h: 0.17, grip: [0.5, 0.85], angle: 12 },
+  umbrella: { h: 0.36, grip: [0.18, 0.84] },
+  trophy: { h: 0.15, grip: [0.5, 0.86] },
+  gear: { h: 0.12, grip: [0.5, 0.88] },
+  keys: { h: 0.11, grip: [0.46, 0.1] },
+  pelmeni: { h: 0.09, grip: [0.1, 0.55] },
+  shovel: { h: 0.12, grip: [0.3, 0.5], angle: 90 },
+  wrench: { h: 0.07, grip: [0.72, 0.5], angle: 70 },
+};
+const GRIP = { h: 0.15, grip: [0.5, 0.85] }; // для предметов, которых нет в GRIPS
 
 // Радиусы зон вокруг этих точек (в долях роста): куда можно попасть предметом или пальцем
 const ZONE_RADIUS = { head: 0.2, forehead: 0.09, mouth: 0.16, chest: 0.11, hand: 0.17, pocket: 0.1, body: 0.25 };
@@ -106,9 +127,11 @@ export class Hero extends Phaser.GameObjects.Container {
     this.legsImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
     this.torsoImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
     this.headImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
+    // пальцы поверх предмета в руке (только у Валеры из картинок)
+    this.fingersImage = scene.add.image(0, 0, '__DEFAULT').setOrigin(1).setVisible(false);
     this.anchors = ANCHORS;
     this.figure.add([this.legsImage, this.torsoImage, this.headImage]);
-    this.figure.add([this.torso, this.blush, this.face, this.eyes, this.hatLayer, this.extras, this.handLayer]);
+    this.figure.add([this.torso, this.blush, this.face, this.eyes, this.hatLayer, this.extras, this.handLayer, this.fingersImage]);
 
     this.add([this.shadow, this.figure]);
     this.setSize(this.heroW, k);
@@ -172,7 +195,12 @@ export class Hero extends Phaser.GameObjects.Container {
       body: at(0, torsoTop + torsoH * 0.5),
     };
     // голова для шапки и деталей уровня: макушка, середина лица, радиус
-    this.headArt = { top: headTop, y: headTop + headH * ART.face.y, radius: headW * ART.face.radius };
+    this.headArt = { top: headTop, y: headTop + headH * ART.face.y, radius: headW * ART.face.radius, w: headW, h: headH };
+    // пальцы лежат ровно на своём месте торса: кусок вырезан из правого нижнего угла
+    const fingers = heroTexture(this.scene, `hand-${this.top ?? 'tank'}`);
+    this.fingersImage.setTexture(fingers ?? '__DEFAULT').setScale(scale);
+    this.fingersImage.setPosition(torsoW / 2, torsoTop + torsoH);
+    this.fingersArt = Boolean(fingers);
     // значки: бабочка под подбородком, медаль на груди
     this.badgeArt = { bowtie: headTop + headH * ART.chin, medal: torsoTop + torsoH * ART.chest, width: torsoW };
   }
@@ -334,9 +362,10 @@ export class Hero extends Phaser.GameObjects.Container {
     for (const id of kind === 'badge' ? [hat, this.item] : [hat]) {
       const badge = id === this.item && kind === 'badge' && this.art;
       // значок-картинка на Валере из картинок: по месту на теле, ширина в долях ширины торса
-      const object = badge
-        ? addHat(this.scene, id, 0, this.badgeArt[id], 1, true)?.setDisplaySize(...this.badgeSize(id))
-        : addHat(this.scene, id, 0, top, size);
+      let object;
+      if (badge) object = addHat(this.scene, id, 0, this.badgeArt[id], 1, true)?.setDisplaySize(...this.badgeSize(id));
+      else if (this.art) object = addHatOnHead(this.scene, id, this.headArt);
+      object ??= addHat(this.scene, id, 0, top, size);
       if (object) this.hatLayer.add(object);
     }
   }
@@ -519,14 +548,25 @@ export class Hero extends Phaser.GameObjects.Container {
     this.top = id;
     this.drawBody();
     this.drawHat();
-    return this;
+    // у другого верха свои пальцы поверх предмета
+    return this.hold(this.held);
   }
 
   // Дать в руку картинку из src/ui/shapes.js (null — забрать)
   hold(shape) {
     this.held = shape;
     this.handLayer.removeAll(true);
-    if (shape) this.handLayer.add(addShape(this.scene, shape, this.heroH * (this.art ? 0.19 : 0.24)).object);
+    const texture = shape && this.art && this.fingersArt && shapeTexture(this.scene, shape);
+    this.fingersImage.setVisible(Boolean(texture));
+    if (texture) {
+      // картинка в кулаке: точка хвата — в середине кисти, пальцы поверх
+      const { h, grip, angle = 0, flip = false } = GRIPS[shape] ?? GRIP;
+      const image = this.scene.add.image(0, 0, texture).setOrigin(...grip);
+      image.setScale((this.heroH * h) / image.height).setFlipX(flip).setAngle(angle);
+      this.handLayer.add(image);
+    } else if (shape) {
+      this.handLayer.add(addShape(this.scene, shape, this.heroH * (this.art ? 0.19 : 0.24)).object);
+    }
     return this;
   }
 
@@ -535,7 +575,7 @@ export class Hero extends Phaser.GameObjects.Container {
     this.drawBody();
     this.drawHat();
     this.drawExtras();
-    return this;
+    return this.hold(this.held);
   }
 
   // Точка на теле в координатах сцены и радиус зоны вокруг неё. part: head, forehead, mouth, chest, hand, body

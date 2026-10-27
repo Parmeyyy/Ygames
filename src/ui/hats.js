@@ -154,6 +154,35 @@ function drawBowtie(g, s) {
 // Картинки шапок: ширина в долях s и где проходит их нижний край (в долях s от макушки)
 const HAT_WIDTH = 0.78;
 const HAT_BRIM = 0.2;
+// Как шапка-картинка сидит на голове-картинке Валеры: w — ширина в долях ширины головы,
+// y — где нижний край шапки (в долях высоты головы от макушки), x — сдвиг в долях ширины головы,
+// angle — поворот в градусах. Кепка сдвинута вправо, чтобы купол, а не козырёк, был над головой;
+// бандана повёрнута, чтобы узел оказался сбоку.
+const HAT_FIT = {
+  cap: { w: 1, y: 0.34, x: 0.06 },
+  redcap: { w: 1, y: 0.34, x: 0.06 },
+  bandana: { w: 1.12, y: 0.6, angle: 10 },
+  beanie: { w: 0.88, y: 0.38 },
+  ushanka: { w: 1.04, y: 0.5 },
+  fedora: { w: 1.12, y: 0.33 },
+  crown: { w: 0.82, y: 0.3 },
+  chef: { w: 0.9, y: 0.33 },
+  paper: { w: 1, y: 0.32 },
+  helmet: { w: 1, y: 0.36 },
+  panama: { w: 1.06, y: 0.36 },
+  straw: { w: 1.22, y: 0.35 },
+};
+
+// Шапка-картинка на голове-картинке. head — { top, w, h }: макушка и размеры головы.
+// Для неизвестной шапки или без картинки вернёт null.
+export function addHatOnHead(scene, id, head) {
+  const texture = heroTexture(scene, `hat-${id}`);
+  const fit = HAT_FIT[id];
+  if (!texture || !fit) return null;
+  const image = scene.add.image(head.w * (fit.x ?? 0), head.top + head.h * fit.y, texture).setOrigin(0.5, 1);
+  return image.setScale((head.w * fit.w) / image.width).setAngle(fit.angle ?? 0);
+}
+
 // Значки-картинки (медаль, бабочка) не на голове: ширина в долях s и середина в долях s от макушки,
 // как у нарисованных кодом. Валера из картинок сам переносит их на грудь и шею (src/ui/Hero.js).
 const BADGES = { medal: { width: 0.36, center: 0.85 }, bowtie: { width: 0.3, center: 0.62 } };
