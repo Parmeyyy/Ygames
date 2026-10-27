@@ -2,7 +2,7 @@ import { COLORS, TEXT } from '../config.js';
 import { t } from '../i18n/index.js';
 import { getSection } from '../levels/index.js';
 import { progress } from '../services/progress.js';
-import { addButton, addStars, addText, drawLock, makeTappable } from '../ui/widgets.js';
+import { addButton, addLock, addStars, addText, makeTappable } from '../ui/widgets.js';
 import { BaseScene } from './BaseScene.js';
 
 // Сетка уровней одного раздела
@@ -68,7 +68,7 @@ export class LevelSelectScene extends BaseScene {
     const cell = this.add.container(x, y, [bg]).setSize(size, size);
 
     if (locked) {
-      drawLock(bg, 0, size * 0.03, size * 0.4);
+      cell.add(addLock(this, 0, size * 0.03, size * 0.4));
       return;
     }
 

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { audio } from '../audio.js';
 import { COLORS, FONT, TEXT } from '../config.js';
+import { shapeTexture } from './images.js';
 
 // Текст по центру точки (x, y); size — в дизайн-единицах
 export function addText(scene, x, y, str, size, style = {}) {
@@ -115,6 +116,25 @@ export function addButton(scene, x, y, w, h, label, onTap, options = {}) {
   return disabled ? button : makeTappable(button, onTap);
 }
 
+// Значок-картинка из src/assets/shapes/ (iconCoin, iconStar, iconLock…): size — по большей стороне.
+// Если картинки нет, вернёт null и рисует код.
+export function addIconImage(scene, name, x, y, size) {
+  const texture = shapeTexture(scene, name);
+  if (!texture) return null;
+  const image = scene.add.image(x, y, texture);
+  return image.setScale(size / Math.max(image.width, image.height));
+}
+
+// Монетка: картинка или жёлтый кружок; (x, y) — центр
+export function addCoin(scene, x, y, radius) {
+  const image = addIconImage(scene, 'iconCoin', x, y, radius * 2.2);
+  if (image) return image;
+  const coin = scene.add.graphics({ x, y });
+  coin.fillStyle(COLORS.coin, 1).fillCircle(0, 0, radius);
+  coin.lineStyle(Math.max(1, radius * 0.15), COLORS.outline, 1).strokeCircle(0, 0, radius);
+  return coin;
+}
+
 // Монетка с числом или подписью («120», «+10»), центр в (x, y). Ширина — в поле width.
 export function addCoinAmount(scene, x, y, label, size = 28, color = TEXT.dark) {
   const u = scene.u;
@@ -124,9 +144,7 @@ export function addCoinAmount(scene, x, y, label, size = 28, color = TEXT.dark) 
   const width = radius * 2 + gap + text.width;
   text.setX(-width / 2 + radius * 2 + gap);
 
-  const coin = scene.add.graphics();
-  coin.fillStyle(COLORS.coin, 1).fillCircle(-width / 2 + radius, 0, radius);
-  coin.lineStyle(Math.max(1, 2 * u), COLORS.outline, 1).strokeCircle(-width / 2 + radius, 0, radius);
+  const coin = addCoin(scene, -width / 2 + radius, 0, radius);
 
   const amount = scene.add.container(x, y, [coin, text]).setSize(width, radius * 2);
   amount.label = text;
@@ -172,8 +190,13 @@ export function addStars(scene, x, y, count, radius, { animate = false, onPop } 
   const row = scene.add.container(x, y);
   for (let i = 0; i < 3; i += 1) {
     const filled = i < count;
-    const star = scene.add.star((i - 1) * radius * 2.3, 0, 5, radius * 0.48, radius, filled ? COLORS.coin : COLORS.locked);
-    if (filled) star.setStrokeStyle(Math.max(1, radius * 0.1), COLORS.outline);
+    // серая звезда — та же картинка, залитая серым
+    let star = addIconImage(scene, 'iconStar', (i - 1) * radius * 2.3, 0, radius * 2.1);
+    if (star && !filled) star.setTintFill(COLORS.locked);
+    if (!star) {
+      star = scene.add.star((i - 1) * radius * 2.3, 0, 5, radius * 0.48, radius, filled ? COLORS.coin : COLORS.locked);
+      if (filled) star.setStrokeStyle(Math.max(1, radius * 0.1), COLORS.outline);
+    }
     row.add(star);
     if (filled && animate) {
       star.setScale(0);
@@ -188,6 +211,15 @@ export function addStars(scene, x, y, count, radius, { animate = false, onPop } 
     }
   }
   return row;
+}
+
+// Замок с центром в (x, y): картинка или нарисованный кодом (color — его цвет)
+export function addLock(scene, x, y, size, color) {
+  const image = addIconImage(scene, 'iconLock', x, y, size * 1.15);
+  if (image) return image;
+  const g = scene.add.graphics();
+  drawLock(g, x, y, size, color);
+  return g;
 }
 
 // Рисует замок с центром в (x, y)

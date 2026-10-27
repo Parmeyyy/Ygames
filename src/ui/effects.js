@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { COLORS } from '../config.js';
+import { addCoin } from './widgets.js';
 
 // Лёгкие эффекты на твинах: без частиц и шейдеров, чтобы не тормозить на слабых телефонах.
 
@@ -44,9 +45,7 @@ export function confetti(scene, count = 36) {
 export function flyCoins(scene, from, to, count, onArrive, onDone) {
   const u = scene.u;
   for (let i = 0; i < count; i += 1) {
-    const coin = scene.add.graphics({ x: from.x, y: from.y });
-    coin.fillStyle(COLORS.coin, 1).fillCircle(0, 0, 13 * u);
-    coin.lineStyle(Math.max(1, 2 * u), COLORS.outline, 1).strokeCircle(0, 0, 13 * u);
+    const coin = addCoin(scene, from.x, from.y, 13 * u);
     scene.tweens.add({
       targets: coin,
       x: to.x,

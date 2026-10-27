@@ -1,5 +1,5 @@
 import { COLORS } from '../config.js';
-import { makeTappable } from './widgets.js';
+import { addIconImage, makeTappable } from './widgets.js';
 
 // Значки для круглых кнопок меню. Каждый рисуется функцией (g, s): центр в (0, 0), s — размер значка.
 const INK = COLORS.outline;
@@ -54,8 +54,13 @@ export function addIconButton(scene, x, y, size, icon, onTap, { badge = false, a
   bg.fillStyle(COLORS.outline, 0.18).fillCircle(0, 5 * u, size / 2);
   bg.fillStyle(COLORS.white, 1).fillCircle(0, 0, size / 2);
   bg.lineStyle(3 * u, COLORS.outline, 1).strokeCircle(0, 0, size / 2);
-  const picture = scene.add.graphics();
-  ICONS[icon](picture, size * 0.56, ...args);
+  // значок-картинка (iconWheel, iconChest, iconMedal, iconSound / iconMute), иначе рисует код
+  const image = { wheel: 'iconWheel', chest: 'iconChest', medal: 'iconMedal', sound: args[0] === false ? 'iconMute' : 'iconSound' }[icon];
+  let picture = image && addIconImage(scene, image, 0, 0, size * 0.66);
+  if (!picture) {
+    picture = scene.add.graphics();
+    ICONS[icon](picture, size * 0.56, ...args);
+  }
   const parts = [bg, picture];
   if (badge) {
     const dot = scene.add.graphics();

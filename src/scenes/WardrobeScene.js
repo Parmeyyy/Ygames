@@ -8,7 +8,7 @@ import { addHat } from '../ui/hats.js';
 import { Hero } from '../ui/Hero.js';
 import { addShape } from '../ui/shapes.js';
 import { flyCoins } from '../ui/effects.js';
-import { addButton, addCoinAmount, addCoinCounter, addText, drawLock, makeTappable } from '../ui/widgets.js';
+import { addButton, addCoinAmount, addCoinCounter, addLock, addText, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -133,14 +133,12 @@ export class WardrobeScene extends BaseScene {
     } else if (item.source) {
       // вещь выдаётся на колесе удачи или в календаре подарков
       picture.setAlpha(0.35);
-      const lock = this.add.graphics();
-      drawLock(lock, w / 2 - 24 * u, -h / 2 + 26 * u, 22 * u);
+      const lock = addLock(this, w / 2 - 24 * u, -h / 2 + 26 * u, 22 * u);
       parts.push(lock, addText(this, 0, labelY, t(`wardrobe.from_${item.source}`), 16, { color: TEXT.muted, fontStyle: 'bold' }));
     } else {
       // награда за раздел: пока раздел не пройден, вещь под замком
       picture.setAlpha(0.35);
-      const lock = this.add.graphics();
-      drawLock(lock, w / 2 - 24 * u, -h / 2 + 26 * u, 22 * u);
+      const lock = addLock(this, w / 2 - 24 * u, -h / 2 + 26 * u, 22 * u);
       parts.push(lock, addText(this, 0, labelY, t(`sections.${item.section}`), 18, { color: TEXT.muted, fontStyle: 'bold' }));
     }
 

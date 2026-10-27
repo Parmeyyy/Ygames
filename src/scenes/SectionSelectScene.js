@@ -4,7 +4,7 @@ import { t } from '../i18n/index.js';
 import { sections } from '../levels/index.js';
 import { progress } from '../services/progress.js';
 import { addShape } from '../ui/shapes.js';
-import { addButton, addCoinCounter, addModal, addText, drawLock, makeTappable } from '../ui/widgets.js';
+import { addButton, addCoinCounter, addModal, addLock, addText, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -90,9 +90,7 @@ export class SectionSelectScene extends BaseScene {
     card.add(label);
 
     if (!open) {
-      const lock = this.add.graphics();
-      drawLock(lock, w / 2 - 44 * u, -h / 2 + 44 * u, 40 * u, COLORS.white);
-      card.add(lock);
+      card.add(addLock(this, w / 2 - 44 * u, -h / 2 + 44 * u, 40 * u, COLORS.white));
     }
 
     if (playable) makeTappable(card, () => this.go('LevelSelect', { section: section.id }));

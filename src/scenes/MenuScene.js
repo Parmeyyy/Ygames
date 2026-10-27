@@ -6,7 +6,7 @@ import { progress } from '../services/progress.js';
 import { Hero } from '../ui/Hero.js';
 import { addIconButton } from '../ui/icons.js';
 import { addShape } from '../ui/shapes.js';
-import { addBubble, addButton, addCoinCounter, addModal, addText } from '../ui/widgets.js';
+import { addBubble, addButton, addCoinCounter, addIconImage, addModal, addText } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -38,7 +38,9 @@ export class MenuScene extends BaseScene {
     addBubble(this, heroX, bubbleY, 460 * u, t('hero.menu'));
     addCoinCounter(this, W - 20 * u, 50 * u, progress.coins, 'right');
     // всего звёзд за пройденные уровни
-    this.add.star(44 * u, 50 * u, 5, 12 * u, 25 * u, COLORS.coin).setStrokeStyle(2 * u, COLORS.outline);
+    if (!addIconImage(this, 'iconStar', 44 * u, 50 * u, 52 * u)) {
+      this.add.star(44 * u, 50 * u, 5, 12 * u, 25 * u, COLORS.coin).setStrokeStyle(2 * u, COLORS.outline);
+    }
     addText(this, 78 * u, 50 * u, String(progress.totalStars), 30, { fontStyle: 'bold', color: TEXT.dark }).setOrigin(0, 0.5);
     new Hero(this, heroX, heroY, 310 * u).enableTaps();
 

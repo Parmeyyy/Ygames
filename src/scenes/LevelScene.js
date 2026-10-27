@@ -7,7 +7,7 @@ import { progress } from '../services/progress.js';
 import { addBackground, hasBackground } from '../ui/background.js';
 import { flashError } from '../ui/effects.js';
 import { Hero } from '../ui/Hero.js';
-import { addBubble, addButton, addCoinCounter, addModal, addText, addWordFlow, makeTappable } from '../ui/widgets.js';
+import { addBubble, addButton, addCoin, addCoinCounter, addModal, addText, addWordFlow, makeTappable } from '../ui/widgets.js';
 import { yandex } from '../yandex.js';
 import { BaseScene } from './BaseScene.js';
 
@@ -182,9 +182,7 @@ export class LevelScene extends BaseScene {
     if (!this.coinDrag) {
       const radius = 16 * this.u;
       const { x, y } = this.coinCounter.coinPoint;
-      const coin = this.add.graphics();
-      coin.fillStyle(COLORS.coin, 1).fillCircle(0, 0, radius);
-      coin.lineStyle(Math.max(1, 2 * this.u), COLORS.outline, 1).strokeCircle(0, 0, radius);
+      const coin = addCoin(this, 0, 0, radius);
       // зона нажатия больше самой монетки, чтобы в неё легко попасть пальцем
       this.coinDrag = this.add.container(x, y, [coin]).setSize(radius * 4, radius * 4);
       this.coinDrag.isUi = true;

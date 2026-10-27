@@ -81,6 +81,11 @@ const GRIPS = {
   wrench: { h: 0.08, grip: [0.68, 0.5], angle: 80 },
 };
 const GRIP = { h: 0.15, grip: [0.5, 0.8] }; // для предметов, которых нет в GRIPS
+// Голова в шапке (scripts/hatheads.py): hathead-<шапка> — сгенерированная голова в шапке, поверх неё наше лицо
+// с эмоцией face-<эмоция>, поверх лица ещё раз шапка над лицом hattop-<шапка>. Голова head-idle лежит внутри
+// картинок шапки со сдвигом HAT_PAD (в пикселях картинки). Эмоция меняет только лицо — шапка не двигается.
+const HAT_PAD = { x: 48, y: 81 };
+
 // Середина кулака на торсе hold-<верх> (в долях картинки); у длинного пальто он выше
 const FIST = { x: 0.685, y: 0.642 };
 const FISTS = { coat: { x: 0.688, y: 0.566 } };
@@ -126,17 +131,22 @@ export class Hero extends Phaser.GameObjects.Container {
     this.pupils = scene.add.graphics();
     this.eyes = scene.add.container(0, -k * 0.755, [this.eyeShapes, this.pupils]);
     this.extras = scene.add.graphics();
+    // детали уровня картинками (у Валеры из картинок): очки, крючок, пропуск…
+    this.propsLayer = scene.add.container(0, 0);
     this.hatLayer = scene.add.container(0, 0);
     this.handLayer = scene.add.container(k * ANCHORS.hand[0], k * ANCHORS.hand[1]);
     // части-картинки: ноги, торс и голова (используются, если для наряда есть картинки)
     this.legsImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
     this.torsoImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
     this.headImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
+    // голова в шапке: лицо с эмоцией и шапка над лицом (см. HAT_PAD)
+    this.faceImage = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 0).setVisible(false);
+    this.hatTopImage = scene.add.image(0, 0, '__DEFAULT').setOrigin(0).setVisible(false);
     // кулак поверх предмета в руке (только у Валеры из картинок)
     this.fistImage = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 0).setVisible(false);
     this.anchors = ANCHORS;
-    this.figure.add([this.legsImage, this.torsoImage, this.headImage]);
-    this.figure.add([this.torso, this.blush, this.face, this.eyes, this.hatLayer, this.extras, this.handLayer, this.fistImage]);
+    this.figure.add([this.legsImage, this.torsoImage, this.headImage, this.faceImage, this.hatTopImage]);
+    this.figure.add([this.torso, this.blush, this.face, this.eyes, this.hatLayer, this.extras, this.propsLayer, this.handLayer, this.fistImage]);
 
     this.add([this.shadow, this.figure]);
     this.setSize(this.heroW, k);
@@ -204,7 +214,7 @@ export class Hero extends Phaser.GameObjects.Container {
       body: at(0, torsoTop + torsoH * 0.5),
     };
     // голова для шапки и деталей уровня: макушка, середина лица, радиус
-    this.headArt = { top: headTop, y: headTop + headH * ART.face.y, radius: headW * ART.face.radius, w: headW, h: headH };
+    this.headArt = { top: headTop, y: headTop + headH * ART.face.y, radius: headW * ART.face.radius, w: headW, h: headH, scale };
     // с вещью в руке — торс с кулаком перед животом, в том же месте и масштабе; кулак — копия поверх предмета
     const holding = this.held && heroTexture(this.scene, `hold-${top}`);
     const fist = holding && heroTexture(this.scene, `fist-${top}`);
@@ -214,12 +224,15 @@ export class Hero extends Phaser.GameObjects.Container {
     this.fistAt = fist ? [(spot.x - 0.5) * torso.width * scale, torsoTop + spot.y * torso.height * scale] : null;
     // значки: бабочка под подбородком, медаль на груди
     this.badgeArt = { bowtie: headTop + headH * ART.chin, medal: torsoTop + torsoH * ART.chest, width: torsoW };
+    this.torsoArt = { top: torsoTop, w: torsoW, h: torsoH };
   }
 
   drawBody() {
     const parts = this.artParts();
     this.art = Boolean(parts);
-    for (const image of [this.legsImage, this.torsoImage, this.headImage, this.fistImage]) image.setVisible(false);
+    for (const image of [this.legsImage, this.torsoImage, this.headImage, this.faceImage, this.hatTopImage, this.fistImage]) {
+      image.setVisible(false);
+    }
     for (const layer of [this.blush, this.face, this.eyes]) layer.setVisible(!this.art);
     this.anchors = ANCHORS;
     if (this.art) {
@@ -368,10 +381,14 @@ export class Hero extends Phaser.GameObjects.Container {
     const size = this.art ? this.headArt.radius * 3.3 : k * 0.46;
     const top = this.art ? this.headArt.top + this.headArt.radius * 0.18 : -k * 0.87;
     this.hatLayer.removeAll(true);
-    if (this.item === 'none') return; // уровень снял с Валеры кепку
     const kind = getItem(this.item)?.kind;
     const hat = !this.item || kind === 'badge' ? 'cap' : this.item;
+    // у Валеры из картинок шапка — вместе с головой (если для неё есть голова в шапке)
+    this.hatHead = this.art && this.item !== 'none' && heroTexture(this.scene, `hathead-${hat}`) ? hat : null;
+    if (this.art) this.showHead(this.mood ?? this.baseMood);
+    if (this.item === 'none') return; // уровень снял с Валеры кепку
     for (const id of kind === 'badge' ? [hat, this.item] : [hat]) {
+      if (id === this.hatHead) continue;
       const badge = id === this.item && kind === 'badge' && this.art;
       // значок-картинка на Валере из картинок: по месту на теле, ширина в долях ширины торса
       let object;
@@ -389,10 +406,14 @@ export class Hero extends Phaser.GameObjects.Container {
     return [w, (w * texture.height) / texture.width];
   }
 
-  // Детали, которые нужны отдельным уровням
+  // Детали, которые нужны отдельным уровням. У Валеры из картинок — картинки из src/assets/shapes/
+  // по месту на голове и груди (PROPS), иначе рисует код.
   drawExtras() {
+    this.propsLayer.removeAll(true);
+    this.extras.clear();
+    if (this.art && this.drawPropImages()) return;
     const k = this.heroH;
-    const g = this.extras.clear();
+    const g = this.extras;
     const stroke = Math.max(2, k * 0.012);
 
     if (this.props.glasses) {
@@ -454,13 +475,54 @@ export class Hero extends Phaser.GameObjects.Container {
     }
   }
 
+  // Голова-картинка с эмоцией mood: без шапки — head-<эмоция>, в шапке — голова в шапке и лицо face-<эмоция>
+  showHead(mood) {
+    const { top, w, scale } = this.headArt;
+    const hat = this.hatHead;
+    const face = (name) => heroTexture(this.scene, `${name}-${mood}`) ?? heroTexture(this.scene, `${name}-idle`);
+    this.faceImage.setVisible(Boolean(hat));
+    this.hatTopImage.setVisible(Boolean(hat));
+    if (!hat) {
+      this.headImage.setTexture(face('head')).setOrigin(0.5, 0).setPosition(0, top);
+      return;
+    }
+    const x = -w / 2 - HAT_PAD.x * scale;
+    const y = top - HAT_PAD.y * scale;
+    this.headImage.setTexture(heroTexture(this.scene, `hathead-${hat}`)).setOrigin(0).setPosition(x, y);
+    this.faceImage.setTexture(face('face')).setScale(scale).setPosition(0, top);
+    this.hatTopImage.setTexture(heroTexture(this.scene, `hattop-${hat}`)).setScale(scale).setPosition(x, y);
+  }
+
+  // Детали-картинки; false — какой-то картинки нет (тогда всё рисует код)
+  drawPropImages() {
+    const { top, w, h } = this.headArt;
+    const torso = this.torsoArt;
+    const p = this.props;
+    // картинка, место (x, y), ширина и поворот; всё в долях головы (или торса для пропуска)
+    const wanted = [];
+    if (p.glasses === 'eyes') wanted.push(['glasses', 0, top + h * 0.41, w * 0.8]);
+    if (p.glasses === 'forehead') wanted.push(['glasses', 0, top + h * 0.2, w * 0.72, -6]);
+    if (p.hook) wanted.push(['hook', -w * 0.3, top - h * 0.02, w * 0.2, -15]);
+    if (p.beetle) wanted.push(['beetle', -w * 0.2, top + h * 0.02, w * 0.24, -20]);
+    if (p.dirty) wanted.push(['oil', w * 0.04, top - h * 0.04, w * 0.42]);
+    if (p.sweat) wanted.push(['sweat', w * 0.4, top + h * 0.36, w * 0.24]);
+    if (p.pass) wanted.push([p.pass === 'front' ? 'passFront' : 'passBack', 0, torso.top + torso.h * 0.25, torso.w * 0.16]);
+    const textures = wanted.map(([name]) => shapeTexture(this.scene, name));
+    if (textures.some((texture) => !texture)) return false;
+    wanted.forEach(([, x, y, width, angle = 0], i) => {
+      const image = this.scene.add.image(x, y, textures[i]);
+      this.propsLayer.add(image.setScale(width / image.width).setAngle(angle));
+    });
+    return true;
+  }
+
   setMood(mood) {
     const k = this.heroH;
     const spec = MOODS[mood] ?? MOODS.idle;
     this.mood = mood;
     if (this.art) {
-      // у Валеры из картинок эмоция — это своя голова
-      this.headImage.setTexture(heroTexture(this.scene, `head-${mood}`) ?? heroTexture(this.scene, 'head-idle'));
+      // у Валеры из картинок эмоция — это своя голова (или своё лицо под шапкой)
+      this.showHead(mood);
       this.eyesOpen = !spec.eyes.startsWith('arc');
       return this;
     }
@@ -560,6 +622,7 @@ export class Hero extends Phaser.GameObjects.Container {
     this.top = id;
     this.drawBody();
     this.drawHat();
+    this.drawExtras();
     // у другого верха свои пальцы поверх предмета
     return this.hold(this.held);
   }
@@ -621,7 +684,7 @@ export class Hero extends Phaser.GameObjects.Container {
       if (this.eyesOpen && blink) {
         // у Валеры из картинок моргание — голова с закрытыми глазами на миг
         const mood = this.mood;
-        this.headImage.setTexture(blink);
+        this.showHead('blink');
         this.scene.time.delayedCall(120, () => {
           if (this.scene && this.art && this.mood === mood) this.setMood(mood);
         });
