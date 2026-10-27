@@ -50,6 +50,7 @@ const ART = {
   height: 0.88, // рост без шапки в долях height
   neck: 0.33, // голова заходит на торс на эту долю своей высоты
   waist: 0.75, // ноги начинаются на этой высоте торса
+  waists: { coat: 0.66 }, // пальто длиннее: ноги начинаются там же, где у пиджака
   face: { y: 0.47, radius: 0.38 }, // середина лица и его радиус (в долях ширины головы)
   forehead: 0.28,
   mouth: 0.72,
@@ -59,26 +60,30 @@ const ART = {
   pocket: { x: 0.2, y: 0.12 },
 };
 
-// Как Валера из картинок держит предмет в правой руке. Предмет рисуется поверх руки,
-// а поверх предмета — пальцы (hand-<верх>.png, режет scripts/hands.py), так что рукоятку он сжимает.
+// Как Валера из картинок держит предмет. С вещью в руке он надевает торс hold-<верх>.png:
+// правая рука согнута, кулак перед животом. Предмет рисуется поверх торса, а поверх предмета —
+// кулак (fist-<верх>.png, режет scripts/hands.py), так что рукоятка проходит сквозь пальцы.
 //   h     — высота картинки предмета в долях роста
 //   grip  — за какую точку картинки он держит (доли её ширины и высоты)
-//   angle — поворот в градусах по часовой; flip — отразить (кружка ручкой к руке; grip — уже у отражённой)
+//   angle — поворот в градусах по часовой
 const GRIPS = {
-  cupFull: { h: 0.13, grip: [0.15, 0.5], flip: true },
-  hammer: { h: 0.22, grip: [0.13, 0.88] },
-  bouquet: { h: 0.26, grip: [0.5, 0.86], angle: 15 },
-  balloon: { h: 0.45, grip: [0.36, 0.98], angle: 8 },
-  icecream: { h: 0.17, grip: [0.5, 0.85], angle: 12 },
-  umbrella: { h: 0.36, grip: [0.18, 0.84] },
-  trophy: { h: 0.15, grip: [0.5, 0.86] },
-  gear: { h: 0.12, grip: [0.5, 0.88] },
-  keys: { h: 0.11, grip: [0.46, 0.1] },
-  pelmeni: { h: 0.09, grip: [0.1, 0.55] },
-  shovel: { h: 0.12, grip: [0.3, 0.5], angle: 90 },
-  wrench: { h: 0.07, grip: [0.72, 0.5], angle: 70 },
+  cupFull: { h: 0.13, grip: [0.88, 0.5] },
+  hammer: { h: 0.24, grip: [0.2, 0.78], angle: -35 },
+  bouquet: { h: 0.26, grip: [0.5, 0.86], angle: 10 },
+  balloon: { h: 0.45, grip: [0.36, 0.98], angle: 28 },
+  icecream: { h: 0.17, grip: [0.5, 0.8] },
+  umbrella: { h: 0.4, grip: [0.24, 0.8], angle: 18 },
+  trophy: { h: 0.16, grip: [0.5, 0.72] },
+  gear: { h: 0.13, grip: [0.5, 0.85] },
+  keys: { h: 0.12, grip: [0.47, 0.12] },
+  pelmeni: { h: 0.1, grip: [0.88, 0.55] },
+  shovel: { h: 0.12, grip: [0.25, 0.5], angle: 90 },
+  wrench: { h: 0.08, grip: [0.68, 0.5], angle: 80 },
 };
-const GRIP = { h: 0.15, grip: [0.5, 0.85] }; // для предметов, которых нет в GRIPS
+const GRIP = { h: 0.15, grip: [0.5, 0.8] }; // для предметов, которых нет в GRIPS
+// Середина кулака на торсе hold-<верх> (в долях картинки); у длинного пальто он выше
+const FIST = { x: 0.685, y: 0.642 };
+const FISTS = { coat: { x: 0.688, y: 0.566 } };
 
 // Радиусы зон вокруг этих точек (в долях роста): куда можно попасть предметом или пальцем
 const ZONE_RADIUS = { head: 0.2, forehead: 0.09, mouth: 0.16, chest: 0.11, hand: 0.17, pocket: 0.1, body: 0.25 };
@@ -127,11 +132,11 @@ export class Hero extends Phaser.GameObjects.Container {
     this.legsImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
     this.torsoImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
     this.headImage = scene.add.image(0, 0, '__DEFAULT').setVisible(false);
-    // пальцы поверх предмета в руке (только у Валеры из картинок)
-    this.fingersImage = scene.add.image(0, 0, '__DEFAULT').setOrigin(1).setVisible(false);
+    // кулак поверх предмета в руке (только у Валеры из картинок)
+    this.fistImage = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 0).setVisible(false);
     this.anchors = ANCHORS;
     this.figure.add([this.legsImage, this.torsoImage, this.headImage]);
-    this.figure.add([this.torso, this.blush, this.face, this.eyes, this.hatLayer, this.extras, this.handLayer, this.fingersImage]);
+    this.figure.add([this.torso, this.blush, this.face, this.eyes, this.hatLayer, this.extras, this.handLayer, this.fistImage]);
 
     this.add([this.shadow, this.figure]);
     this.setSize(this.heroW, k);
@@ -169,7 +174,9 @@ export class Hero extends Phaser.GameObjects.Container {
     torso.setTexture(parts.torso).setOrigin(0.5, 0);
     head.setTexture(parts.head).setOrigin(0.5, 0);
     // общий масштаб: части нарисованы одним листом в одном размере
-    const px = legs.height + torso.height * ART.waist + head.height * (1 - ART.neck);
+    const top = this.top ?? 'tank';
+    const waist = ART.waists[top] ?? ART.waist;
+    const px = legs.height + torso.height * waist + head.height * (1 - ART.neck);
     const scale = (k * ART.height) / px;
     for (const image of [legs, torso, head]) image.setScale(scale).setVisible(true);
     const legsH = legs.height * scale;
@@ -178,7 +185,7 @@ export class Hero extends Phaser.GameObjects.Container {
     const headH = head.height * scale;
     const headW = head.width * scale;
     legs.setPosition(0, 0);
-    const torsoTop = -legsH - torsoH * ART.waist;
+    const torsoTop = -legsH - torsoH * waist;
     torso.setPosition(0, torsoTop);
     const headTop = torsoTop - headH * (1 - ART.neck);
     head.setPosition(0, headTop);
@@ -196,11 +203,13 @@ export class Hero extends Phaser.GameObjects.Container {
     };
     // голова для шапки и деталей уровня: макушка, середина лица, радиус
     this.headArt = { top: headTop, y: headTop + headH * ART.face.y, radius: headW * ART.face.radius, w: headW, h: headH };
-    // пальцы лежат ровно на своём месте торса: кусок вырезан из правого нижнего угла
-    const fingers = heroTexture(this.scene, `hand-${this.top ?? 'tank'}`);
-    this.fingersImage.setTexture(fingers ?? '__DEFAULT').setScale(scale);
-    this.fingersImage.setPosition(torsoW / 2, torsoTop + torsoH);
-    this.fingersArt = Boolean(fingers);
+    // с вещью в руке — торс с кулаком перед животом, в том же месте и масштабе; кулак — копия поверх предмета
+    const holding = this.held && heroTexture(this.scene, `hold-${top}`);
+    const fist = holding && heroTexture(this.scene, `fist-${top}`);
+    if (holding) torso.setTexture(holding);
+    this.fistImage.setTexture(fist || '__DEFAULT').setScale(scale).setPosition(0, torsoTop).setVisible(Boolean(fist));
+    const spot = FISTS[top] ?? FIST;
+    this.fistAt = fist ? [(spot.x - 0.5) * torso.width * scale, torsoTop + spot.y * torso.height * scale] : null;
     // значки: бабочка под подбородком, медаль на груди
     this.badgeArt = { bowtie: headTop + headH * ART.chin, medal: torsoTop + torsoH * ART.chest, width: torsoW };
   }
@@ -208,7 +217,7 @@ export class Hero extends Phaser.GameObjects.Container {
   drawBody() {
     const parts = this.artParts();
     this.art = Boolean(parts);
-    for (const image of [this.legsImage, this.torsoImage, this.headImage]) image.setVisible(false);
+    for (const image of [this.legsImage, this.torsoImage, this.headImage, this.fistImage]) image.setVisible(false);
     for (const layer of [this.blush, this.face, this.eyes]) layer.setVisible(!this.art);
     this.anchors = ANCHORS;
     if (this.art) {
@@ -217,6 +226,7 @@ export class Hero extends Phaser.GameObjects.Container {
     }
     const [handX, handY] = this.anchors.hand;
     this.handLayer.setPosition(handX * this.heroH, handY * this.heroH);
+    if (this.art && this.fistAt) this.handLayer.setPosition(...this.fistAt);
     // детали уровня (очки, пот, крючок…) нарисованы для головы-фигуры: переносим их на голову-картинку
     if (this.art) {
       const k = this.heroH;
@@ -555,14 +565,15 @@ export class Hero extends Phaser.GameObjects.Container {
   // Дать в руку картинку из src/ui/shapes.js (null — забрать)
   hold(shape) {
     this.held = shape;
+    // торс меняется: с вещью рука согнута
+    if (this.art) this.drawBody();
     this.handLayer.removeAll(true);
-    const texture = shape && this.art && this.fingersArt && shapeTexture(this.scene, shape);
-    this.fingersImage.setVisible(Boolean(texture));
+    const texture = shape && this.art && this.fistAt && shapeTexture(this.scene, shape);
     if (texture) {
-      // картинка в кулаке: точка хвата — в середине кисти, пальцы поверх
-      const { h, grip, angle = 0, flip = false } = GRIPS[shape] ?? GRIP;
+      // картинка в кулаке: точка хвата — в середине кулака, кулак поверх
+      const { h, grip, angle = 0 } = GRIPS[shape] ?? GRIP;
       const image = this.scene.add.image(0, 0, texture).setOrigin(...grip);
-      image.setScale((this.heroH * h) / image.height).setFlipX(flip).setAngle(angle);
+      image.setScale((this.heroH * h) / image.height).setAngle(angle);
       this.handLayer.add(image);
     } else if (shape) {
       this.handLayer.add(addShape(this.scene, shape, this.heroH * (this.art ? 0.19 : 0.24)).object);
