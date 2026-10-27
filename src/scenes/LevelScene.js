@@ -50,22 +50,27 @@ export class LevelScene extends BaseScene {
   computeLayout() {
     const { W, H, u, portrait } = this;
     if (portrait) {
+      // на вытянутых телефонах лишняя высота идёт и Валере: он растёт до 400, поле уменьшается на столько же
+      const hero = Math.min(400 * u, 290 * u + Math.max(0, H - 1280 * u) * 0.4);
+      const grow = hero - 290 * u;
       const side = W - 320 * u;
       return {
         coins: { x: W / 2, y: 122 * u, anchor: 'center' },
         question: { x: W / 2, y: 215 * u, w: W - 80 * u },
-        field: { x: 40 * u, y: 310 * u, w: W - 80 * u, h: H - 650 * u },
-        hero: { x: 140 * u, y: H - 165 * u, h: 290 * u },
-        bubble: { x: 280 * u + side / 2, y: H - 150 * u, w: side },
-        skip: { x: 280 * u + side / 2, y: H - 295 * u, w: Math.min(side, 380 * u), h: 60 * u },
+        field: { x: 40 * u, y: 310 * u, w: W - 80 * u, h: H - 650 * u - grow },
+        hero: { x: 140 * u + grow * 0.2, y: H - 20 * u - hero / 2, h: hero },
+        bubble: { x: 280 * u + grow * 0.4 + (side - grow * 0.4) / 2, y: H - 150 * u - grow / 2, w: side - grow * 0.4 },
+        skip: { x: 280 * u + grow * 0.4 + (side - grow * 0.4) / 2, y: H - 295 * u - grow, w: Math.min(side - grow * 0.4, 380 * u), h: 60 * u },
       };
     }
     const column = W * 0.34;
+    // Валера занимает низ колонки до кнопки «Пропустить»
+    const heroH = Math.min(420 * u, H - 350 * u);
     return {
       coins: { x: 220 * u, y: 60 * u, anchor: 'left' },
       question: { x: column + (W - column) / 2, y: 170 * u, w: W - column - 80 * u },
       field: { x: column + 20 * u, y: 250 * u, w: W - column - 60 * u, h: H - 280 * u },
-      hero: { x: column / 2, y: H - 175 * u, h: 270 * u },
+      hero: { x: column / 2, y: H - 40 * u - heroH / 2, h: heroH },
       bubble: { x: column / 2, y: 190 * u, w: column - 60 * u },
       skip: { x: column / 2, y: 290 * u, w: Math.min(column - 60 * u, 380 * u), h: 56 * u },
     };

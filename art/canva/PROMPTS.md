@@ -87,3 +87,13 @@ Game item sheet in the exact art style of the reference image: same thick dark o
 ```
 Texture sheet for a 2D cartoon mobile game in the exact flat art style of the reference image: flat cartoon colors, simple shapes. Draw 7 square seamless tileable texture tiles in a neat grid of 4 columns and 2 rows, all squares exactly the same size, with white space between them, nothing touching. Each tile fills its square completely edge to edge, with no border and no outline around the square, and the pattern continues seamlessly across the edges. In order, row by row: 1 calm blue lake water with small light wave lines, 2 brown garden soil with small clods, 3 green lawn grass, 4 dark grey rubber conveyor belt with horizontal ribs, 5 light grey metal panel with a few rivets, 6 light brown wooden planks running horizontally, 7 yellow sand path with small pebbles, 8 leave this square completely empty. Plain solid pure white background between the tiles, no text, no numbers, no shadows.
 ```
+
+## hold.png - торсы «держит перед собой» (формат 16:9)
+
+Образец (reference) — `art/canva/original/parts/tops.png`. Сетка 5 × 2: 1 tank, 2 tshirt, 3 hawaii,
+4 sweater, 5 telnyashka, 6 jacket, 7 tuxedo, 8 superhero, 9 coat, 10 -. Режется в `hold-<верх>.png`:
+этот торс Валера надевает, когда у него что-то в руке, и держит вещь кулаком перед животом.
+
+```
+Clothing sheet in the exact art style and exact size of the reference image: the same chubby headless torso with arms, same thick dark outline, same flat cartoon colors, same 2D mobile game style, cut at the neck like the reference, no head, no legs. Draw 9 torsos in a neat grid of 5 columns and 2 rows with big empty white space between them, nothing touching, all exactly the same size and pose. Pose for every torso: the arm on the LEFT side of the image hangs straight down exactly like the reference; the arm on the RIGHT side of the image is bent at the elbow so the forearm comes forward and the closed fist is in front of the belly, slightly right of the center, at waist height, fist facing the viewer and loosely closed as if gripping a stick handle, the hand is EMPTY. In order, row by row: 1 white tank top, 2 plain red t-shirt, 3 orange hawaiian shirt with white flowers, 4 green knitted sweater with a white zigzag stripe, 5 white and navy striped sailor shirt, 6 grey suit jacket over a white shirt with a red tie, 7 black tuxedo jacket over a white shirt with a black bow tie, 8 blue t-shirt with a big yellow star, 9 long brown wool coat with big buttons, 10 leave this cell completely empty. Plain solid pure white background, no text, no numbers, no shadows.
+```
