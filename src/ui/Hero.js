@@ -161,8 +161,10 @@ export class Hero extends Phaser.GameObjects.Container {
   artParts() {
     const scene = this.scene;
     const head = heroTexture(scene, 'head-idle');
-    const torso = heroTexture(scene, `torso-${this.top ?? 'tank'}`);
-    const legs = heroTexture(scene, `legs-${this.pants ?? 'track'}${this.props.socks ? '-socks' : ''}`);
+    // нет картинки для вещи — родная майка или треники (в носках — треники в носках), но не Валера из кода
+    const torso = heroTexture(scene, `torso-${this.top ?? 'tank'}`) ?? heroTexture(scene, 'torso-tank');
+    const socks = this.props.socks ? '-socks' : '';
+    const legs = heroTexture(scene, `legs-${this.pants ?? 'track'}${socks}`) ?? heroTexture(scene, `legs-track${socks}`);
     return head && torso && legs ? { head, torso, legs } : null;
   }
 

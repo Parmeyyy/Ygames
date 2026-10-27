@@ -97,3 +97,26 @@ Texture sheet for a 2D cartoon mobile game in the exact flat art style of the re
 ```
 Clothing sheet in the exact art style and exact size of the reference image: the same chubby headless torso with arms, same thick dark outline, same flat cartoon colors, same 2D mobile game style, cut at the neck like the reference, no head, no legs. Draw 9 torsos in a neat grid of 5 columns and 2 rows with big empty white space between them, nothing touching, all exactly the same size and pose. Pose for every torso: the arm on the LEFT side of the image hangs straight down exactly like the reference; the arm on the RIGHT side of the image is bent at the elbow so the forearm comes forward and the closed fist is in front of the belly, slightly right of the center, at waist height, fist facing the viewer and loosely closed as if gripping a stick handle, the hand is EMPTY. In order, row by row: 1 white tank top, 2 plain red t-shirt, 3 orange hawaiian shirt with white flowers, 4 green knitted sweater with a white zigzag stripe, 5 white and navy striped sailor shirt, 6 grey suit jacket over a white shirt with a red tie, 7 black tuxedo jacket over a white shirt with a black bow tie, 8 blue t-shirt with a big yellow star, 9 long brown wool coat with big buttons, 10 leave this cell completely empty. Plain solid pure white background, no text, no numbers, no shadows.
 ```
+
+## hatheads.png - голова Валеры в шапках (формат 4:3)
+
+Образец (reference) — `art/canva/ready/parts/head-idle.png`. Сетка 4 × 3: 1 cap, 2 redcap, 3 bandana,
+4 beanie, 5 ushanka, 6 fedora, 7 crown, 8 chef, 9 paper, 10 helmet, 11 panama, 12 straw.
+Из каждой головы вырезается шапка вместе с тем, как она облегает голову, и кладётся на голову
+с любой эмоцией (лицо ниже края шапки остаётся своё).
+
+```
+Sheet of the SAME head as the reference image, drawn 12 times: exactly the same face, same size, same proportions, same front view, same calm expression, same thick dark outline, same flat cartoon colors. Each head wears a different hat that sits naturally ON the head: the hat covers the whole top of the head down to just above the eyebrows, wraps around the head so the bald top is hidden, only a little hair shows at the sides under the hat, ears stay visible. Neat grid of 4 columns and 3 rows with big empty white space between the heads, nothing touching. In order, row by row: 1 blue-grey baseball cap with the visor turned forward, 2 red baseball cap with the visor turned forward, 3 red bandana with white polka dots tied with a knot on the side, 4 blue knitted beanie with a pompom and a folded cuff, 5 brown fur ushanka with the ear flaps down over the ears, 6 dark grey fedora with a black band, 7 golden crown with red gems, 8 white chef hat, 9 folded newspaper hat, 10 yellow construction hard hat, 11 beige bucket panama hat, 12 wide straw hat with a red band. Plain solid pure white background, no text, no numbers, no shadows.
+```
+
+## extras.png - ноги в носках, значки меню и детали (формат 16:9)
+
+Образец (reference) — `art/canva/original/parts/pants.png`. Сетка 6 × 4, по рядам:
+1 legs-jeans-socks, 2 legs-shorts-socks, 3 legs-camo-socks, 4 legs-pajama-socks, 5 legs-trousers-socks,
+6 legs-tights-socks, 7 iconWheel, 8 iconChest, 9 iconMedal, 10 iconSound, 11 iconMute, 12 iconStar,
+13 iconCoin, 14 iconLock, 15 mess, 16 wrinkles, 17 stoneDown, 18 passFront, 19 passBack, 20 oil, 21 sweat,
+22 -, 23 -, 24 -.
+
+```
+Game art sheet in the exact art style of the reference image: same thick dark outline, same flat cartoon colors, same 2D mobile game style. Neat grid of 6 columns and 4 rows with big empty white space between the items, nothing touching. Row 1: six pairs of chubby legs from the waist down, exactly like the reference, front view, all the same size, each wearing WHITE SOCKS with a red stripe and NO shoes and NO slippers: 1 blue jeans, 2 light blue denim shorts with bare shins, 3 green camouflage cargo pants, 4 light blue and white striped pajama pants, 5 black tuxedo trousers with a grey side stripe, 6 blue superhero tights. Row 2, small round game menu icons: 7 colorful wheel of fortune with six segments and a pointer on top, 8 closed wooden treasure chest with a gold lock, 9 gold medal on a red ribbon, 10 white loudspeaker with sound waves, 11 the same loudspeaker crossed out, 12 yellow star. Row 3: 13 gold coin, 14 grey padlock, 15 a wild tuft of messy uncombed brown hair sticking up in all directions, wide, 16 a few dark blue wrinkle crease lines like on a crumpled shirt, wide, 17 a grey stone just under the blue water surface with ripple circles, top view, 18 green lanyard with a white ID card showing a small face photo, 19 the same lanyard with the ID card turned backwards, plain grey back, Row 4: 20 a few black oil blots, 21 three blue sweat drops, 22 to 24 leave these cells completely empty. Plain solid pure white background, no text, no numbers, no shadows.
+```
